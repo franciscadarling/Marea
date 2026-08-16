@@ -1,0 +1,14 @@
+{
+    "infogeneral": [
+        { "id": 1, "nombre": "María", "mail": "maria@gmail.com", "contraseña": 1234, "genero": "mujer", "edad": 24, "foto": "foto1.png", "paleta": "verde", "regular": true, "condiciones": "no", "peso": 70, "altura": 170}
+    ],
+    "sintomas": [ {"id": 1, "fecha": "2026-08-16",	"entrada": "txt", "ligero": false, "moderado": false, "fuerte": true, "masacre": false, "rojo": true,	"marron": false, "cambiosDeAnimo": true, "normal": false,	"irritabilidad": false,	"enojo": false,	"ansiedad": true, "tristeza": true, "Indiferencia": false, "sinDolor": false, "colicos": true, "sensibilidadSenos": false, "migraña": true, "lumbares": false, "articulaciones": false,	"vulvar": false, "tampon": false,	"toallahigienica": true, "protectorDiario": false, "copa": true, "ropaInteriorPro": false, "malaMemoria": false, "nieblaMental": false, "distraccion": true, "estres": false, "sinMotivacion": true, "bajoRendimiento": true, "vitalidad": false, "ok": false, "Agotamiento": true,	"cansancioFatiga": true, "Mareo": false, "Nauseas": true, "debilidadMuscular": false, "presionBaja": true}
+    ],
+    "educacion": [
+        {"id": 1, "articulo": 3},
+        {"id": 1, "articulo": 5}
+    ],
+    "fechas": [
+        {"id": 1, "fechasDeMenstruacion": ["2026-08-15", "2026-08-16", "2026-08-17", "2026-08-18"]}
+    ]
+}
