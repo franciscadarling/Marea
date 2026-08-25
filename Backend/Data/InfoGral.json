@@ -1,0 +1,4 @@
+
+    [
+{ "id": 1, "nombre": "María", "mail": "maria@gmail.com", "contraseña": 1234, "genero": "mujer", "edad": 24, "foto": "foto1.png", "paleta": "verde", "regular": true, "condiciones": "no", "peso": 70, "altura": 170}
+    ]
