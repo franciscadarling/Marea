@@ -15,7 +15,8 @@ body {
     position: sticky;
     top: 0;
     display: flex;
-    justify-content: flex-end;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
     z-index: 10;
     background-color: blueviolet;
@@ -56,6 +57,16 @@ body {
     position: relative; 
     display: flex;
     flex-direction: row;
+    margin-right: 5%;
+}
+.foto-logo{
+    background-color: rgb(185, 185, 185);
+    width: 12.72%;
+    height: 56.18%;
+    position: relative; 
+    display: flex;
+    flex-direction: row;
+    margin-left: 5%;
 }
 .rueda {
     width: 50%;
