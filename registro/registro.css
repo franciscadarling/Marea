@@ -75,3 +75,51 @@ body {
     display: flex;
     flex-direction: row;
 }
+
+h1 {
+    display: flex;
+    flex-direction: column;
+
+}
+.sintomas {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+h2 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    margin: 1vh;
+}
+
+.opciones {
+    display: flex;
+    flex-direction: row; 
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    gap: 5vw;
+
+    overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 5vh;
+
+} 
+
+.opcion {
+    background-color: rgb(153, 153, 153);
+    aspect-ratio: 1/1;
+    flex: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-style: solid;
+    border-color: rgb(90, 90, 90);
+    width: 10vh;
+    height: 10vh;
+}
