@@ -77,7 +77,7 @@ type Ciclo = {
   fechasDeMenstruacion: string[]
 }
 
-type DiasMenstruacion = Ciclo  []
+type CiclosMenstruales = Ciclo  []
 
 type tablas = {
     infogeneral: InfoGral[];
@@ -88,7 +88,7 @@ type tablas = {
   
     fechas: Ciclo[];
   }
-const ruta: string = 'Data/Sintoma.json'
+const ruta: string = '../Data/sintomas.json'
 const contenido: string = fs.readFileSync(ruta, 'utf8');
 
 const datos: Sintomas = JSON.parse(contenido);

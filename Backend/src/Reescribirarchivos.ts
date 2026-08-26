@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import { stringify } from 'querystring';
 
-const ruta: string = 'Data/Ciclo.json'; 
+const ruta: string = '../Data/Ciclo.json'; 
   
   type Ciclo = {
     id: number;
