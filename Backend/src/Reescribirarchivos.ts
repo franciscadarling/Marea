@@ -1,21 +1,21 @@
 import * as fs from 'fs';
 import { stringify } from 'querystring';
 
-const ruta: string = '../Data/Ciclo.json'; 
+const ruta: string = '../Data/ciclos.json'; 
   
   type Ciclo = {
     id: number;
     fechasDeMenstruacion: string[]
   }
   
-  type DiasMenstruacion = Ciclo  []
-function leerDatos(): DiasMenstruacion {
+  type CiclosMenstruacion = Ciclo  []
+function leerDatos(): CiclosMenstruacion {
   const contenido = fs.readFileSync(ruta, 'utf8');
-  return JSON.parse(contenido) as DiasMenstruacion;
+  return JSON.parse(contenido) as CiclosMenstruacion;
 }
 
 // Función genérica para guardar el JSON completo
-function guardarDatos(datos: DiasMenstruacion): void {
+function guardarDatos(datos: CiclosMenstruacion): void {
   fs.writeFileSync(ruta, JSON.stringify(datos, null, 2), 'utf8');
 }
 
