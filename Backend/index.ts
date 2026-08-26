@@ -16,6 +16,8 @@ type InfoGral=  {
   altura: number;
 }
 
+type Users = InfoGral []
+
 type Sintoma = {id: number;
   fecha: string;
   entrada: string;
@@ -59,16 +61,23 @@ marron: boolean;
   debilidadMuscular: boolean;
   presionBaja: boolean;
 }
+
+type sintomas = Sintoma []
+
 type Edu = {
   id: number;
   articulo: number;
   leido: boolean;
 }
 
+type educacion = Edu []
+
 type Ciclo = {
   id: number;
   fechasDeMenstruacion: string[]
 }
+
+type diasmenstruacion = Ciclo  []
 
 type tablas = {
     infogeneral: InfoGral[];
@@ -79,9 +88,8 @@ type tablas = {
   
     fechas: Ciclo[];
   }
-const ruta: string = './tablas.json'
+const ruta: string = 'Data/Ciclo.json'
 const contenido: string = fs.readFileSync(ruta, 'utf8');
 
-const datos: tablas = JSON.parse(contenido);
-
-console.log(datos.fechas[0]!.fechasDeMenstruacion)
+const datos: sintomas = JSON.parse(contenido);
+console.log(datos [0])
