@@ -74,7 +74,8 @@ type Educacion = Edu []
 
 type Ciclo = {
   id: number;
-  fechasDeMenstruacion: string[]
+  inicio: string;
+  duracion: number
 }
 
 type CiclosMenstruales = Ciclo  []
