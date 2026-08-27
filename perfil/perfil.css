@@ -34,8 +34,8 @@ body {
     min-height: 0; 
     overflow-y: auto; 
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    justify-content: flex-start;
     flex-direction: column;
     gap: 5%; 
     padding: 5% 0;
@@ -68,10 +68,30 @@ body {
 }
 
 .foto-logo {
-    background-color: rgb(185, 185, 185);
     width: 12.72%;
     height: 56.18%;
     position: relative;
     display: flex;
     flex-direction: row;
+}
+
+.foto-perfil-grande{
+    display: flex;
+    justify-self: flex-start;
+    align-self: center;
+    background-color: rgb(224, 222, 222);
+    border-radius: 50%;
+    height: 30vh;
+    aspect-ratio: 1/1;
+}
+.info{
+    background-color: rgb(224, 222, 222);
+    display: flex;
+    justify-content: space-evenly;
+    padding: 5vw;
+    flex-direction: column;
+    margin-left: 8vw;
+    height: 18vh;
+    width: 84vw;
+    justify-self: flex-start;
 }
