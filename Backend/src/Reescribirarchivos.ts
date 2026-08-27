@@ -3,10 +3,11 @@ import { stringify } from 'querystring';
 
 const ruta: string = '../Data/ciclos.json'; 
   
-  type Ciclo = {
-    id: number;
-    fechasDeMenstruacion: string[]
-  }
+type Ciclo = {
+  id: number;
+  inicio: string;
+  duracion: number
+}
   
   type CiclosMenstruacion = Ciclo  []
 function leerDatos(): CiclosMenstruacion {
@@ -27,6 +28,7 @@ function agregarSintoma(NuevasFechas: Ciclo): void {
 }
 let NuevasFechas: Ciclo = {
     id: 1,
-    fechasDeMenstruacion: ["hola", "hola"]
+    inicio: "27-08-2026",
+    duracion: 5
 }
 agregarSintoma(NuevasFechas);
