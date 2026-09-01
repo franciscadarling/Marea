@@ -1,4 +1,5 @@
 
     [
-{ "id": 1, "nombre": "María", "mail": "maria@gmail.com", "contraseña": 1234, "genero": "mujer", "edad": 24, "foto": "foto1.png", "paleta": "verde", "regular": true, "condiciones": "no", "peso": 70, "altura": 170}
+{ "id": 0, "nombre": "María", "mail": "maria@gmail.com", "contrasena": 1234, "genero": "mujer", "edad": 24, "foto": "foto1.png", "paleta": "verde", "regular": true, "condiciones": "no", "peso": 70, "altura": 170},
+{ "id": 1, "nombre": "Juana", "mail": "juana@gmail.com", "contrasena": 12345, "genero": "hombre", "edad": 32, "foto": "foto2.png", "paleta": "indigo", "regular": false, "condiciones": "no", "peso": 67, "altura": 165}
     ]

@@ -1,96 +1,40 @@
 import * as fs from 'fs';
 import { stringify } from 'querystring';
+import type {Users, Sintomas, Educacion, CiclosMenstruales} from './types.js'
 
-type InfoGral=  {
-  id: number;
-  nombre: string;
-  mail: string;
-  contraseña: number;
-  genero: string;
-  edad: number;
-  foto: string;
-  paleta: string;
-  regular: boolean;
-  condiciones: string;
-  peso: number;
-  altura: number;
+function leerDatosUsuarios(): Users {
+  const ruta: string = '../Data/usuarios.json'
+  const contenido = fs.readFileSync(ruta, 'utf8');
+  return JSON.parse(contenido);
 }
 
-type Users = InfoGral []
-
-type Sintoma = {id: number;
-  fecha: string;
-  entrada: string;
-  ligero: boolean;
-  moderado: boolean;
-  fuerte: boolean;
-  masacre: boolean;
-  rojo: boolean;
-marron: boolean;
-  cambiosDeAnimo: boolean;
-  normal: boolean;
-  irritabilidad: boolean;
-  enojo: boolean;
-  ansiedad: boolean;
-  tristeza: boolean;
-  Indiferencia: boolean;
-  sinDolor: boolean;
-  colicos: boolean;
-  sensibilidadSenos: boolean;
-  migraña: boolean;
-  lumbares: boolean;
-  articulaciones: boolean;
-  vulvar: boolean;
-  tampon: boolean;
-  toallahigienica: boolean;
-  protectorDiario: boolean;
-  copa: boolean;
-  ropaInteriorPro: boolean;
-  malaMemoria: boolean;
-  nieblaMental: boolean;
-  distraccion: boolean;
-  estres: boolean;
-  sinMotivacion: boolean;
-  bajoRendimiento: boolean;
-  vitalidad: boolean;
-  ok: boolean;
-  Agotamiento: boolean;
-  cansancioFatiga: boolean;
-  Mareo: boolean;
-  Nauseas: boolean;
-  debilidadMuscular: boolean;
-  presionBaja: boolean;
+function leerDatosSintomas(): Sintomas {
+  const ruta: string = '../Data/sintomas.json'
+  const contenido = fs.readFileSync(ruta, 'utf8');
+  return JSON.parse(contenido) as Sintomas;
 }
 
-type Sintomas = Sintoma []
-
-type Edu = {
-  id: number;
-  articulo: number;
-  leido: boolean;
+/*function leerDatosEducacion(): Educacion {
+  const contenido = fs.readFileSync(ruta, 'utf8');
+  return JSON.parse(contenido) as Educacion;
 }
 
-type Educacion = Edu []
+function leerDatosCiclos(): CiclosMenstruales {
+  const contenido = fs.readFileSync(ruta, 'utf8');
+  return JSON.parse(contenido) as CiclosMenstruales;
+}*/
 
-type Ciclo = {
-  id: number;
-  inicio: string;
-  duracion: number
-}
+let Datitos = leerDatosUsuarios ()
+const Aleer = "mail" as keyof Users[0];
+console.log(Datitos[0]?.[Aleer])
+/*
+let IdLeer: number= 1
+//Quiero leer el mail de la persona id 2
+for (let id: number = 0; id < Datitos.length; id++) {
+  if (id!==IdLeer) {
 
-type CiclosMenstruales = Ciclo  []
-
-type tablas = {
-    infogeneral: InfoGral[];
-  
-    sintomas: Sintoma[];
-  
-    educacion: Edu[];
-  
-    fechas: Ciclo[];
   }
-const ruta: string = '../Data/sintomas.json'
-const contenido: string = fs.readFileSync(ruta, 'utf8');
-
-const datos: Sintomas = JSON.parse(contenido);
-console.log(datos [0])
+  else {
+    console.log (Datitos)
+  }
+}*/
