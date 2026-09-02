@@ -1,0 +1,65 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100dvh;
+    overflow: hidden; 
+}
+
+.app {
+    width: 100%;
+    height: 100dvh; 
+    display: flex;
+    flex-direction: column;
+}
+
+.pantalla {
+    width: 100%;
+    flex: 1; 
+    min-height: 0; 
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    flex-direction: column;
+    gap: 5%; 
+    padding: 5% 0;
+}
+
+.div-logo{
+    width: 50%;
+    aspect-ratio: 1/1;
+}
+.logo{
+    max-width: 100%;
+    aspect-ratio: 1/1;
+}
+
+.botones {
+    background-color: blueviolet;
+    width: 50%;
+    height: 30dvh;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+;}
+    
+
+.link {
+    width: 100%;
+    text-decoration: none;
+}
+
+.boton {
+    max-width: 80%;
+    background-color: rgb(173, 173, 173);
+    display: flex;
+    margin: 0 auto;
+    flex-direction: row;
+    justify-content: center;
+    padding: 3dvw;
+    align-items: center;
+}

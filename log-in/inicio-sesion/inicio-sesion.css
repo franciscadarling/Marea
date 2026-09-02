@@ -1,0 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100dvh;
+    overflow: hidden; 
+}
+
+.app {
+    width: 100%;
+    height: 100dvh; 
+    display: flex;
+    flex-direction: column;
+}
+
+.pantalla {
+    width: 100%;
+    flex: 1; 
+    min-height: 0; 
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    flex-direction: column;
+    gap: 5%; 
+    padding: 5% 0;
+}
