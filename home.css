@@ -80,7 +80,10 @@ body {
     aspect-ratio: 1/1;
     border-radius: 50%;
     background-color: blueviolet;
-    color: blueviolet;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .proximo-ciclo {

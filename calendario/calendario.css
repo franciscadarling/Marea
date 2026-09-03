@@ -30,15 +30,44 @@ body {
 
 .pantalla {
     width: 100%;
-    flex: 1; 
-    min-height: 0; 
-    overflow-y: auto; 
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.calendario-scroll {
+    width: 100%;
+}
+
+.mes-bloque {
+    padding: 1rem 5%;
+}
+
+.mes-titulo {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.dias-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.dia-celda {
+    aspect-ratio: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
-    gap: 5%; 
-    padding: 5% 0;
+    border-radius: 50%;
+}
+
+.dia-menstruacion {
+    background-color: #e63966;
+    color: white;
 }
 
 .botones {
