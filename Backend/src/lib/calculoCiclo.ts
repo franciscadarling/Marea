@@ -13,7 +13,7 @@ import * as fs from 'fs';
   },
   {
     "id": 0,
-    "inicio": "2026-09-01",
+    "inicio": "2026-07-01",
     "duracion": 5
   }
 ]*/
@@ -62,24 +62,37 @@ function DuracionProximo (anteriores: number[]): number | null {
     }
     else {
         proximaduracion = null
-        console.log ("No hay ciclos anteriores")
     }
     return proximaduracion
 }
-function InicioProximo (anteriores: number []) : void {
+function InicioProximo (anteriores: number []): string | null {
     let diferencia: number = 0
     let FechaInicio: any = 0
+    let FechaOSI: string = ""
+    let partes: string[] = []
     if (anteriores.length>=2) {
     for (let i: number = 0; i<anteriores.length && i+1<anteriores.length ; i++) {
         diferencia= diferencia + (anteriores[i+1]!-anteriores[i]!)
     }
-    console.log (diferencia)
     diferencia= diferencia/(anteriores.length-1)
-    console.log (diferencia)
     FechaInicio= Math.floor((anteriores[anteriores.length-1]!)+diferencia)
-    FechaInicio= new Date (FechaInicio)
-    console.log (FechaInicio)
+    FechaInicio=new Date (FechaInicio)
+    FechaOSI = FechaInicio.toISOString() // toISOString() es un método de Date que convierte la fecha a un string con formato ISO 8601
+    partes = FechaOSI.split ("T") //split('T') divide un string en un array, cortando por cada lugar donde aparece la letra "T".
+    FechaInicio=partes[0]
     }
+    else if (anteriores.length===1) {
+        diferencia=28*24*60*60*1000
+        FechaInicio=anteriores[0]!+diferencia
+        FechaInicio=new Date (FechaInicio)
+        FechaOSI = FechaInicio.toISOString()
+        partes = FechaOSI.split ("T")
+        FechaInicio = partes[0]
+    }
+    else {
+        FechaInicio= null
+    }
+    return FechaInicio
 }
 let Contenido = fs.readFileSync('../../Data/ciclos.json', 'utf8')
 let Ciclos = JSON.parse(Contenido) as CiclosMenstruales
@@ -88,6 +101,7 @@ let DuracionCiclos: number[]= duracionCiclos (Ciclos, id)
 let InicioCiclos: number []= inicioCiclos (Ciclos, id)
 console.log (DuracionCiclos)
 console.log (InicioCiclos)
-let proximoTiempo: number | null = DuracionProximo (DuracionCiclos)
+let proximoTiempo: number | null = DuracionProximo(DuracionCiclos)
+let proximoInicio: string | null = InicioProximo (InicioCiclos)
 console.log (proximoTiempo)
-InicioProximo (InicioCiclos)
+console.log (proximoInicio)
