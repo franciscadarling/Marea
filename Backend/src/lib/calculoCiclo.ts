@@ -66,7 +66,21 @@ function DuracionProximo (anteriores: number[]): number | null {
     }
     return proximaduracion
 }
-
+function InicioProximo (anteriores: number []) : void {
+    let diferencia: number = 0
+    let FechaInicio: any = 0
+    if (anteriores.length>=2) {
+    for (let i: number = 0; i<anteriores.length && i+1<anteriores.length ; i++) {
+        diferencia= diferencia + (anteriores[i+1]!-anteriores[i]!)
+    }
+    console.log (diferencia)
+    diferencia= diferencia/(anteriores.length-1)
+    console.log (diferencia)
+    FechaInicio= Math.floor((anteriores[anteriores.length-1]!)+diferencia)
+    FechaInicio= new Date (FechaInicio)
+    console.log (FechaInicio)
+    }
+}
 let Contenido = fs.readFileSync('../../Data/ciclos.json', 'utf8')
 let Ciclos = JSON.parse(Contenido) as CiclosMenstruales
 let id: number = 0
@@ -76,3 +90,4 @@ console.log (DuracionCiclos)
 console.log (InicioCiclos)
 let proximoTiempo: number | null = DuracionProximo (DuracionCiclos)
 console.log (proximoTiempo)
+InicioProximo (InicioCiclos)
