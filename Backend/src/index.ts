@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import { stringify } from 'querystring';
-import type {Users, Sintomas, Educacion, CiclosMenstruales} from './types.js'
+import type {Users, Sintomas, Educacion, CiclosMenstruales} from './lib/types.js'
 
 function leerDatosUsuarios(): Users {
   const ruta: string = '../Data/usuarios.json'
