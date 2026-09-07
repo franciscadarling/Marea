@@ -109,7 +109,7 @@ function InicioProximo (anteriores: number []): string | null {
 
 let Contenido = fs.readFileSync('../../Data/ciclos.json', 'utf8')
 let Ciclos = JSON.parse(Contenido) as CiclosMenstruales
-let id: any = pedirID
+let id: number = await pedirID  ()
 let DuracionCiclos: number[]= duracionCiclos (Ciclos, id)
 let InicioCiclos: number []= inicioCiclos (Ciclos, id)
 console.log (DuracionCiclos)
