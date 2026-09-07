@@ -1,4 +1,6 @@
 import type {CiclosMenstruales} from "./types.js"
+import * as readLine from 'node:readline/promises'
+import {stdin as input, stdout as output} from 'node:process'
 import * as fs from 'fs';
 /* [
   {
@@ -17,6 +19,16 @@ import * as fs from 'fs';
     "duracion": 5
   }
 ]*/
+
+async function pedirID (): Promise<number> {
+    const leerConsola =readLine.createInterface ({input, output});
+
+    const Persona = await leerConsola.question ('Id:') as string
+    leerConsola.close()
+    let PersonaId= Number (Persona)
+    return PersonaId
+}
+
 function duracionCiclos (Ciclos: CiclosMenstruales, idusuario: number) : number[] {
     let dias: number []= []
     for (let i:number =0; i<Ciclos.length; i++) {
@@ -94,9 +106,10 @@ function InicioProximo (anteriores: number []): string | null {
     }
     return FechaInicio
 }
+
 let Contenido = fs.readFileSync('../../Data/ciclos.json', 'utf8')
 let Ciclos = JSON.parse(Contenido) as CiclosMenstruales
-let id: number = 0
+let id: any = pedirID
 let DuracionCiclos: number[]= duracionCiclos (Ciclos, id)
 let InicioCiclos: number []= inicioCiclos (Ciclos, id)
 console.log (DuracionCiclos)
