@@ -124,17 +124,18 @@ h2 {
 }
 
 .opcion {
-    height: 20vh;
-    aspect-ratio: 1 / 1;
+    height: 12vh;
+    aspect-ratio: 1/1;
     background-color: #858686;
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 5vh;
+    font-size:2.5vh;
     border-radius: 2vw;
     scroll-snap-align: start; 
-    border: none; 
+    border: none;   
+    overflow-wrap: break-word
 }
 
 .diario {
