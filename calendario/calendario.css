@@ -48,7 +48,7 @@ body {
 .mes-titulo {
     text-align: center;
     font-weight: bold;
-    margin-bottom: 0.5rem;
+    margin-bottom: 3dvh;
 }
 
 .dias-grid {
