@@ -1,19 +1,20 @@
 
-// Ejecutas la función al cargar el script
-tocarBotondeOpcion();
-
-const seleccionadas = []; // acá se van guardando los valores
-
-function tocarBotondeOpcion() {
-  const opciones = document.querySelectorAll('.opcion');
-
-  opciones.forEach(opcion => {
-    opcion.addEventListener('click', () => {
-        const valor = opcion.id; 
-        seleccionadas.push(valor);
-      console.log(seleccionadas); // para que veas que se va llenando
-    });
-  });
+function esBotonValido(elemento) {
+  return elemento.classList.contains('opcion');
 }
 
-tocarBotondeOpcion();
+function agregarIdAlArray(id) {
+  if (id && !idsSeleccionados.includes(id)) {
+      idsSeleccionados.push(id);
+      console.log('Array actualizado:', idsSeleccionados);
+  }
+}
+
+document.addEventListener('click', function(event) {
+  const elementoPresionado = event.target;
+  if (esBotonValido(elementoPresionado)) {
+      agregarIdAlArray(elementoPresionado.id);
+  }
+});
+
+
