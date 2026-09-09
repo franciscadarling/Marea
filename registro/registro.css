@@ -15,7 +15,12 @@ body {
     display: flex;
     flex-direction: column;
 }
-
+@font-face {
+    font-family: 'Gaegu';
+    src: url('../Gaegu-Bold-Tildes.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
 .header {
     width: 100%;
     height: 10.45dvh;
@@ -83,6 +88,8 @@ h1 {
     justify-content: center;
     padding-left: 2vh;
     padding-top: 1vh;
+    font-family: 'Gaegu', serif;
+    font-size: 5dvh;
 }
 
 .sintomas {
@@ -92,6 +99,7 @@ h1 {
     width: 100%;
     max-width: 100vw; 
     padding-bottom: 1vh;
+    font-family: 'Gaegu', serif;
 }
 
 
@@ -102,6 +110,8 @@ h2 {
     width: 100%;
     margin: 1vh;
     padding-left: 4vw; 
+    font-family: 'Gaegu', serif;
+    font-size: 3.5dvh;
 }
 
 
@@ -126,7 +136,6 @@ h2 {
 .opcion {
     height: 12vh;
     aspect-ratio: 1/1;
-    background-color: #858686;
     color: white;
     display: flex;
     align-items: center;
@@ -137,9 +146,12 @@ h2 {
     border: none;   
     overflow-wrap: break-word
 }
-
+.imagenes{
+    height: 12vh;
+    aspect-ratio: 1/1;
+}
 .diario {
-    font-size: 1.5em;
+    font-size: 5dvh;
     padding-bottom: 2vh;
     padding-left: 1.5vh;
     padding-right: 1vh;
@@ -150,6 +162,7 @@ h2 {
     width: 100%;
     border: 0.5vh;
     border-color: blueviolet;
+    font-family: 'Gaegu', serif;
 }
 
 .inputdiario {

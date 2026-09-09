@@ -15,6 +15,12 @@ body {
     display: flex;
     flex-direction: column;
 }
+@font-face {
+    font-family: 'Gaegu';
+    src: url('../Gaegu-Bold-Tildes.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
 
 .header {
     width: 100%;
@@ -35,6 +41,7 @@ body {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    background-color: rgb(255, 255, 255);
 }
 
 .calendario-scroll {
@@ -49,12 +56,15 @@ body {
     text-align: center;
     font-weight: bold;
     margin-bottom: 3dvh;
+    font-size: 4.5dvh;
+    font-family: 'Gaegu', serif;
 }
 
 .dias-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 4px;
+    font-family: 'Gaegu', serif;
 }
 
 .dia-celda {
@@ -63,10 +73,11 @@ body {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
+    font-family: 'Gaegu', serif;
 }
 
 .dia-menstruacion {
-    background-color: #e63966;
+    background-color: #e63939;
     color: white;
 }
 
