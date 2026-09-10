@@ -92,6 +92,13 @@ h1 {
     font-size: 5dvh;
 }
 
+.minicalendario {
+    font-family: 'Gaegu', serif;
+    display: flex;
+    margin-left: 2vh;
+    font-size: 3dvh;
+}
+
 .sintomas {
     display: flex;
     flex-direction: column;
@@ -173,3 +180,4 @@ h2 {
     display: flex;
     flex-direction: column;
 }
+
