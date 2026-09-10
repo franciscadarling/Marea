@@ -1,0 +1,69 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100dvh;
+    overflow: hidden; 
+}
+
+.app {
+    width: 100%;
+    height: 100dvh; 
+    display: flex;
+    flex-direction: column;
+}
+
+.pantalla {
+    width: 100%;
+    flex: 1; 
+    min-height: 0; 
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    flex-direction: column;
+    gap: 5%; 
+    padding: 5% 0;
+}
+.inputpapa{
+    background-color: blueviolet;
+    display: flex;
+    flex-direction: column;
+    width: 70dvw;
+    height: 40dvh;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 10%;
+}
+.input{
+    width: 80%;
+    margin-bottom: 6%;
+    height: 4dvh;
+}
+h2{
+    margin-bottom: 6%;
+    align-self: flex-start;
+    margin-left: 10%;
+}
+.boton{
+    height: 4dvh;
+    width: 50%;
+    background-color: aliceblue;
+    margin: 8%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.boton-2{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+p{
+    font-size: 2.5dvh;
+    text-align: center;
+}
