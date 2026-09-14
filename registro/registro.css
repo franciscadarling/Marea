@@ -153,6 +153,13 @@ h2 {
     border: none;   
     overflow-wrap: break-word
 }
+
+.opcion.seleccionado {
+    background-color: #4CAF50; 
+    color: white;
+    border-color: #388E3C;
+  }
+
 .imagenes{
     height: 12vh;
     aspect-ratio: 1/1;
