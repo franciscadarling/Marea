@@ -8,6 +8,12 @@ body {
     height: 100dvh;
     overflow: hidden; 
 }
+@font-face {
+    font-family: 'Gaegu';
+    src: url('../../Gaegu-Bold-Tildes.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
 
 .app {
     width: 100%;
@@ -56,10 +62,14 @@ justify-content: center;
     margin-bottom: 6%;
     height: 4dvh;
 }
+h1{
+    font-family: Gaegu, Arial;
+}
 h2{
     margin-bottom: 6%;
     align-self: flex-start;
     margin-left: 10%;
+    font-family: Gaegu, Arial;
 }
 .boton{
     height: 4dvh;
@@ -75,4 +85,7 @@ h2{
     display: flex;
     align-items: center;
     justify-content: center;
+}
+p{
+    font-family: Gaegu, Arial;
 }
