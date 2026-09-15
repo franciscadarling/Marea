@@ -6,7 +6,12 @@
 
 body {
     height: 100dvh;
-    overflow: hidden; 
+    overflow-y: auto;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 5%; 
+    padding: 5%;
 }
 @font-face {
     font-family: 'Gaegu';
@@ -14,25 +19,7 @@ body {
     font-weight: normal;
     font-style: normal;
   }
-.app {
-    width: 100%;
-    height: 100dvh; 
-    display: flex;
-    flex-direction: column;
-}
 
-.pantalla {
-    width: 100%;
-    flex: 1; 
-    min-height: 0; 
-    display: flex;
-    align-items: center; 
-    justify-content: center;
-    flex-direction: column;
-    gap: 5%; 
-    padding: 5% 0;
-    overflow-y: auto;
-}
 .inputpapa{
     background-color: blueviolet;
     display: flex;
@@ -50,6 +37,7 @@ body {
 }
 h1{
     font-family: Gaegu, Arial;
+    margin-top: 5%;
 }
 h2{
     margin-bottom: 6%;
