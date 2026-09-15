@@ -25,14 +25,42 @@
 <div class="pregunta">
    <h1>¿Ya tuviste un ciclo menstrual completo?</h1>
    <select>
-      <option>Sí, tuve varios: medio año o más</option>
-      <option>Sí, tuve algunos: medio año o menos</option>
-      <option>Me vino pero no tuve un ciclo completo</option>
-      
+      <option value="" disabled selected>-- Seleccione una opción --</option>
+      <option value="muchos">Sí, tuve varios: medio año o más</option>
+      <option value="algunos">Sí, tuve algunos: medio año o menos</option>
+      <option value="no">Me vino pero no tuve un ciclo completo</option>
    </select>
 </div>
-
-
+<div class="pregunta">
+   <h1>¿Eres regular o irregular?</h1>
+   <select>
+      <option value="" disabled selected>-- Seleccione una opción --</option>
+      <option value="regular">Regular</option>
+      <option value="irregular">Irregular</option>
+   </select>
+</div>
+<div class="pregunta">
+   <h1>Selecciona las menstruaciones que recuerdes</h1>
+   <div class="calendar">
+      <div class="calendar-header">
+        <button type="button" id="prev-month">&lt;</button>
+        <span id="month-year"></span>
+        <button type="button" id="next-month">&gt;</button>
+      </div>
+      <div class="weekdays">
+        <div>Dom</div><div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div>
+      </div>
+      <div id="calendar-days" class="days-grid"></div>
+    </div>
+    <div class="pregunta">
+      <h1>¿Tienes alguna de estas variables que pueda afectar tu ciclo?</h1>
+      <select>
+         <option value="" disabled selected>-- Seleccione una opción --</option>
+         <option value="anticonceptivos">Anticonceptivos</option>
+         <option value="">Irregular</option>
+      </select>
+   </div>  
+</div>
 </form>
    </main> 
 </div>
