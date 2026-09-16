@@ -150,20 +150,23 @@ h2 {
     font-size:2.5vh;
     border-radius: 2vw;
     scroll-snap-align: start; 
-    border: none;   
+    border: 3px solid transparent; 
     overflow-wrap: break-word
 }
 
-.opcion.seleccionado {
+button.activo {
     background-color: #4CAF50; 
     color: white;
     border-color: #388E3C;
+    transform: translateY(2px);
   }
 
 .imagenes{
     height: 12vh;
     aspect-ratio: 1/1;
+    pointer-events: none; 
 }
+
 .diario {
     font-size: 5dvh;
     padding-bottom: 2vh;
