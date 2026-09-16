@@ -9,3 +9,11 @@ botones.forEach(boton => {
 })
 });
 
+document.addEventListener('click', () => { 
+  const botones = document.querySelectorAll('.opcion');
+});
+
+
+
+
+
