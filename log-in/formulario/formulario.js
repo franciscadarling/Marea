@@ -1,63 +1,35 @@
-const monthYearLabel = document.getElementById('month-year');
-const daysGrid = document.getElementById('calendar-days');
-const prevBtn = document.getElementById('prev-month');
-const nextBtn = document.getElementById('next-month');
+let preguntas = [
+  "Comenzar",
+  "1",
+  "2",
+  "3",
+  "4"
+];
+let indiceinicial = 0;
+let contenedorpregunta = document.getElementById("contenedor");
+let botonsig = document.getElementById("siguiente");
+let botonat = document.getElementById("atrás");
 
-let currentDate = new Date();
-const selectedDates = new Set(); 
+function mostrarPregunta() {
+  contenedorpregunta.replaceChildren();
 
-function renderCalendar() {
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
+  const nuevoParrafo = document.createElement("p");
+  nuevoParrafo.textContent = preguntas[indiceinicial];
+  nuevoParrafo.classList.add("parrafo");
 
-  const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-  monthYearLabel.textContent = `${monthNames[month]} ${year}`;
-
-  daysGrid.innerHTML = '';
-
-  const firstDayIndex = new Date(year, month, 1).getDay();
-  const totalDays = new Date(year, month + 1, 0).getDate();
-
-  for (let i = 0; i < firstDayIndex; i++) {
-    const emptyCell = document.createElement('div');
-    emptyCell.classList.add('day', 'empty');
-    daysGrid.appendChild(emptyCell);
-  }
-
-
-  for (let day = 1; day <= totalDays; day++) {
-    const dayCell = document.createElement('div');
-    dayCell.classList.add('day');
-    dayCell.textContent = day;
-
-    const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-
-    if (selectedDates.has(dateString)) {
-      dayCell.classList.add('selected');
-    }
-
-    dayCell.addEventListener('click', () => {
-      if (selectedDates.has(dateString)) {
-        selectedDates.delete(dateString);
-        dayCell.classList.remove('selected');
-      } else {
-        selectedDates.add(dateString);
-        dayCell.classList.add('selected');
-      }
-      console.log('Fechas seleccionadas:', Array.from(selectedDates));
-    });
-
-    daysGrid.appendChild(dayCell);
-  }
+  contenedorpregunta.appendChild(nuevoParrafo);
 }
-prevBtn.addEventListener('click', () => {
-  currentDate.setMonth(currentDate.getMonth() - 1);
-  renderCalendar();
-});
 
-nextBtn.addEventListener('click', () => {
-  currentDate.setMonth(currentDate.getMonth() + 1);
-  renderCalendar();
+botonsig.addEventListener("click", () => {
+  if (indiceinicial < preguntas.length - 1) {
+    indiceinicial++;
+    mostrarPregunta();
+  }
 });
-
-renderCalendar();
+botonat.addEventListener("click", () => {
+  if (indiceinicial > 0) {
+    indiceinicial--;
+    mostrarPregunta();
+  }
+});
+mostrarPregunta();

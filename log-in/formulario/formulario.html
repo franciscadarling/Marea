@@ -8,72 +8,12 @@
     <script src="formulario.js" defer></script>
 </head>
 <body>
-<h1>Queremos conocerte</h1>
+<div id="contenedor">
 
-<div class="inputpapa">
-<p>Para poder personalizar tu experiencia y realizar las predicciones de tu ciclo necesitamos conocerte mejor. Responde el siguiente formulario corto.</p>
-<div class="boton">Comenzar</div>
 </div>
-<form>
-<div class="pregunta">
-   <h1>¿Cómo querés que te llamemos?</h1>
-   <input>
+<div class="botones">
+<button id="atrás" class="atrás"></button>
+<button class="siguiente" id="siguiente"></button>
 </div>
-<div class="pregunta">
-   <h1>¿Ya tuviste un ciclo menstrual completo?</h1>
-   <select>
-      <option value="" disabled selected>-- Seleccione una opción --</option>
-      <option value="muchos">Sí, tuve varios: medio año o más</option>
-      <option value="algunos">Sí, tuve algunos: medio año o menos</option>
-      <option value="no">Me vino pero no tuve un ciclo completo</option>
-   </select>
-</div>
-<div class="pregunta">
-   <h1>¿Eres regular o irregular?</h1>
-   <select>
-      <option value="" disabled selected>-- Seleccione una opción --</option>
-      <option value="regular">Regular</option>
-      <option value="irregular">Irregular</option>
-   </select>
-</div>
-<div class="pregunta">
-   <h1>¿Cuánto pesas?</h1>
-   <input type="number" placeholder="Kg">
-</div>
-<div class="pregunta">
-   <h1>¿Cuánto medís?</h1>
-   <input type="number" placeholder="Cm">
-</div>
-<div class="pregunta">
-   <h1>¿Cuál es tu edad?</h1>
-   <input type="number" placeholder="Edad">
-</div>
-<div class="pregunta">
-   <h1>¿Cuánto suele durar tu ciclo?</h1>
-   <input type="number" placeholder="Días">
-</div>
-<div class="pregunta">
-   <h1>Selecciona las menstruaciones que recuerdes</h1>
-   <div class="calendar">
-      <div class="calendar-header">
-        <button type="button" id="prev-month">&lt;</button>
-        <span id="month-year"></span>
-        <button type="button" id="next-month">&gt;</button>
-      </div>
-      <div class="weekdays">
-        <div>Dom</div><div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div>
-      </div>
-      <div id="calendar-days" class="days-grid"></div>
-    </div>
-    <div class="pregunta">
-      <h1>¿Tienes alguna de estas variables que pueda afectar tu ciclo?</h1>
-      <select>
-         <option value="" disabled selected>-- Seleccione una opción --</option>
-         <option value="anticonceptivos">Anticonceptivos</option>
-         <option value="">No</option>
-      </select>
-   </div>  
-</div>
-</form>
 </body>
 </html>
