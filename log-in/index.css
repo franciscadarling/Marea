@@ -7,6 +7,7 @@
 body {
     height: 100dvh;
     overflow: hidden; 
+    background-image: url("../Fondo predeterminado.png");
 }
 @font-face {
     font-family: 'Gaegu';
@@ -36,45 +37,50 @@ margin-top: 10dvh;
 margin-bottom: 4dvh;
 font-size: 4dvh;
 font-family: Gaegu, Arial;
+color: #DDD5F5;
+letter-spacing: 0.5vh;
 
 }
 
-.tiktok{
+p {
     font-size: 2.5dvh;
     justify-self: flex-end;
     font-family: Gaegu, Arial;
+    color: #DDD5F5;
 }
 
-.div-logo{
-    width: 60%;
-    aspect-ratio: 1/1;
-}
-.logo{
-    max-width: 100%;
-    aspect-ratio: 1/1;
-}
+a {
+    color: #DDD5F5;
+    text-decoration: none;   
+  }
 
 .botones {
-    background-color: #4F349E ;
-    width: 50%;
-    height: 30dvh;
+    width: 65%;
+    height: 5vh;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     margin-top: 8dvh;
     margin-bottom: 10dvh;
-;}
+    font-family: Gaegu, Arial;
+    color: #DDD5F5;
+}
     
-
-.link {
-    width: 100%;
-    text-decoration: none;
+.boton-signin {
+    background-color:#4F349E;
+    display: flex;
+    margin: 0 auto;
+    margin-bottom: 5vh;
+    flex-direction: row;
+    justify-content: center;
+    padding: 3dvw;
+    align-items: center;
+    font-size: 3dvh;
+    border-radius: 3vh;
 }
 
-.boton {
-    max-width: 80%;
-    background-color: rgb(173, 173, 173);
+.boton-login {
     display: flex;
     margin: 0 auto;
     flex-direction: row;
@@ -82,4 +88,22 @@ font-family: Gaegu, Arial;
     padding: 3dvw;
     align-items: center;
     font-size: 3dvh;
+    background-color: #1A0F33;
+    border-color: #4F349E;
+    border-radius: 3vh;
+    border: 0.3vh solid;
+}
+
+.tiktok{
+    font-size: 2.5dvh;
+    justify-self: flex-end;
+    font-family: Gaegu, Arial;
+    color: #DDD5F5;
+}
+
+.logo{
+    max-width: 100%;
+    aspect-ratio: 1/1;
+    margin-top: auto;
+    padding-bottom: 0;
 }
