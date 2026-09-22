@@ -13,19 +13,33 @@ body {
     gap: 5%; 
     padding: 5%;
 }
+.pantalla{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100dvh;
+  width: 100dvw;
+}
 .atrás{
-  height: 10dvh;
+  height: 5dvh;
   aspect-ratio: 1/1;
-  background-color: red;
-  border-radius: 50%;
-  margin: 1dvh;
+  background: url(bi_arrow-right-circle-fill\ \(2\).png);
+  margin: 2dvh;
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat;
+  border-width: 0;
 }
 .siguiente{
-  height: 10dvh;
+  height: 5dvh;
   aspect-ratio: 1/1;
-  background-color: green;
-  border-radius: 50%;
-  margin: 1dvh;
+  background-image: url(bi_arrow-right-circle-fill\ \(3\).png);
+  margin: 2dvh;
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat;
+  border-width: 0;
 }
 .parrafo{
   color: black;
@@ -36,4 +50,22 @@ body {
   flex-direction: row;
   justify-content: center;
   height: 12dvh;
+}
+.preguntas{
+  display: flex;
+  flex-direction: column;
+  width: 80dvw;
+  aspect-ratio: 1/1;
+  background-color: blueviolet;
+  justify-content: center;
+  align-items: center;
+}
+.label{
+  margin: 2dvh;
+  text-align: center;
+}
+.boton-comenzar{
+  height: 3dvh;
+  width: 50dvw;
+  background-color: blue;
 }
