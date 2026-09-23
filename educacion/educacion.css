@@ -13,6 +13,7 @@
 body {
     height: 100dvh;
     overflow: hidden; 
+    background-image: url(../Fondo\ predeterminado.png);
 }
 
 .app {
@@ -90,7 +91,7 @@ body {
 .seccion-articulos h2 {
     padding-left: 4vw;
     font-size: clamp(1rem, 4vw, 1.4rem);
-    color: #333;
+    color: #ffffff;
 }
 
 .carrusel {
@@ -122,9 +123,9 @@ body {
 h2{
     padding-left: 4vw;
     padding-bottom: 1vh;
+    color: #ffffff;
 }
 .gaegu-bold {
     font-family: "Gaegu", sans-serif;
-    font-weight: 700;
     font-style: normal;
   }
