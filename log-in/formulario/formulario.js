@@ -38,7 +38,6 @@ function mostrarPregunta() {
     botonsig.className = "siguiente";
   }
 
-  // Si es la pregunta del calendario, la inicializamos
   if (indiceinicial === 5) {
     inicializarCalendarioP5();
   }
@@ -60,89 +59,119 @@ botonat.addEventListener("click", () => {
 
 mostrarPregunta();
 
-// ---------- Calendario seleccionable para p5 ----------
+// ---------- Calendario tipo Almanaque / Tabla para p5 ----------
 
 function inicializarCalendarioP5() {
   const contenedor = document.getElementById("calendario-pantalla-p5");
   const calendarioScroll = document.getElementById("calendario-scroll-p5");
 
   const nombresMes = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-  const diasSemanaCorto = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+  const diasSemana = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
 
   const hoy = new Date();
-  const limiteFuturo = hoy; // no se pueden seleccionar días futuros
-  const limitePasado = new Date(hoy.getFullYear() - 2, hoy.getMonth(), hoy.getDate());
+  const limitePasado = new Date(hoy.getFullYear() - 2, hoy.getMonth(), 1);
 
-  // Empezamos hoy y vamos agregando hacia atrás
-  let fechaCursor = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
+  let fechaAtras = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
 
-  function crearCeldaDia(fecha) {
-    const celda = document.createElement('div');
-    celda.className = 'dia-celda';
+  function crearBloqueMes(año, mes) {
+    const bloque = document.createElement('div');
+    bloque.className = 'mes-bloque';
 
-    const fechaStr = `${fecha.getFullYear()}-${String(fecha.getMonth() + 1).padStart(2, '0')}-${String(fecha.getDate()).padStart(2, '0')}`;
+    const titulo = document.createElement('div');
+    titulo.className = 'mes-titulo';
+    titulo.textContent = `${nombresMes[mes]} ${año}`;
+    bloque.appendChild(titulo);
 
-    celda.textContent = `${diasSemanaCorto[(fecha.getDay() + 6) % 7]} ${fecha.getDate()} de ${nombresMes[fecha.getMonth()]} ${fecha.getFullYear()}`;
+    const grid = document.createElement('div');
+    grid.className = 'dias-grid';
 
-    if (fechasSeleccionadas.includes(fechaStr)) {
-      celda.classList.add('dia-seleccionada');
+    // Encabezados de días
+    diasSemana.forEach(dia => {
+      const celdaHeader = document.createElement('div');
+      celdaHeader.className = 'dia-semana-nombre';
+      celdaHeader.textContent = dia;
+      grid.appendChild(celdaHeader);
+    });
+
+    // Desplazamiento del 1er día del mes (Lunes = 0)
+    let primerDia = new Date(año, mes, 1).getDay();
+    primerDia = (primerDia + 6) % 7;
+
+    const totalDias = new Date(año, mes + 1, 0).getDate();
+
+    // Espacios en blanco previos
+    for (let i = 0; i < primerDia; i++) {
+      grid.appendChild(document.createElement('div'));
     }
 
-    if (fecha > limiteFuturo) {
-      celda.classList.add('dia-deshabilitada');
-    } else {
-      celda.addEventListener('click', function() {
-        if (fechasSeleccionadas.includes(fechaStr)) {
-          fechasSeleccionadas = fechasSeleccionadas.filter(f => f !== fechaStr);
-          celda.classList.remove('dia-seleccionada');
-        } else {
-          fechasSeleccionadas.push(fechaStr);
-          celda.classList.add('dia-seleccionada');
-        }
-      });
+    // Celdas numéricas
+    for (let dia = 1; dia <= totalDias; dia++) {
+      const celda = document.createElement('div');
+      celda.className = 'dia-celda';
+      celda.textContent = dia;
+
+      const fechaStr = `${año}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+      const fechaCelda = new Date(año, mes, dia);
+
+      if (fechasSeleccionadas.includes(fechaStr)) {
+        celda.classList.add('dia-seleccionada');
+      }
+
+      if (fechaCelda > hoy) {
+        celda.classList.add('dia-deshabilitada');
+      } else {
+        celda.addEventListener('click', function() {
+          if (fechasSeleccionadas.includes(fechaStr)) {
+            fechasSeleccionadas = fechasSeleccionadas.filter(f => f !== fechaStr);
+            celda.classList.remove('dia-seleccionada');
+          } else {
+            fechasSeleccionadas.push(fechaStr);
+            celda.classList.add('dia-seleccionada');
+          }
+        });
+      }
+
+      grid.appendChild(celda);
     }
 
-    return celda;
+    bloque.appendChild(grid);
+    return bloque;
   }
 
-  function cargarBloqueAnterior(cantidad = 30) {
+  function cargarMesAnterior() {
+    const anterior = new Date(fechaAtras.getFullYear(), fechaAtras.getMonth() - 1, 1);
+    if (anterior < limitePasado) return;
+
+    fechaAtras = anterior;
+    const bloque = crearBloqueMes(fechaAtras.getFullYear(), fechaAtras.getMonth());
+
     const alturaAntes = calendarioScroll.scrollHeight;
-    const fragment = document.createDocumentFragment();
-    let ultimaCelda = null;
-
-    for (let i = 0; i < cantidad; i++) {
-      if (fechaCursor < limitePasado) break;
-      const celda = crearCeldaDia(fechaCursor);
-      fragment.insertBefore(celda, fragment.firstChild);
-      ultimaCelda = celda;
-      fechaCursor = new Date(fechaCursor.getFullYear(), fechaCursor.getMonth(), fechaCursor.getDate() - 1);
-    }
-
-    calendarioScroll.insertBefore(fragment, calendarioScroll.firstChild);
+    calendarioScroll.insertBefore(bloque, calendarioScroll.firstChild);
     const alturaDespues = calendarioScroll.scrollHeight;
-    contenedor.scrollTop += (alturaDespues - alturaAntes);
 
-    if (ultimaCelda && fechaCursor >= limitePasado) {
-      observarPrimero(calendarioScroll.firstElementChild);
-    }
+    contenedor.scrollTop += (alturaDespues - alturaAntes);
+    observarPrimero(bloque);
   }
 
-  function observarPrimero(celda) {
-    if (!celda) return;
+  function observarPrimero(bloque) {
+    if (!bloque) return;
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           observer.disconnect();
-          cargarBloqueAnterior();
+          cargarMesAnterior();
         }
       });
     }, { root: contenedor, threshold: 0.1 });
-    observer.observe(celda);
+    observer.observe(bloque);
   }
 
-  // Carga inicial: hoy hacia atrás
-  cargarBloqueAnterior(30);
+  // Carga inicial
+  const bloqueActual = crearBloqueMes(hoy.getFullYear(), hoy.getMonth());
+  calendarioScroll.appendChild(bloqueActual);
 
-  // Arranca scrolleado abajo del todo (donde está "hoy")
+  for (let i = 0; i < 2; i++) cargarMesAnterior();
+
+  observarPrimero(calendarioScroll.firstElementChild);
   contenedor.scrollTop = contenedor.scrollHeight;
 }
