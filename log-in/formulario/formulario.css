@@ -69,3 +69,26 @@ body {
   width: 50dvw;
   background-color: blue;
 }
+.dia-seleccionada {
+  background-color: red;
+  color: white;
+}
+.dia-deshabilitada {
+  opacity: 0.3;
+  pointer-events: none;
+}
+.calendario-pantalla {
+  width: 80dvw;
+  height: 50dvh;
+  overflow-y: auto;
+}
+.calendario-scroll {
+  display: flex;
+  flex-direction: column;
+}
+.dia-celda {
+  padding: 1.5dvh;
+  text-align: center;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  cursor: pointer;
+}
