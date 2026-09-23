@@ -7,6 +7,7 @@
 body {
     height: 100dvh;
     overflow: hidden; 
+    background-image: url("../Fondo predeterminado.png");
 }
 
 .app {
@@ -142,7 +143,6 @@ h2 {
 .opcion {
     height: 12vh;
     width: 13vh;
-    color: white;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -150,13 +150,16 @@ h2 {
     border-radius: 4vw;
     scroll-snap-align: start; 
     border: 3px solid transparent; 
-    overflow-wrap: break-word
+    overflow-wrap: break-word;
+    overflow-wrap: break-word;
+    background: transparent;   
+    appearance: none;          
+    -webkit-appearance: none;  
+    outline: none; 
 }
 
 button.activo {
-    background-color: #4CAF50; 
-    color: white;
-    border-color: #388E3C;
+    box-shadow: 0 0 2vh rgba(158, 134, 236, 0.4);
     transform: translateY(2px);
   }
 
