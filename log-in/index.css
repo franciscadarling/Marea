@@ -44,7 +44,7 @@ letter-spacing: 0.5vh;
 }
 
 p {
-    font-size: 2.7dvh;
+    font-size: 2.75dvh;
     justify-self: flex-end;
     font-family: Gaegu, Arial;
     color: #DDD5F5;
@@ -52,6 +52,8 @@ p {
     text-align: center;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    margin-bottom: 1.25dvh
 }
 
 a {
@@ -60,13 +62,13 @@ a {
   }
 
 .botones {
-    width: 65%;
+    width: 60%;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    margin-top: 8dvh;
-    margin-bottom: 4dvh;
+    margin-top: 5dvh;
+    margin-bottom: 5dvh;
     font-family: Gaegu, Arial;
     color: #DDD5F5;
     gap: 1.5dvh;
@@ -83,6 +85,7 @@ a {
     align-items: center;
     font-size: 3dvh;
     border-radius: 3vh;
+    width: 100%;
 }
 
 .boton-login {
@@ -97,19 +100,25 @@ a {
     border-color: #4F349E;
     border-radius: 3vh;
     border: 0.3vh solid;
+    width: 100%;
 }
 
 .tiktok{
-    font-size: 3dvh;
     justify-self: flex-end;
     font-family: Gaegu, Arial;
     color: #DDD5F5;
     text-align: center;
     display: flex;
     flex-direction: column;
-    gap: 0.3dvh;
+    gap: 0.2dvh;
     margin-top: auto; 
-    margin-bottom: 2vh;
+    margin-bottom: 1vh;
+
+}
+
+.cuentatt {
+    display: flex;
+    font-size: 2.9vh;
 }
 
 .logo{
