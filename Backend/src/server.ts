@@ -7,7 +7,6 @@ type RegistroPayload = {
   mail: string;
   contrasena: string;
   nombre: string;
-  regularidad: "regular" | "irregular";
   regular: boolean;
   duracionCiclo: number;
   duracionMenstruacion: number;
@@ -86,10 +85,10 @@ function validarRegistro(cuerpo: unknown): RegistroPayload {
   const mail = leerTexto(datos.mail, "mail", 160).toLowerCase();
   const contrasena = leerTexto(datos.contrasena, "contrasena", 200);
   const nombre = leerTexto(datos.nombre, "nombre", 100);
-  const regularidad = datos.regularidad;
+  const regular = datos.regular;
 
-  if (regularidad !== "regular" && regularidad !== "irregular") {
-    throw new ErrorValidacion("El campo regularidad sólo puede ser regular o irregular.");
+  if (typeof regular !== "boolean") {
+    throw new ErrorValidacion("El campo regular debe ser true o false.");
   }
 
   const fechas = datos.fechasMenstruacion;
@@ -110,8 +109,7 @@ function validarRegistro(cuerpo: unknown): RegistroPayload {
     mail,
     contrasena,
     nombre,
-    regularidad,
-    regular: regularidad === "regular",
+    regular,
     duracionCiclo: leerNumero(datos.duracionCiclo, "duracionCiclo", 1, 60),
     duracionMenstruacion: leerNumero(
       datos.duracionMenstruacion,
@@ -147,7 +145,6 @@ function guardarRegistro(registro: RegistroPayload): Usuario {
     mail: registro.mail,
     contrasena: `scrypt:${sal}:${hash}`,
     regular: registro.regular,
-    regularidad: registro.regularidad,
     duracionCiclo: registro.duracionCiclo,
     duracionMenstruacion: registro.duracionMenstruacion,
     fechasMenstruacion: registro.fechasMenstruacion,

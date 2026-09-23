@@ -160,12 +160,12 @@ function validarRespuestaActual() {
   } else if (indiceinicial === 3) {
     const dias = Number(respuestas.duracionCiclo);
     if (!Number.isInteger(dias) || dias < 1 || dias > 60) {
-      mensaje = "La duración del ciclo debe ser un número entre 1 y 60.";
+      mensaje = "La duración del ciclo debe ser un número entre 1 y 40.";
     }
   } else if (indiceinicial === 4) {
     const dias = Number(respuestas.duracionMenstruacion);
     if (!Number.isInteger(dias) || dias < 1 || dias > 14) {
-      mensaje = "La duración de la menstruación debe ser un número entre 1 y 14.";
+      mensaje = "La duración de la menstruación debe ser un número entre 1 y 9, si es más deberías consultar con un médico.";
     }
   } else if (indiceinicial === 5 && respuestas.fechasMenstruacion.length === 0) {
     mensaje = "Seleccioná al menos una fecha de menstruación.";
@@ -180,7 +180,6 @@ function crearPayload(credenciales) {
     mail: credenciales.mail.trim(),
     contrasena: credenciales.contrasena,
     nombre: respuestas.nombre,
-    regularidad: respuestas.regularidad,
     regular: respuestas.regularidad === "regular",
     duracionCiclo: Number(respuestas.duracionCiclo),
     duracionMenstruacion: Number(respuestas.duracionMenstruacion),

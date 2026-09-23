@@ -16,7 +16,6 @@ El JSON enviado tiene esta forma:
   "mail": "persona@example.com",
   "contrasena": "contraseña-ingresada",
   "nombre": "Nombre",
-  "regularidad": "regular",
   "regular": true,
   "duracionCiclo": 28,
   "duracionMenstruacion": 5,
