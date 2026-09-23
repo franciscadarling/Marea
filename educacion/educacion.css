@@ -124,6 +124,10 @@ h2{
     padding-left: 4vw;
     padding-bottom: 1vh;
     color: #ffffff;
+    color: #ffffff;
+  font-size: 3.2dvh;
+  line-height: 1.3;
+  letter-spacing: 1px;
 }
 .gaegu-bold {
     font-family: "Gaegu", sans-serif;

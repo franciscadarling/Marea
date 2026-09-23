@@ -102,6 +102,27 @@ body {
   gap: 15px;
 }
 
+.estado-formulario {
+  color: #ffffff;
+  text-align: center;
+  max-width: 420px;
+  margin: 10px auto 0;
+}
+
+.estado-formulario.error {
+  color: #ffb4b4;
+}
+
+.estado-formulario.exito {
+  color: #b8f0bd;
+}
+
+.siguiente:disabled,
+.boton-comenzar:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
 .boton-comenzar {
   height: 6dvh;
   width: 60dvw;

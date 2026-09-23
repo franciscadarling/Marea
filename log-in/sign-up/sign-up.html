@@ -1,34 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Registrarse</title>
     <link rel="stylesheet" href="sign-up.css">
     <script src="script.js" defer></script>
 </head>
 <body>
-   <div class="app">
-   <main class="pantalla">
+    <div class="app">
+        <main class="pantalla">
+            <h1>Regístrate</h1>
 
-      <h1>Regístrate</h1>
+            <form id="formulario-signup" class="inputpapa" novalidate>
+                <div class="email">
+                    <h2 id="etiqueta-mail">E-mail:</h2>
+                    <input
+                        class="input"
+                        id="mail"
+                        name="mail"
+                        type="email"
+                        autocomplete="email"
+                        required
+                        aria-labelledby="etiqueta-mail"
+                    >
+                </div>
+                <div class="contrasena">
+                    <h2 id="etiqueta-contrasena">Contraseña:</h2>
+                    <input
+                        class="input"
+                        id="contrasena"
+                        name="contrasena"
+                        type="password"
+                        autocomplete="new-password"
+                        required
+                        aria-labelledby="etiqueta-contrasena"
+                    >
+                </div>
+                <p id="error-signup" class="mensaje-error" role="alert" hidden></p>
+                <button type="submit" class="boton">Siguiente</button>
+            </form>
 
-<div class="inputpapa">
-   <div class="email">
-      <h2>E-mail:</h2>
-      <input class="input"> 
-   </div>
-   <div class="contrasena">
-      <h2>Contraseña:</h2>
-      <input class="input"> 
-   </div>
-<a href="../formulario/formulario.html" class="boton">Siguiente</a>
-</div>
-<a class="boton-2" href="../inicio-sesion/inicio-sesion.html">
-<p>¿Ya tenés cuenta? Iniciá sesión</p>
-</a>
-</div>
-   </main> 
-</div>
+            <a class="boton-2" href="../inicio-sesion/inicio-sesion.html">
+                <p>¿Ya tenés cuenta? Iniciá sesión</p>
+            </a>
+        </main>
+    </div>
 </body>
 </html>
