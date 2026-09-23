@@ -86,6 +86,7 @@ a {
     font-size: 3dvh;
     border-radius: 3vh;
     width: 100%;
+    box-shadow: 0 0 2dvh rgba(142, 115, 227, 0.4);
 }
 
 .boton-login {
@@ -101,6 +102,7 @@ a {
     border-radius: 3vh;
     border: 0.3vh solid;
     width: 100%;
+    box-shadow: 0 0 2dvh rgba(142, 115, 227, 0.4);
 }
 
 .tiktok{
