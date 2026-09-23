@@ -29,6 +29,7 @@ body {
     display: flex;
     align-items: center; 
     flex-direction: column;
+    justify-content: space-between;
     height: 100dvh;
 }
 
@@ -65,6 +66,7 @@ a {
     margin-bottom: 10dvh;
     font-family: Gaegu, Arial;
     color: #DDD5F5;
+    gap: 1.5dvh;
 }
     
 .boton-signin {
@@ -99,6 +101,10 @@ a {
     justify-self: flex-end;
     font-family: Gaegu, Arial;
     color: #DDD5F5;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3dvh;
 }
 
 .logo{
@@ -106,4 +112,8 @@ a {
     aspect-ratio: 1/1;
     margin-top: auto;
     padding-bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-top: auto;
 }
