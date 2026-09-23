@@ -34,9 +34,9 @@ body {
 }
 
 h1{
-margin-top: 10dvh;
+margin-top: 8vh;
 margin-bottom: 4dvh;
-font-size: 4dvh;
+font-size: 6vh;
 font-family: Gaegu, Arial;
 color: #DDD5F5;
 letter-spacing: 0.5vh;
@@ -44,10 +44,14 @@ letter-spacing: 0.5vh;
 }
 
 p {
-    font-size: 2.5dvh;
+    font-size: 2.7dvh;
     justify-self: flex-end;
     font-family: Gaegu, Arial;
     color: #DDD5F5;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
 }
 
 a {
@@ -57,13 +61,12 @@ a {
 
 .botones {
     width: 65%;
-    height: 5vh;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     margin-top: 8dvh;
-    margin-bottom: 10dvh;
+    margin-bottom: 4dvh;
     font-family: Gaegu, Arial;
     color: #DDD5F5;
     gap: 1.5dvh;
@@ -73,7 +76,7 @@ a {
     background-color:#4F349E;
     display: flex;
     margin: 0 auto;
-    margin-bottom: 5vh;
+    margin-bottom: 3vh;
     flex-direction: row;
     justify-content: center;
     padding: 3dvw;
@@ -87,7 +90,7 @@ a {
     margin: 0 auto;
     flex-direction: row;
     justify-content: center;
-    padding: 3dvw;
+    padding: 3vw;
     align-items: center;
     font-size: 3dvh;
     background-color: #1A0F33;
@@ -97,7 +100,7 @@ a {
 }
 
 .tiktok{
-    font-size: 2.5dvh;
+    font-size: 3dvh;
     justify-self: flex-end;
     font-family: Gaegu, Arial;
     color: #DDD5F5;
@@ -105,12 +108,12 @@ a {
     display: flex;
     flex-direction: column;
     gap: 0.3dvh;
+    margin-top: auto; 
+    margin-bottom: 2vh;
 }
 
 .logo{
-    max-width: 100%;
-    aspect-ratio: 1/1;
-    margin-top: auto;
+    width: 100%;
     padding-bottom: 0;
     display: flex;
     justify-content: center;
