@@ -18,131 +18,55 @@ let preguntas = [
    </div>`
 ];
 
-const API_REGISTRO = "http://localhost:3000/api/registro";
-const CREDENCIALES_KEY = "marea.credenciales";
-const RESPUESTAS_KEY = "marea.respuestas";
 
+/*declaro variables*/
 let indiceinicial = 0;
 let contenedorpregunta = document.getElementById("contenedor");
 let botonsig = document.getElementById("siguiente");
 let botonat = document.getElementById("atrás");
-let estadoFormulario = document.getElementById("estado-formulario");
-let envioEnCurso = false;
 let fechasSeleccionadas = [];
 let respuestas = cargarRespuestas();
+let mailGuardado = localStorage.getItem('Email');
+let contrasenaGuardada = localStorage.getItem('Contrasena');
 
-function crearRespuestasVacias() {
-  return {
+
+function crearNuevasRespuestas(mailGuardado, contrasenaGuardada) {
+  let respuestas = {
+    mail: mailGuardado,         
+    contrasena: contrasenaGuardada,
     nombre: "",
     regularidad: "",
     duracionCiclo: "",
     duracionMenstruacion: "",
-    fechasMenstruacion: []
+    fechasMenstruacion: []      
   };
+  return respuestas;
 }
 
-function cargarRespuestas() {
-  try {
-    const respuestasGuardadas = JSON.parse(sessionStorage.getItem(RESPUESTAS_KEY) || "null");
-    if (!respuestasGuardadas || typeof respuestasGuardadas !== "object") {
-      return crearRespuestasVacias();
-    }
+function guardarRespuestasParciales(){
+// 1. Buscamos el input actual en la pantalla (ajusta el selector según cómo tengas tu HTML)
+let inputActual = document.getElementById("input-respuesta"); 
+  
+if (!inputActual) return; // Si no hay input en esta pantalla, salimos
 
-    const base = crearRespuestasVacias();
-    return {
-      ...base,
-      ...respuestasGuardadas,
-      fechasMenstruacion: Array.isArray(respuestasGuardadas.fechasMenstruacion)
-        ? respuestasGuardadas.fechasMenstruacion
-        : []
-    };
-  } catch (error) {
-    return crearRespuestasVacias();
-  }
+// 2. Guardamos el valor según el paso en el que estamos (índice)
+// (Suponiendo que 'misRespuestas' es el objeto que armamos antes)
+switch (indiceinicial) {
+  case 1:
+    misRespuestas.nombre = inputActual.value;
+    break;
+  case 2:
+    misRespuestas.regularidad = inputActual.value;
+    break;
+  case 3:
+    misRespuestas.duracionCiclo = inputActual.value;
+    break;
+  case 4:
+    misRespuestas.duracionMenstruacion = inputActual.value;
+    break;
 }
 
-function guardarRespuestas() {
-  try {
-    sessionStorage.setItem(RESPUESTAS_KEY, JSON.stringify(respuestas));
-  } catch (error) {
-    console.error(error);
-  }
-}
 
-function obtenerCredenciales() {
-  try {
-    const credenciales = JSON.parse(sessionStorage.getItem(CREDENCIALES_KEY) || "null");
-    if (
-      credenciales &&
-      typeof credenciales.mail === "string" &&
-      typeof credenciales.contrasena === "string" &&
-      credenciales.mail.trim() &&
-      credenciales.contrasena
-    ) {
-      return credenciales;
-    }
-  } catch (error) {
-    console.error(error);
-  }
-
-  return null;
-}
-
-function mostrarEstado(mensaje, tipo = "error") {
-  estadoFormulario.textContent = mensaje;
-  estadoFormulario.className = `estado-formulario ${tipo}`;
-  estadoFormulario.hidden = !mensaje;
-}
-
-function guardarRespuestaActual() {
-  switch (indiceinicial) {
-    case 1:
-      respuestas.nombre = document.getElementById("p1")?.value.trim() || "";
-      break;
-    case 2:
-      respuestas.regularidad = document.getElementById("regularidad")?.value || "";
-      break;
-    case 3:
-      respuestas.duracionCiclo = document.getElementById("p3")?.value || "";
-      break;
-    case 4:
-      respuestas.duracionMenstruacion = document.getElementById("p4")?.value || "";
-      break;
-    case 5:
-      respuestas.fechasMenstruacion = [...fechasSeleccionadas];
-      break;
-  }
-
-  guardarRespuestas();
-}
-
-function restaurarRespuestaActual() {
-  switch (indiceinicial) {
-    case 1: {
-      const campo = document.getElementById("p1");
-      if (campo) campo.value = respuestas.nombre;
-      break;
-    }
-    case 2: {
-      const campo = document.getElementById("regularidad");
-      if (campo) campo.value = respuestas.regularidad;
-      break;
-    }
-    case 3: {
-      const campo = document.getElementById("p3");
-      if (campo) campo.value = respuestas.duracionCiclo;
-      break;
-    }
-    case 4: {
-      const campo = document.getElementById("p4");
-      if (campo) campo.value = respuestas.duracionMenstruacion;
-      break;
-    }
-    case 5:
-      fechasSeleccionadas = [...respuestas.fechasMenstruacion];
-      break;
-  }
-}
 
 function validarRespuestaActual() {
   guardarRespuestaActual();
@@ -231,28 +155,22 @@ async function enviarRegistro() {
   }
 }
 
+/*función para mostrar las preguntas*/
 function mostrarPregunta() {
   contenedorpregunta.innerHTML = preguntas[indiceinicial];
-  restaurarRespuestaActual();
-
   if (indiceinicial === 0) {
     botonat.style.display = "none";
     botonsig.textContent = "Comenzar";
     botonsig.className = "boton-comenzar";
-  } else if (indiceinicial === preguntas.length - 1) {
-    botonat.style.display = "inline-block";
-    botonsig.textContent = envioEnCurso ? "Guardando..." : "Finalizar";
-    botonsig.className = "boton-comenzar";
-    botonsig.disabled = envioEnCurso;
-  } else {
+  } 
+  else if (indiceinicial>0){
     botonat.style.display = "inline-block";
     botonsig.textContent = "";
     botonsig.className = "siguiente";
     botonsig.disabled = false;
   }
-
   if (indiceinicial === 5) {
-    inicializarCalendarioP5();
+    inicializarCalendarioP5(); /*acá inicia la función del calendario, y ya después manda la respuesta*/
   }
 }
 
@@ -261,7 +179,7 @@ botonsig.addEventListener("click", async () => {
     return;
   }
 
-  if (indiceinicial < preguntas.length - 1) {
+  if (indiceinicial < preguntas.length - 1) { /*si no es la última pregunta avanza, cuando lo es hace el fetch*/
     indiceinicial++;
     mostrarPregunta();
   } else {

@@ -1,10 +1,7 @@
-const CREDENCIALES_KEY = "marea.credenciales";
-const RESPUESTAS_KEY = "marea.respuestas";
-
-const formulario = document.getElementById("formulario-signup");
-const inputMail = document.getElementById("mail");
-const inputContrasena = document.getElementById("contrasena");
-const mensajeError = document.getElementById("error-signup");
+let formulario = document.getElementById("formulario-signup");
+let inputMail = document.getElementById("mail");
+let inputContrasena = document.getElementById("contrasena");
+let mensajeError = document.getElementById("error");
 
 function mostrarError(mensaje) {
   mensajeError.textContent = mensaje;
@@ -15,27 +12,19 @@ formulario.addEventListener("submit", (event) => {
   event.preventDefault();
   mostrarError("");
 
-  const mail = inputMail.value.trim();
-  const contrasena = inputContrasena.value;
+  let nuevomail = inputMail.value;
+  let nuevacontrasena = inputContrasena.value;
 
   if (!formulario.checkValidity()) {
     formulario.reportValidity();
     return;
   }
 
-  if (!mail || !contrasena) {
+  if (!nuevomail || !nuevacontrasena) /*esto lo googlié y chequea que la variable exista digamos */ {
     mostrarError("Completá tu e-mail y tu contraseña.");
     return;
   }
-
-  try {
-    // La contraseña queda sólo en sessionStorage hasta completar el formulario.
-    sessionStorage.setItem(CREDENCIALES_KEY, JSON.stringify({ mail, contrasena }));
-    // Un nuevo registro no debe reutilizar respuestas de un registro anterior.
-    sessionStorage.removeItem(RESPUESTAS_KEY);
-    window.location.href = "../formulario/formulario.html";
-  } catch (error) {
-    console.error(error);
-    mostrarError("No se pudieron guardar tus datos en este navegador.");
-  }
-});
+  localStorage.setItem('Email', nuevomail);
+  localStorage.setItem('Contrasena', nuevacontrasena);
+  window.location.href = "../formulario/formulario.html";
+})
