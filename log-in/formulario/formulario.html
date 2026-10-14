@@ -9,10 +9,46 @@
 </head>
 <body>
     <main class="pantalla">
-        <div id="contenedor"></div>
+        <div id="contenedor">
+            <form class="preguntas" id="formulario">
+                <div class="inicio" id="p0">
+                    <p class="parrafo">Este es un formulario para conocer los datos de tu ciclo menstrual y brindarte un seguimiento personalizado.</p>
+                </div>
+            
+                <div class="preguntas" id="p1">
+                    <label class="label" for="nombre">¿Cómo querés que te llamemos?</label>
+                    <input type="text" id="nombre" name="nombre" autocomplete="name" required>
+                </div>
+            
+                <div class="preguntas" id="p2">
+                    <label class="label" for="regularidad">¿Sos regular o irregular?</label> 
+                    <select id="regularidad" name="regularidad" required>
+                        <option value="">Elegí una opción</option>
+                        <option value="regular">Regular</option>
+                        <option value="irregular">Irregular</option>
+                    </select>
+                </div>
+            
+                <div class="preguntas" id="p3">
+                    <label class="label" for="duracionCiclo">¿Cuántos días dura tu ciclo aproximadamente?</label> 
+                    <input type="number" id="duracionCiclo" name="duracionCiclo" min="1" max="60" required>
+                </div>
+            
+                <div class="preguntas" id="p4">
+                    <label class="label" for="duracionMenstruacion">¿Cuántos días dura tu menstruación aproximadamente?</label>
+                    <input type="number" id="duracionMenstruacion" name="duracionMenstruacion" min="1" max="14" required>
+                </div>
+            
+                <div class="preguntas" id="p5">
+                    <label class="label">Selecciona las fechas de tus menstruaciones anteriores</label>
+                    <div class="calendario-pantalla" id="calendario-pantalla-p5">
+                        <div class="calendario-scroll" id="calendario-scroll-p5"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
         <div class="botones">
-            <button id="atrás" class="atrás" aria-label="Volver"></button>
-            <button class="siguiente" id="siguiente" aria-label="Siguiente"></button>
+            <button id="enviar" class="boton-enviar">Enviar</button>
         </div>
     </main>
 </body>

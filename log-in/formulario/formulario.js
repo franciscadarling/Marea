@@ -1,97 +1,58 @@
-let preguntas = [
-  `<div class="inicio">
-     <p class="parrafo">Este es un formulario para conocer los datos de tu ciclo menstrual y brindarte un seguimiento personalizado.</p>
-   </div>`,
-  `<div class="preguntas"><label class="label" for="p1">¿Cómo querés que te llamemos?</label> <input type="text" id="p1" name="nombre" autocomplete="name" required></div>`,
-  `<div class="preguntas"><label class="label" for="regularidad">¿Sos regular o irregular?</label> <select id="regularidad" name="regularidad" required>
-      <option value="">Elegí una opción</option>
-       <option value="regular">Regular</option>
-      <option value="irregular">Irregular</option>
-    </select></div>`,
-  `<div class="preguntas"><label class="label" for="p3">¿Cuántos días dura tu ciclo aproximadamente?</label> <input type="number" id="p3" name="duracionCiclo" min="1" max="60" required></div>`,
-  `<div class="preguntas"><label class="label" for="p4">¿Cuántos días dura tu menstruación aproximadamente?</label> <input type="number" id="p4" name="duracionMenstruacion" min="1" max="14" required></div>`,
-  `<div class="preguntas">
-     <label class="label">Selecciona las fechas de tus menstruaciones anteriores</label>
-     <div class="calendario-pantalla" id="calendario-pantalla-p5">
-       <div class="calendario-scroll" id="calendario-scroll-p5"></div>
-     </div>
-   </div>`
-];
-
-
 /*declaro variables*/
 let indiceinicial = 0;
-let contenedorpregunta = document.getElementById("contenedor");
+let contenedorpregunta = document.getElementById("formulario"); // <- Corregido al ID correcto del HTML
 let botonsig = document.getElementById("siguiente");
 let botonat = document.getElementById("atrás");
 let fechasSeleccionadas = [];
-let respuestas = cargarRespuestas();
+let respuestas = cargarRespuestas() || crearNuevasRespuestas();
 let mailGuardado = localStorage.getItem('Email');
 let contrasenaGuardada = localStorage.getItem('Contrasena');
 
 
 function crearNuevasRespuestas(mailGuardado, contrasenaGuardada) {
   let respuestas = {
-    mail: mailGuardado,         
-    contrasena: contrasenaGuardada,
+    mail: mailGuardado || "",          
+    password: contrasenaGuardada || "",
     nombre: "",
-    regularidad: "",
-    duracionCiclo: "",
-    duracionMenstruacion: "",
-    fechasMenstruacion: []      
+    genero: "",
+    edad: "",
+    regularidad: "", 
+    condiciones: "",
+    duracionCiclo: 0,
+    duracionMenstruacion: 0,
+    fechasMenstruacion: [] // <- Agregado aquí para que coincida
   };
-  return respuestas;
+  return respuestas; // <- Retornamos un solo objeto completo
 }
 
-function guardarRespuestasParciales(){
-// 1. Buscamos el input actual en la pantalla (ajusta el selector según cómo tengas tu HTML)
-let inputActual = document.getElementById("input-respuesta"); 
-  
-if (!inputActual) return; // Si no hay input en esta pantalla, salimos
-
-// 2. Guardamos el valor según el paso en el que estamos (índice)
-// (Suponiendo que 'misRespuestas' es el objeto que armamos antes)
-switch (indiceinicial) {
-  case 1:
-    misRespuestas.nombre = inputActual.value;
-    break;
-  case 2:
-    misRespuestas.regularidad = inputActual.value;
-    break;
-  case 3:
-    misRespuestas.duracionCiclo = inputActual.value;
-    break;
-  case 4:
-    misRespuestas.duracionMenstruacion = inputActual.value;
-    break;
+function cargarRespuestas() {
+  // Función auxiliar de ejemplo por si usas localStorage, 
+  // si usas otra lógica, mantenela.
+  const guardado = localStorage.getItem('respuestasMarea');
+  return guardado ? JSON.parse(guardado) : null;
 }
 
+function guardarRespuestas() {
+  localStorage.setItem('respuestasMarea', JSON.stringify(respuestas));
+}
 
+function mostrarEstado(mensaje) {
+  // Asegurate de tener tu elemento de estado o console.log
+  console.log(mensaje);
+}
 
 function validarRespuestaActual() {
-  guardarRespuestaActual();
-
-  if (indiceinicial === 0) {
-    mostrarEstado("");
-    return true;
-  }
-
   let mensaje = "";
-  if (indiceinicial === 1 && !respuestas.nombre) {
+  if (!respuestas.nombre) {
     mensaje = "Escribí tu nombre para continuar.";
-  } else if (indiceinicial === 2 && !respuestas.regularidad) {
+  } else if (!respuestas.regularidad) {
     mensaje = "Elegí si tu ciclo es regular o irregular.";
-  } else if (indiceinicial === 3) {
-    const dias = Number(respuestas.duracionCiclo);
-    if (!Number.isInteger(dias) || dias < 1 || dias > 60) {
+  } else if (!respuestas.duracionCiclo || respuestas.duracionCiclo > 40) {
       mensaje = "La duración del ciclo debe ser un número entre 1 y 40.";
-    }
-  } else if (indiceinicial === 4) {
-    const dias = Number(respuestas.duracionMenstruacion);
-    if (!Number.isInteger(dias) || dias < 1 || dias > 14) {
+    } else if (!respuestas.duracionMenstruacion || respuestas.duracionMenstruacion > 9) {
       mensaje = "La duración de la menstruación debe ser un número entre 1 y 9, si es más deberías consultar con un médico.";
     }
-  } else if (indiceinicial === 5 && respuestas.fechasMenstruacion.length === 0) {
+   else if (!respuestas.fechasMenstruacion || respuestas.fechasMenstruacion.length === 0) {
     mensaje = "Seleccioná al menos una fecha de menstruación.";
   }
 
@@ -99,109 +60,16 @@ function validarRespuestaActual() {
   return !mensaje;
 }
 
-function crearPayload(credenciales) {
-  return {
-    mail: credenciales.mail.trim(),
-    contrasena: credenciales.contrasena,
-    nombre: respuestas.nombre,
-    regular: respuestas.regularidad === "regular",
-    duracionCiclo: Number(respuestas.duracionCiclo),
-    duracionMenstruacion: Number(respuestas.duracionMenstruacion),
-    fechasMenstruacion: [...respuestas.fechasMenstruacion]
-  };
-}
 
-async function enviarRegistro() {
-  const credenciales = obtenerCredenciales();
-  if (!credenciales) {
-    mostrarEstado("Primero tenés que completar el registro con tu e-mail y contraseña.");
-    return;
-  }
-
-  envioEnCurso = true;
-  botonsig.disabled = true;
-  botonsig.textContent = "Guardando...";
-  mostrarEstado("Guardando tus datos...", "");
-
-  try {
-    const respuesta = await fetch(API_REGISTRO, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(crearPayload(credenciales))
-    });
-
-    let resultado = {};
-    try {
-      resultado = await respuesta.json();
-    } catch (error) {
-      resultado = {};
-    }
-
-    if (!respuesta.ok) {
-      throw new Error(resultado.mensaje || "No se pudo guardar el registro.");
-    }
-
-    sessionStorage.removeItem(CREDENCIALES_KEY);
-    sessionStorage.removeItem(RESPUESTAS_KEY);
-    botonsig.textContent = "Listo";
-    mostrarEstado("¡Tu registro se guardó correctamente!", "exito");
-  } catch (error) {
-    envioEnCurso = false;
-    botonsig.disabled = false;
-    botonsig.textContent = "Finalizar";
-    mostrarEstado(error instanceof Error ? error.message : "No se pudo conectar con el backend.");
-  }
-}
-
-/*función para mostrar las preguntas*/
-function mostrarPregunta() {
-  contenedorpregunta.innerHTML = preguntas[indiceinicial];
-  if (indiceinicial === 0) {
-    botonat.style.display = "none";
-    botonsig.textContent = "Comenzar";
-    botonsig.className = "boton-comenzar";
-  } 
-  else if (indiceinicial>0){
-    botonat.style.display = "inline-block";
-    botonsig.textContent = "";
-    botonsig.className = "siguiente";
-    botonsig.disabled = false;
-  }
-  if (indiceinicial === 5) {
-    inicializarCalendarioP5(); /*acá inicia la función del calendario, y ya después manda la respuesta*/
-  }
-}
-
-botonsig.addEventListener("click", async () => {
-  if (envioEnCurso || !validarRespuestaActual()) {
-    return;
-  }
-
-  if (indiceinicial < preguntas.length - 1) { /*si no es la última pregunta avanza, cuando lo es hace el fetch*/
-    indiceinicial++;
-    mostrarPregunta();
-  } else {
-    await enviarRegistro();
-  }
-});
-
-botonat.addEventListener("click", () => {
-  if (indiceinicial > 0) {
-    guardarRespuestaActual();
-    indiceinicial--;
-    mostrarPregunta();
-  }
-});
-
-mostrarPregunta();
 
 // ---------- Calendario tipo Almanaque / Tabla para p5 ----------
 
 function inicializarCalendarioP5() {
   const contenedor = document.getElementById("calendario-pantalla-p5");
   const calendarioScroll = document.getElementById("calendario-scroll-p5");
+
+  // Validación de seguridad por si los elementos aún no cargaron en el DOM
+  if (!contenedor || !calendarioScroll) return;
 
   const nombresMes = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
   const diasSemana = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
@@ -316,3 +184,8 @@ function inicializarCalendarioP5() {
   observarPrimero(calendarioScroll.firstElementChild);
   contenedor.scrollTop = contenedor.scrollHeight;
 }
+
+// Ejecutar cuando el DOM esté listo por seguridad
+document.addEventListener("DOMContentLoaded", () => {
+  inicializarCalendarioP5();
+});

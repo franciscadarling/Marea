@@ -117,13 +117,9 @@ body {
   color: #b8f0bd;
 }
 
-.siguiente:disabled,
-.boton-comenzar:disabled {
-  cursor: wait;
-  opacity: 0.7;
-}
 
-.boton-comenzar {
+
+.boton-enviar {
   height: 6dvh;
   width: 60dvw;
   max-width: 260px;
@@ -138,30 +134,12 @@ body {
   transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
-.boton-comenzar:hover {
+.boton-enviar:hover {
   background-color: #6a3bc2;
   transform: translateY(-2px);
 }
 
-.atrás, .siguiente {
-  height: 5dvh;
-  aspect-ratio: 1/1;
-  background-size: cover; 
-  background-position: center; 
-  background-repeat: no-repeat;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.3));
-}
 
-.atrás {
-  background-image: url("bi_arrow-right-circle-fill (2).png");
-}
-
-.siguiente {
-  background-image: url("bi_arrow-right-circle-fill (3).png");
-}
 
 /* --- Estilo Específico del Calendario Almanaque (P5) --- */
 
