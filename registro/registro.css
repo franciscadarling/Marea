@@ -100,6 +100,10 @@ h1 {
     color: #DDD5F5;
 }
 
+.lodearriba {
+    display: flex;  
+}
+
 .minicalendario {
     font-family: 'Gaegu', serif;
     display: flex;
@@ -108,6 +112,17 @@ h1 {
     background-color: #1A0F33;
     border-color: #DDD5F5;
     color: #DDD5F5;
+}
+
+.enviar {
+    display: flex;
+    background-color: #1A0F33;
+    border-color: #DDD5F5;
+    color: #DDD5F5;
+    margin-left: 2vh;
+    font-size: 3dvh;
+    font-family: 'Gaegu', serif;
+
 }
 
 .sintomas {
