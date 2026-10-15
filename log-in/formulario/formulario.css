@@ -40,7 +40,7 @@ body {
   width: 100%;
 }
 
-/* Estilo para pantalla de Inicio y Preguntas */
+
 .inicio, .preguntas {
   display: flex;
   flex-direction: column;
@@ -48,12 +48,12 @@ body {
   align-items: center;
   width: 85dvw;
   max-width: 400px;
-  background-color: transparent; /* Fondo transparente como en Marea */
+  background-color: transparent;
   text-align: center;
   gap: 20px;
 }
 
-/* Títulos y párrafos */
+
 .parrafo, .label {
   color: #ffffff;
   font-size: 3.2dvh;
@@ -63,7 +63,7 @@ body {
   margin: 0;
 }
 
-/* Inputs y Selects con el estilo redondeado de Marea */
+
 .preguntas input[type="text"],
 .preguntas input[type="number"],
 .preguntas select {
@@ -73,7 +73,7 @@ body {
   background: rgba(255, 255, 255, 0.05);
   border: 1.5px solid #8e73e3;
   border-radius: 25px;
-  color: #ffffff;
+  color: #000000;
   font-size: 2.5dvh;
   text-align: center;
   outline: none;

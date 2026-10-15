@@ -1,69 +1,80 @@
 /*declaro variables*/
 let indiceinicial = 0;
 let contenedorpregunta = document.getElementById("formulario");
-let fechasSeleccionadas = [];
-let mailGuardado = localStorage.getItem('Email');
-let contrasenaGuardada = localStorage.getItem('Contrasena');
-let nam = document.getElementById("nombre").value;
-let regular = document.getElementById("regularidad").value;
-let ciclo = document.getElementById("duracionCiclo").value;
-let menst = document.getElementById("duracionMenstruacion").value;
-let calendar = document.getElementById("calendario-pantalla-p5").value;
+let fechasSeleccionadas = []; 
 
-
-function crearNuevasRespuestas(mailGuardado, contrasenaGuardada) {
-  let respuestas = {
-    mail: mailGuardado,          
-    password: contrasenaGuardada,
-    nombre: "",
-    genero: "",
-    edad: "",
-    regularidad: "", 
-    condiciones: "",
-    duracionCiclo: 0,
-    duracionMenstruacion: 0,
-    fechasMenstruacion: [] 
-  };
-  return respuestas;
-}
+/*elementos del dom*/
+let formulario = document.getElementById("formulario");
+let inputNombre = document.getElementById("nombre");
+let inputEdad = document.getElementById("edad");
+let inputGenero = document.getElementById("genero")
+let inputRegularidad = document.getElementById("regularidad");
+let inputCiclo = document.getElementById("duracionCiclo");
+let inputMenstruacion = document.getElementById("duracionMenstruacion");
 
 function mostrarEstado(mensaje) {
   console.log(mensaje);
 }
 
-formulario.addEventListener('submit', function(e) {
-  e.preventDefault(); 
-   respuestas = {
-    mail: mailGuardado,          
-    password: contrasenaGuardada,
-    nombre: nam,
-    genero: "",
-    edad: "",
-    regularidad: regular, 
-    condiciones: "",
-    duracionCiclo: ciclo,
-    duracionMenstruacion: menst,
-    fechasMenstruacion: calendar 
-  };
-
-function validarRespuestaActual() {
+function validarRespuestaActual(respuestas) {
   let mensaje = "";
+  
   if (!respuestas.nombre) {
     mensaje = "Escribí tu nombre para continuar.";
   } else if (!respuestas.regularidad) {
     mensaje = "Elegí si tu ciclo es regular o irregular.";
-  } else if (!respuestas.duracionCiclo || respuestas.duracionCiclo > 40 || respuestas.duracionCiclo<1) {
-      mensaje = "La duración del ciclo debe ser un número entre 1 y 40.";
-    } else if (!respuestas.duracionMenstruacion || respuestas.duracionMenstruacion > 9 || respuestas.duracionMenstruacion<1) {
-      mensaje = "La duración de la menstruación debe ser un número entre 1 y 9, si es más deberías consultar con un médico.";
-    }
-   else if (!respuestas.fechasMenstruacion || respuestas.fechasMenstruacion.length === 0) {
+  } else if (!respuestas.duracionCiclo || respuestas.duracionCiclo > 40 || respuestas.duracionCiclo < 1) {
+    mensaje = "La duración del ciclo debe ser un número entre 1 y 40.";
+  } else if (!respuestas.duracionMenstruacion || respuestas.duracionMenstruacion > 9 || respuestas.duracionMenstruacion < 1) {
+    mensaje = "La duración de la menstruación debe ser un número entre 1 y 9.";
+  } else if (!respuestas.fechasMenstruacion || respuestas.fechasMenstruacion.length === 0) {
     mensaje = "Seleccioná al menos una fecha de menstruación.";
   }
 
   mostrarEstado(mensaje);
-  return !mensaje;
+  return !mensaje; 
 }
+async function enviarRegistro(respuestas) {
+  const respuesta = await fetch ("http://localhost:3000/marea/registro",{
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(respuestas)
+  })
+  const resultado = await respuesta.json();
+  console.log (resultado);
+}
+
+/*submit del formulario*/
+formulario.addEventListener('submit', function(e) {
+  e.preventDefault(); 
+
+  let mailGuardado = localStorage.getItem('Email');
+  let contrasenaGuardada = localStorage.getItem('Contrasena');
+
+  let respuestas = {
+    mail: mailGuardado,           
+    password: contrasenaGuardada,
+    nombre: inputNombre.value.trim(),
+    genero: inputGenero.value,
+    edad: inputEdad.value,
+    regularidad: inputRegularidad.value, 
+    condiciones: "",
+    duracionCiclo: Number(inputCiclo.value),
+    duracionMenstruacion: Number(inputMenstruacion.value),
+    fechasMenstruacion: fechasSeleccionadas
+  };
+
+  let esValido = validarRespuestaActual(respuestas);
+
+  if (esValido === true) {
+    mostrarEstado("¡Formulario válido! Guardando datos...");
+    localStorage.setItem('usuarioRegistrado', JSON.stringify(respuestas));
+    console.log (respuestas);
+    enviarRegistro (respuestas);
+  }
+});
 
 
 
