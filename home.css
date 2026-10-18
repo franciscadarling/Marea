@@ -7,11 +7,11 @@
 body {
     height: 100dvh;
     overflow: hidden; 
-    background-image: url("../Fondo predeterminado.png");
+    background-image: url("./Fondo predeterminado.png");
 }
 
 @font-face {
-    font-family: 'MiFuentePersonalizada';
+    font-family: 'Gaegu';
     src: url('Gaegu-Bold-Tildes.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
@@ -32,7 +32,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 0 5%; 
-    background-color: blueviolet;
+
 }
 
 .pantalla {
@@ -89,24 +89,36 @@ body {
 }
 
 .rueda {
-    width: 50%;
+    width: 55%;
     aspect-ratio: 1/1;
-    border-radius: 50%;
-    background-color: blueviolet;
-    color: black;
+    margin-bottom: 8vh;
+    border-radius: 55%;
+    background-color: transparent;
+    border: 2.5vh solid #4F349E;
+     box-shadow: 0 0 2vh 2vh #3d288896;
+    color: #DDD5F5;
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: 'Gaegu'
 }
 
 .proximo-ciclo {
-    width: 50%;
-    aspect-ratio: 3/1;
-    background-color: blueviolet;
+    height: 8vh; 
+    width: 35vh;
+    border-radius: 2.5vh;
+    background-color: #9B85CCBF;
+    box-shadow: 0 0 2.5vh 0.7vh #3D278A; 
+    font-family: 'Gaegu';
+    margin-bottom: 2vh;
 }
 
 .dato-fase {
-    width: 50%;
-    aspect-ratio: 3/1;
-    background-color: blueviolet;
+    height: 18vh; 
+    width: 35vh;
+    border-radius: 2.5vh;
+    background-color: #9B85CCBF;
+    box-shadow: 0 0 2.5vh 0.7vh #3D278A; 
+    font-family: 'Gaegu';
+    margin-bottom: 5vh;
 }
