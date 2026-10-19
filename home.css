@@ -88,6 +88,7 @@ body {
     flex-direction: row;
 }
 
+/*
 .rueda {
     width: 55%;
     aspect-ratio: 1/1;
@@ -102,6 +103,74 @@ body {
     align-items: center;
     font-family: 'Gaegu'
 }
+*/
+
+.rueda { 
+    position: relative; 
+    width: 55%; 
+    margin-bottom: 5vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+svg { 
+transform: rotate(-90deg); 
+overflow: visible;
+margin-bottom: 8vh;
+} 
+
+circle { 
+    fill: none; 
+    stroke-width: 18; 
+}
+
+.fondo { 
+    stroke: #4F349E; 
+    filter: drop-shadow(0 0 2vh #3d288896);
+}
+
+.progreso {
+  stroke: rgb(134, 114, 190);
+  stroke-linecap: round;
+  stroke-dasharray: 534;   /* circunferencia = 2 × π × 85 */
+  stroke-dashoffset: 534;  /* arranca vacío */
+  transition: stroke-dashoffset 0.8s ease;
+}
+
+
+
+.marcador {
+    position: absolute;
+    inset: 0;                                   /* cubre toda la rueda */
+    transform: rotate(var(--angulo, 0deg));     /* gira según el ángulo */
+    transition: transform 0.8s ease;            /* misma duración que el aro */
+    pointer-events: none;
+  }
+  
+  .burbuja {
+    position: absolute;
+    top: 7.5%;                                  /* justo sobre el centro del aro */
+    left: 50%;
+    width: 20%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #9B85CC;
+    border: 0.5vh solid #4F349E;
+    color: white;
+    font-size: 1.5vh;
+  
+    /* centra la burbuja y contrarresta el giro para que el texto quede derecho */
+    transform: translate(-50%, -50%) rotate(calc(var(--angulo, 0deg) * -1));
+    transition: transform 0.8s ease;
+  }
+
+
+
 
 .proximo-ciclo {
     height: 8vh; 
@@ -110,7 +179,7 @@ body {
     background-color: #9B85CCBF;
     box-shadow: 0 0 2.5vh 0.7vh #3D278A; 
     font-family: 'Gaegu';
-    margin-bottom: 2vh;
+    margin-bottom: 4vh;
 }
 
 .dato-fase {
