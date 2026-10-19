@@ -11,6 +11,38 @@ let inputGenero = document.getElementById("genero");
 let inputRegularidad = document.getElementById("regularidad");
 let inputCiclo = document.getElementById("duracionCiclo");
 let inputMenstruacion = document.getElementById("duracionMenstruacion");
+let contenedorMensaje = document.getElementById("mensajeError"); 
+
+function mostrarEstado(mensaje) {
+  console.log(mensaje);
+  if (contenedorMensaje) {
+    contenedorMensaje.textContent = mensaje;
+  }
+}
+
+function validarRespuestaActual(respuestas) {
+  let mensaje = "";
+  
+  if (!respuestas.nombre) {
+    mensaje = "Escribí tu nombre para continuar.";
+  } else if (!respuestas.genero) {
+    mensaje = "Elegí tu género.";
+  } else if (!respuestas.edad) {
+    mensaje = "Indicanos cuántos años tenés.";
+  } else if (!respuestas.regularidad) {
+    mensaje = "Elegí si tu ciclo es regular o irregular.";
+  } else if (!respuestas.duracionCiclo || respuestas.duracionCiclo > 40 || respuestas.duracionCiclo < 1) {
+    mensaje = "La duración del ciclo debe ser un número entre 1 y 40.";
+  } else if (!respuestas.duracionMenstruacion || respuestas.duracionMenstruacion > 9 || respuestas.duracionMenstruacion < 1) {
+    mensaje = "La duración de la menstruación debe ser un número entre 1 y 9.";
+  } else if (!respuestas.fechasMenstruacion || respuestas.fechasMenstruacion.length === 0) {
+    mensaje = "Seleccioná al menos una fecha de menstruación.";
+  }
+
+  mostrarEstado(mensaje);
+  return !mensaje; 
+}
+
 
 async function enviarRegistro(respuestas) {
   try {
