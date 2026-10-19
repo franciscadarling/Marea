@@ -1,19 +1,23 @@
-/*declaro variables*/
+/* Declaración de variables */
 let indiceinicial = 0;
 let contenedorpregunta = document.getElementById("formulario");
 let fechasSeleccionadas = []; 
 
-/*elementos del dom*/
+/* Elementos del DOM */
 let formulario = document.getElementById("formulario");
 let inputNombre = document.getElementById("nombre");
 let inputEdad = document.getElementById("edad");
-let inputGenero = document.getElementById("genero")
+let inputGenero = document.getElementById("genero");
 let inputRegularidad = document.getElementById("regularidad");
 let inputCiclo = document.getElementById("duracionCiclo");
 let inputMenstruacion = document.getElementById("duracionMenstruacion");
+let contenedorMensaje = document.getElementById("mensajeError"); 
 
 function mostrarEstado(mensaje) {
   console.log(mensaje);
+  if (contenedorMensaje) {
+    contenedorMensaje.textContent = mensaje;
+  }
 }
 
 function validarRespuestaActual(respuestas) {
@@ -21,6 +25,10 @@ function validarRespuestaActual(respuestas) {
   
   if (!respuestas.nombre) {
     mensaje = "Escribí tu nombre para continuar.";
+  } else if (!respuestas.genero) {
+    mensaje = "Elegí tu género.";
+  } else if (!respuestas.edad) {
+    mensaje = "Indicanos cuántos años tenés.";
   } else if (!respuestas.regularidad) {
     mensaje = "Elegí si tu ciclo es regular o irregular.";
   } else if (!respuestas.duracionCiclo || respuestas.duracionCiclo > 40 || respuestas.duracionCiclo < 1) {
@@ -34,19 +42,24 @@ function validarRespuestaActual(respuestas) {
   mostrarEstado(mensaje);
   return !mensaje; 
 }
+
 async function enviarRegistro(respuestas) {
-  const respuesta = await fetch ("http://localhost:3000/marea/registro",{
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(respuestas)
-  })
-  const resultado = await respuesta.json();
-  console.log (resultado);
+  try {
+    const respuesta = await fetch("http://localhost:3000/marea/registro", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(respuestas)
+    });
+    const resultado = await respuesta.json();
+    console.log(resultado);
+  } catch (error) {
+    console.error("Error al conectar con el servidor:", error);
+  }
 }
 
-/*submit del formulario*/
+/* Submit del formulario */
 formulario.addEventListener('submit', function(e) {
   e.preventDefault(); 
 
@@ -71,11 +84,10 @@ formulario.addEventListener('submit', function(e) {
   if (esValido === true) {
     mostrarEstado("¡Formulario válido! Guardando datos...");
     localStorage.setItem('usuarioRegistrado', JSON.stringify(respuestas));
-    console.log (respuestas);
-    enviarRegistro (respuestas);
+    console.log(respuestas);
+    enviarRegistro(respuestas);
   }
 });
-
 
 
 // ---------- Calendario tipo Almanaque / Tabla para p5 ----------
