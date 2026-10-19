@@ -234,3 +234,9 @@ body {
   background-color: #f0f0f0;
   border-color: transparent;
 }
+
+.mensaje-error{
+  color: coral;
+  height:5dvh;
+  font-family: "Gaegu", sans-serif;
+}
