@@ -1,8 +1,22 @@
-/*  (lo que me dio chat)
+//  (lo que me dio chat)
 
-fetch: info de alan */
+/* fetch('https://marea/calendario/:id')
+.then(respuesta => respuesta.json())
+  .then(datos => console.log(datos));
 
-const inicioUltimoPeriodo = new Date("2026-10-10");
+.params.fecha 
+
+async function cargarDatos() {
+  const respuesta = await fetch("http://192.168.1.50:3000/ciclo");
+  const datos = await respuesta.json();
+  return datos;
+}
+  
+*/
+
+//  (para probar)--> document.querySelector(".progreso").style.strokeDashoffset = 267; 
+
+const inicioUltimoPeriodo = new Date("2026-10-10T00:00:00");
 const duracionCiclo = 28;
 const duracionPeriodo = 5;
 
@@ -15,11 +29,11 @@ const diaDelCiclo = (diasPasados % duracionCiclo) + 1;
 // 2. Porcentaje y rueda
 const porcentaje = diaDelCiclo / duracionCiclo;
 const circunferencia = 534;
+
 document.querySelector(".progreso").style.strokeDashoffset =
   circunferencia * (1 - porcentaje);
 
-  const angulo = porcentaje * 360;
-  document.querySelector(".rueda").style.setProperty("--angulo", angulo + "deg");
+  document.querySelector(".rueda").style.setProperty("--angulo", porcentaje * 360 + "deg");
   document.getElementById("burbuja").textContent = `Día ${diaDelCiclo}`;
 
 // 3. Fase del ciclo

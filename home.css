@@ -108,17 +108,33 @@ body {
 .rueda { 
     position: relative; 
     width: 55%; 
-    margin-bottom: 5vh;
+    aspect-ratio: 1; 
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    
+
+    
+.marcador {
+    position: absolute;
+    inset: 0;                                   /* cubre toda la rueda */
+    transform: rotate(var(--angulo, 0deg));     /* gira según el ángulo */
+    transition: transform 0.8s ease;            /* misma duración que el aro */
+    pointer-events: none;
+  }
+
+.texto-rueda {
+    display: flex;
+
+  }
 }
 
 svg { 
 transform: rotate(-90deg); 
 overflow: visible;
-margin-bottom: 8vh;
+display: block;
+width: 100%;
 } 
 
 circle { 
@@ -139,15 +155,6 @@ circle {
   transition: stroke-dashoffset 0.8s ease;
 }
 
-
-
-.marcador {
-    position: absolute;
-    inset: 0;                                   /* cubre toda la rueda */
-    transform: rotate(var(--angulo, 0deg));     /* gira según el ángulo */
-    transition: transform 0.8s ease;            /* misma duración que el aro */
-    pointer-events: none;
-  }
   
   .burbuja {
     position: absolute;
@@ -169,10 +176,8 @@ circle {
     transition: transform 0.8s ease;
   }
 
-
-
-
 .proximo-ciclo {
+    margin-top: 8vh;
     height: 8vh; 
     width: 35vh;
     border-radius: 2.5vh;
