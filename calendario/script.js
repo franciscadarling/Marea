@@ -45,7 +45,9 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       celda.addEventListener('click', function() {
-        window.location.href = "../registro/index.html"
+        localStorage.setItem('registro', fechaStr);
+        window.location.href = "../registro/index.html";
+        
       });
 
       grid.appendChild(celda);
