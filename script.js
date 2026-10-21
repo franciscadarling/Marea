@@ -1,42 +1,18 @@
-//  (lo que me dio chat)
+//  (para probar)--> document.querySelector(".progreso").style.strokeDashoffset = 267; 
 
-/* fetch('https://marea/calendario/:id')
+
+/* fetch('https://marea/rueda/:id')
 .then(respuesta => respuesta.json())
   .then(datos => console.log(datos));
 
 .params.fecha 
+*/ 
 
-async function cargarDatos() {
-  const respuesta = await fetch("http://192.168.1.50:3000/ciclo");
-  const datos = await respuesta.json();
-  return datos;
-}
-  
-*/
 
-//  (para probar)--> document.querySelector(".progreso").style.strokeDashoffset = 267; 
+const URL_BASE = "http://localhost:3000";
+const duracionPeriodo = 5; // por defecto, hasta que el backend la mande
 
-const inicioUltimoPeriodo = new Date("2026-10-10T00:00:00");
-const duracionCiclo = 28;
-const duracionPeriodo = 5;
-
-// 1. ¿Qué día del ciclo es hoy?
-const hoy = new Date();
-const msPorDia = 1000 * 60 * 60 * 24;
-const diasPasados = Math.floor((hoy - inicioUltimoPeriodo) / msPorDia);
-const diaDelCiclo = (diasPasados % duracionCiclo) + 1;
-
-// 2. Porcentaje y rueda
-const porcentaje = diaDelCiclo / duracionCiclo;
-const circunferencia = 534;
-
-document.querySelector(".progreso").style.strokeDashoffset =
-  circunferencia * (1 - porcentaje);
-
-  document.querySelector(".rueda").style.setProperty("--angulo", porcentaje * 360 + "deg");
-  document.getElementById("burbuja").textContent = `Día ${diaDelCiclo}`;
-
-// 3. Fase del ciclo
+// Fase del ciclo
 function obtenerFase(dia) {
   if (dia <= duracionPeriodo) return "Menstruación";
   if (dia <= 13) return "Fase folicular";
@@ -44,16 +20,44 @@ function obtenerFase(dia) {
   return "Fase lútea";
 }
 
-// 4. Próximo período
-const proximoPeriodo = new Date(
-  inicioUltimoPeriodo.getTime() +
-  Math.ceil((diasPasados + 1) / duracionCiclo) * duracionCiclo * msPorDia
-);
+function mostrarRueda(datos) {
+  // OJO: estos nombres son supuestos, cambialos por los reales
+  const duracionCiclo = datos.duracion;
+  const diasQueFaltan = datos.falta;
+  const proximoCiclo = new Date(datos.proximoCiclo + "T00:00:00");
 
-// 5. Mostrar textos
-document.getElementById("hoy").textContent = `Día ${diaDelCiclo}`;
-document.getElementById("fase").textContent = obtenerFase(diaDelCiclo);
-document.getElementById("proximo").textContent =
-  "Tu próximo período inicia el " +
-  proximoPeriodo.toLocaleDateString("es-AR", { day: "numeric", month: "long" }); 
-  
+  // Día del ciclo, porcentaje y rueda
+  const diaDelCiclo = duracionCiclo - diasQueFaltan + 1;
+  const porcentaje = diaDelCiclo / duracionCiclo;
+  const circunferencia = 534;
+
+  document.querySelector(".progreso").style.strokeDashoffset =
+    circunferencia * (1 - porcentaje);
+  document.querySelector(".rueda").style.setProperty("--angulo", porcentaje * 360 + "deg");
+  document.getElementById("burbuja").textContent = `Día ${diaDelCiclo}`;
+
+  // Textos
+  document.getElementById("hoy").textContent = `Día ${diaDelCiclo}`;
+  document.getElementById("fase").textContent = obtenerFase(diaDelCiclo);
+  document.getElementById("proximo").textContent =
+    "Tu próximo período inicia el " +
+    proximoCiclo.toLocaleDateString("es-AR", { day: "numeric", month: "long" });
+}
+
+// Pedir los datos al backend
+async function iniciar() {
+  const id = 1; // fijo por ahora, para probar
+
+  try {
+    const respuesta = await fetch(`${URL_BASE}/marea/rueda/${id}`);
+    if (!respuesta.ok) throw new Error("Error " + respuesta.status);
+
+    const datos = await respuesta.json();
+    console.log(datos); // mirá acá cómo se llaman los campos
+    mostrarRueda(datos);
+  } catch (error) {
+    console.error("No se pudieron cargar los datos:", error);
+  }
+}
+
+iniciar();
