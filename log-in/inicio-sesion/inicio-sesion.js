@@ -29,9 +29,10 @@ function validarRespuestaActual(respuestas) {
     mostrarEstado(mensajex);
     return mensajex === ""; 
 }
-/*async function enviarDatos(respuestas) {
+
+async function enviarDatos(respuestas) {
     try {
-      const respuesta = await fetch("http://localhost:3000/marea/registro", {
+      const respuesta = await fetch("http://localhost:3000/marea/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -43,7 +44,7 @@ function validarRespuestaActual(respuestas) {
     } catch (error) {
       console.error("Error al conectar con el servidor:", error);
     }
-  }*/
+  }
 
 document.getElementById('formulario-signup').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -54,7 +55,7 @@ document.getElementById('formulario-signup').addEventListener('submit', function
     
     let respuestas = {
         mail: inputmail,            
-        contrasena: inputcontrasena
+        password: inputcontrasena
     };
 
     let esValido = validarRespuestaActual(respuestas);
@@ -63,10 +64,7 @@ document.getElementById('formulario-signup').addEventListener('submit', function
         mostrarEstado("¡Formulario válido! Guardando datos...");
         localStorage.setItem('usuarioRegistrado', JSON.stringify(respuestas));
         console.log(respuestas);
-        
-        // Si tienes una función para enviar al servidor, 
-        // asegúrate de declararla antes de llamarla:
-        // enviarRegistro(respuestas);
+        enviarDatos(respuestas);
     } else {
         console.log("Formulario inválido");
     }
