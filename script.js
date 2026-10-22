@@ -4,6 +4,7 @@
 const URL_BASE = "http://localhost:3000";
 const MS_POR_DIA = 1000 * 60 * 60 * 24;
 const SINTOMAS_PERIODO = [1, 2, 3, 4];
+const DIAS_A_REVISAR = 8;
 
 function fechaLocal(fecha) {
   const a = fecha.getFullYear();
@@ -23,9 +24,37 @@ function obtenerFase(dia, duracionPeriodo, duracionCiclo) {
 function empezoPeriodo(sintomas) {
   if (!Array.isArray(sintomas)) return false;
   return sintomas.some((s) => {
-    const idSintoma = typeof s === "object" ? s.id : s; // "id" tiene que ser el param que y tenga en los sintomas
+    const idSintoma = typeof s === "object" ? s.id : s; // "id" tiene que ser el param que tenga en los sintomas endpoint
     return SINTOMAS_PERIODO.includes(Number(idSintoma));
   });
+}
+
+async function buscarInicioReciente(id) {
+  const peticiones = [];
+  for (let i = 0; i < DIAS_A_REVISAR; i++) {
+    const dia = new Date();
+    dia.setDate(dia.getDate() - i);
+    peticiones.push(
+      fetch(`${URL_BASE}/marea/versintomas/${id}/${fechaLocal(dia)}`)
+        .then((r) => (r.ok ? r.json() : []))
+        .then((sintomas) => ({ dia, tiene: empezoPeriodo(sintomas) }))
+        .catch(() => ({ dia, tiene: false }))
+    );
+  }
+
+const masReciente = dias.findIndex((d) => d.tiene);
+  if (masReciente === -1) return null;
+
+  // desde ese día, retrocedemos mientras haya síntomas consecutivos
+  let inicio = masReciente;
+  while (inicio + 1 < dias.length && dias[inicio + 1].tiene) inicio++;
+
+  // si la racha llega al borde de la ventana, no sabemos cuándo empezó de verdad
+  if (inicio === dias.length - 1) return null;
+
+  const fecha = new Date(dias[inicio].dia);
+  fecha.setHours(0, 0, 0, 0);
+  return fecha;
 }
 
 function mostrarRueda(datos, periodoHoy) {
@@ -37,60 +66,50 @@ function mostrarRueda(datos, periodoHoy) {
   const hoy = new Date();
   hoy.setHours(0, 0, 0, 0);
 
-  let diaDelCiclo;
+const periodoNuevo = inicioReciente && inicioReciente > inicioUltimo;
+const inicioCiclo = periodoNuevo ? inicioReciente : inicioUltimo;
+const diaDelCiclo = Math.round((hoy - inicioCiclo) / MS_POR_DIA) + 1;
+
   let textoProximo;
 
-  if (periodoHoy) {
-    diaDelCiclo = 1;
-    const estimado = new Date(hoy.getTime() + duracionCiclo * MS_POR_DIA);
+if (periodoNuevo) {
+    const estimado = new Date(inicioCiclo.getTime() + duracionCiclo * MS_POR_DIA);
     textoProximo = "Tu próximo período inicia el " +
       estimado.toLocaleDateString("es-AR", { day: "numeric", month: "long" });
+  } else if (inicioProximo >= hoy) {
+    textoProximo = "Tu próximo período inicia el " +
+      inicioProximo.toLocaleDateString("es-AR", { day: "numeric", month: "long" });
   } else {
-    diaDelCiclo = Math.round((hoy - inicioUltimo) / MS_POR_DIA) + 1;
-    if (inicioProximo >= hoy) {
-      textoProximo = "Tu próximo período inicia el " +
-        inicioProximo.toLocaleDateString("es-AR", { day: "numeric", month: "long" });
-    } else {
-      const atraso = Math.round((hoy - inicioProximo) / MS_POR_DIA);
-      textoProximo = `Tu período lleva ${atraso} ${atraso === 1 ? "día" : "días"} de atraso`;
-    }
+    const atraso = Math.round((hoy - inicioProximo) / MS_POR_DIA);
+    textoProximo = `Tu período lleva ${atraso} ${atraso === 1 ? "día" : "días"} de atraso`;
   }
 
-  const porcentaje = Math.min(diaDelCiclo / duracionCiclo, 1); 
+  const porcentaje = Math.min(diaDelCiclo / duracionCiclo, 1);
   const circunferencia = 534;
 
-// revisar lo siguiente
-
-const diasPasados = Math.round((hoy - inicioUltimo) / MS_POR_DIA); 
-const diaDelCiclo = (diasPasados % duracionCiclo) + 1;
-
-
-
-  document.querySelector(".progreso").style.strokeDashoffset =
+document.querySelector(".progreso").style.strokeDashoffset =
     circunferencia * (1 - porcentaje);
   document.querySelector(".rueda").style.setProperty("--angulo", porcentaje * 360 + "deg");
   document.getElementById("burbuja").textContent = `Día ${diaDelCiclo}`;
 
-
-  
   document.getElementById("hoy").textContent = `Día ${diaDelCiclo}`;
-  document.getElementById("fase").textContent = obtenerFase(diaDelCiclo);
-  document.getElementById("proximo").textContent =
-    "Tu próximo período inicia el " +
-    proximoCiclo.toLocaleDateString("es-AR", { day: "numeric", month: "long" });
+  document.getElementById("fase").textContent = obtenerFase(diaDelCiclo, duracionPeriodo, duracionCiclo);
+  document.getElementById("proximo").textContent = textoProximo;
 }
 
-// Pedir los datos al backend
 async function iniciar() {
-  const id = 1; // fijo por ahora, para probar
+  const usuario = JSON.parse(localStorage.getItem('usuarioRegistrado'));
+  const id = usuario?.id;
 
   try {
-    const respuesta = await fetch(`${URL_BASE}/marea/rueda/${id}`);
-    if (!respuesta.ok) throw new Error("Error " + respuesta.status);
+    const resRueda = await fetch(`${URL_BASE}/marea/rueda/${id}`);
+    if (!resRueda.ok) throw new Error("Rueda: error " + resRueda.status);
 
-    const datos = await respuesta.json();
-    console.log(datos); // mirá acá cómo se llaman los campos
-    mostrarRueda(datos);
+    const datos = await resRueda.json();
+    const inicioReciente = await buscarInicioReciente(id);
+    console.log(datos, inicioReciente);
+
+    mostrarRueda(datos, inicioReciente);
   } catch (error) {
     console.error("No se pudieron cargar los datos:", error);
   }
