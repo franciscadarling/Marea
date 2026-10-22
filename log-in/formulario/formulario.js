@@ -94,6 +94,7 @@ formulario.addEventListener('submit', function(e) {
     localStorage.setItem('usuarioRegistrado', JSON.stringify(respuestas));
     console.log(respuestas);
     enviarRegistro(respuestas);
+    window.location.href  = "../inicio-sesion/inicio-sesion.html"
   }
 });
 
