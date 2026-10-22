@@ -22,7 +22,7 @@ function validarRespuestaActual(respuestas) {
     else if (!regexEmail.test(respuestas.mail)) {
         mensajex = "El mail no es válido";
     }
-    else if (!respuestas.contrasena) {
+    else if (!respuestas.password) {
         mensajex = "Elegí una contraseña para continuar.";
     } 
 
