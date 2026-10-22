@@ -48,6 +48,7 @@ async function enviarDatos(respuestas) {
             mostrarEstado(mensajeError);
         } else {
             mostrarEstado("¡Inicio de sesión exitoso!");
+            localStorage.setItem('usuarioRegistrado', JSON.stringify(resultado));
             window.location.href = "../../index.html";
         }
 
@@ -57,7 +58,7 @@ async function enviarDatos(respuestas) {
     }
 }
 
-  document.getElementById('formulario-signup').addEventListener('submit', function(e) {
+document.getElementById('formulario-signup').addEventListener('submit', function(e) {
     e.preventDefault();
 
     let inputmail = document.getElementById("mail").value.trim();
@@ -72,13 +73,8 @@ async function enviarDatos(respuestas) {
 
     if (esValido === true) {
         mostrarEstado("Validando credenciales...");
-        localStorage.setItem('usuarioRegistrado', JSON.stringify(respuestas));
         enviarDatos(respuestas);
     } else {
         console.log("Formulario inválido");
     }
 });
-
-  
-    
-  
