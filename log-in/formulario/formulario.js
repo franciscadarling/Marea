@@ -54,6 +54,13 @@ async function enviarRegistro(respuestas) {
       body: JSON.stringify(respuestas)
     });
     const resultado = await respuesta.json();
+    const uwu = await fetch ("hhtp://localhost:3000/marea/registroPrimerasFecha/"+ resultado.id, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ fechasMenstruacion:respuestas.fechasMenstruacion})
+    })
     console.log(resultado);
   } catch (error) {
     console.error("Error al conectar con el servidor:", error);
