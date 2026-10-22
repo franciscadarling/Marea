@@ -22,28 +22,41 @@ function validarRespuestaActual(respuestas) {
     else if (!regexEmail.test(respuestas.mail)) {
         mensajex = "El mail no es válido";
     }
-    else if (!respuestas.contrasena) {
+    else if (!respuestas.password) {
         mensajex = "Elegí una contraseña para continuar.";
     } 
 
     mostrarEstado(mensajex);
     return mensajex === ""; 
 }
-/*async function enviarDatos(respuestas) {
+
+async function enviarDatos(respuestas) {
     try {
-      const respuesta = await fetch("http://localhost:3000/marea/registro", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(respuestas)
-      });
-      const resultado = await respuesta.json();
-      console.log(resultado);
+        const respuesta = await fetch("http://localhost:3000/marea/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(respuestas)
+        });
+
+        const resultado = await respuesta.json();
+        console.log(resultado);
+
+        if (!respuesta.ok) {
+            const mensajeError = resultado.mensaje || resultado.error || "El usuario o la contraseña no coinciden.";
+            mostrarEstado(mensajeError);
+        } else {
+            mostrarEstado("¡Inicio de sesión exitoso!");
+            localStorage.setItem('usuarioRegistrado', JSON.stringify(resultado));
+            window.location.href = "../../index.html";
+        }
+
     } catch (error) {
-      console.error("Error al conectar con el servidor:", error);
+        console.error("Error al conectar con el servidor:", error);
+        mostrarEstado("No se pudo conectar con el servidor.");
     }
-  }*/
+}
 
 document.getElementById('formulario-signup').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -51,27 +64,17 @@ document.getElementById('formulario-signup').addEventListener('submit', function
     let inputmail = document.getElementById("mail").value.trim();
     let inputcontrasena = document.getElementById("contrasena").value.trim();
     
-    
     let respuestas = {
         mail: inputmail,            
-        contrasena: inputcontrasena
+        password: inputcontrasena 
     };
 
     let esValido = validarRespuestaActual(respuestas);
 
     if (esValido === true) {
-        mostrarEstado("¡Formulario válido! Guardando datos...");
-        localStorage.setItem('usuarioRegistrado', JSON.stringify(respuestas));
-        console.log(respuestas);
-        
-        // Si tienes una función para enviar al servidor, 
-        // asegúrate de declararla antes de llamarla:
-        // enviarRegistro(respuestas);
+        mostrarEstado("Validando credenciales...");
+        enviarDatos(respuestas);
     } else {
         console.log("Formulario inválido");
     }
 });
-
-  
-    
-  

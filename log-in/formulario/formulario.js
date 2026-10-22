@@ -54,7 +54,7 @@ async function enviarRegistro(respuestas) {
       body: JSON.stringify(respuestas)
     });
     const resultado = await respuesta.json();
-    const uwu = await fetch ("hhtp://localhost:3000/marea/registroPrimerasFecha/"+ resultado.id, {
+    const uwu = await fetch ("http://localhost:3000/marea/registroPrimerasFecha/"+ resultado.id, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -94,6 +94,7 @@ formulario.addEventListener('submit', function(e) {
     localStorage.setItem('usuarioRegistrado', JSON.stringify(respuestas));
     console.log(respuestas);
     enviarRegistro(respuestas);
+    window.location.href  = "../inicio-sesion/inicio-sesion.html"
   }
 });
 
