@@ -60,7 +60,7 @@ document.getElementById("burbuja").textContent = `Día ${diaDelCiclo}`;
 document.getElementById("hoy").textContent = `Día ${diaDelCiclo}`;
   document.getElementById("fase").textContent =
     obtenerFase(diaDelCiclo, duracionPeriodo, duracionCiclo);
-  document.getElementById("proximo").textContent = textoProximo;
+  document.getElementById("proximo-ciclo").textContent = textoProximo;
 }
 
 async function iniciar() {
