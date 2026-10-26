@@ -53,29 +53,45 @@ async function enviarRegistro(respuestas) {
       },
       body: JSON.stringify(respuestas)
     });
+
+    if (!respuesta.ok) {
+      throw new Error("Error al registrar el usuario.");
+    }
+
     const resultado = await respuesta.json();
-    const uwu = await fetch ("http://localhost:3000/marea/registroPrimerasFecha/"+ resultado.id, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ fechasMenstruacion:respuestas.fechasMenstruacion})
-    })
-    console.log(resultado);
+    
+    if (resultado && resultado.id) {
+      const respuestaFechas = await fetch("http://localhost:3000/marea/registroPrimerasFecha/" + resultado.id, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ fechasMenstruacion: respuestas.fechasMenstruacion })
+      });
+
+      if (!respuestaFechas.ok) {
+        throw new Error("El usuario se creó pero hubo un error al guardar las fechas.");
+      }
+    }
+
+    console.log("Registro completo exitoso:", resultado);
+    return true; 
   } catch (error) {
     console.error("Error al conectar con el servidor:", error);
+    mostrarEstado("Hubo un error al registrarse. Intentalo de nuevo.");
+    return false;
   }
 }
 
 /* Submit del formulario */
-formulario.addEventListener('submit', function(e) {
+formulario.addEventListener('submit', async function(e) {
   e.preventDefault(); 
 
   let mailGuardado = localStorage.getItem('Email');
   let contrasenaGuardada = localStorage.getItem('Contrasena');
 
   let respuestas = {
-    mail: mailGuardado,           
+    mail: mailGuardado,              
     password: contrasenaGuardada,
     nombre: inputNombre.value.trim(),
     genero: inputGenero.value,
@@ -93,8 +109,13 @@ formulario.addEventListener('submit', function(e) {
     mostrarEstado("¡Formulario válido! Guardando datos...");
     localStorage.setItem('usuarioRegistrado', JSON.stringify(respuestas));
     console.log(respuestas);
-    enviarRegistro(respuestas);
-    window.location.href  = "../inicio-sesion/inicio-sesion.html"
+    
+    // ESPERAMOS a que termine todo el proceso con el backend antes de redirigir
+    let registroExitoso = await enviarRegistro(respuestas);
+
+    if (registroExitoso) {
+      window.location.href = "../inicio-sesion/inicio-sesion.html";
+    }
   }
 });
 
@@ -105,7 +126,6 @@ function inicializarCalendarioP5() {
   const contenedor = document.getElementById("calendario-pantalla-p5");
   const calendarioScroll = document.getElementById("calendario-scroll-p5");
 
-  // Validación de seguridad por si los elementos aún no cargaron en el DOM
   if (!contenedor || !calendarioScroll) return;
 
   const nombresMes = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
@@ -128,7 +148,6 @@ function inicializarCalendarioP5() {
     const grid = document.createElement('div');
     grid.className = 'dias-grid';
 
-    // Encabezados de días
     diasSemana.forEach(dia => {
       const celdaHeader = document.createElement('div');
       celdaHeader.className = 'dia-semana-nombre';
@@ -136,18 +155,15 @@ function inicializarCalendarioP5() {
       grid.appendChild(celdaHeader);
     });
 
-    // Desplazamiento del 1er día del mes (Lunes = 0)
     let primerDia = new Date(año, mes, 1).getDay();
     primerDia = (primerDia + 6) % 7;
 
     const totalDias = new Date(año, mes + 1, 0).getDate();
 
-    // Espacios en blanco previos
     for (let i = 0; i < primerDia; i++) {
       grid.appendChild(document.createElement('div'));
     }
 
-    // Celdas numéricas
     for (let dia = 1; dia <= totalDias; dia++) {
       const celda = document.createElement('div');
       celda.className = 'dia-celda';
@@ -171,9 +187,6 @@ function inicializarCalendarioP5() {
             fechasSeleccionadas.push(fechaStr);
             celda.classList.add('dia-seleccionada');
           }
-
-          respuestas.fechasMenstruacion = [...fechasSeleccionadas];
-          guardarRespuestas();
         });
       }
 
@@ -212,7 +225,6 @@ function inicializarCalendarioP5() {
     observer.observe(bloque);
   }
 
-  // Carga inicial
   const bloqueActual = crearBloqueMes(hoy.getFullYear(), hoy.getMonth());
   calendarioScroll.appendChild(bloqueActual);
 
@@ -222,7 +234,6 @@ function inicializarCalendarioP5() {
   contenedor.scrollTop = contenedor.scrollHeight;
 }
 
-// Ejecutar cuando el DOM esté listo por seguridad
 document.addEventListener("DOMContentLoaded", () => {
   inicializarCalendarioP5();
 });
