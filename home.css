@@ -89,36 +89,50 @@ body {
     border-radius: 50%;
 }
 
-.rueda { 
-    position: relative; 
-    width: 55%; 
-    aspect-ratio: 1; 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    
-.marcador {
+.rueda {
+    position: relative;
+    width: 55%;
+    aspect-ratio: 1;
+  }
+  
+  .rueda svg {
+    display: block;
+    width: 100%;
+    transform: rotate(-90deg);
+    overflow: visible;
+  }
+  
+  .marcador {
     position: absolute;
-    inset: 0;                                   
-    transform: rotate(var(--angulo, 0deg));     
-    transition: transform 0.8s ease;           
+    inset: 0;
+    transform: rotate(var(--angulo, 0deg));
+    transition: transform 0.8s ease;
     pointer-events: none;
   }
-
-.texto-rueda {
+  
+  .texto-rueda {
+    position: absolute;
+    inset: 15%;                    /* queda dentro del aro */
     display: flex;
-
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    text-align: center;
+    color: white;
+    pointer-events: none;
   }
-}
+  
+  #hoy,
+  #fase {
+    font-size: 1.6vh;
+  }
+  
+  #proximo {
+    font-family: 'Gaegu';
+    font-size: 2.4vh;
+    letter-spacing: 0.2vh;
+  }
 
-svg { 
-transform: rotate(-90deg); 
-overflow: visible;
-display: block;
-width: 100%;
-} 
 
 circle { 
     fill: none; 
