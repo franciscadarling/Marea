@@ -89,23 +89,6 @@ body {
     border-radius: 50%;
 }
 
-/*
-.rueda {
-    width: 55%;
-    aspect-ratio: 1/1;
-    margin-bottom: 8vh;
-    border-radius: 55%;
-    background-color: transparent;
-    border: 2.5vh solid #4F349E;
-     box-shadow: 0 0 2vh 2vh #3d288896;
-    color: #DDD5F5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Gaegu'
-}
-*/
-
 .rueda { 
     position: relative; 
     width: 55%; 
@@ -114,14 +97,13 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    
 
     
 .marcador {
     position: absolute;
-    inset: 0;                                   /* cubre toda la rueda */
-    transform: rotate(var(--angulo, 0deg));     /* gira según el ángulo */
-    transition: transform 0.8s ease;            /* misma duración que el aro */
+    inset: 0;                                   
+    transform: rotate(var(--angulo, 0deg));     
+    transition: transform 0.8s ease;           
     pointer-events: none;
   }
 

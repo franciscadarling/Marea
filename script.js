@@ -51,6 +51,12 @@ if (datos.atrasado === true) {
 const porcentaje = Math.min(diaDelCiclo / duracionCiclo, 1);
 const circunferencia = 534;
 
+// Aro y burbuja
+document.querySelector(".progreso").style.strokeDashoffset =
+circunferencia * (1 - porcentaje);
+document.querySelector(".rueda").style.setProperty("--angulo", porcentaje * 360 + "deg");
+document.getElementById("burbuja").textContent = `Día ${diaDelCiclo}`;
+
 document.getElementById("hoy").textContent = `Día ${diaDelCiclo}`;
   document.getElementById("fase").textContent =
     obtenerFase(diaDelCiclo, duracionPeriodo, duracionCiclo);
