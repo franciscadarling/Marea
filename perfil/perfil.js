@@ -1,38 +1,86 @@
 document.addEventListener('DOMContentLoaded', () => {
     const datosGuardados = localStorage.getItem('usuarioRegistrado');
-
     if (!datosGuardados) {
-        console.log("No hay sesión activa o el usuario no está logueado.");
-        return;
+        const mail = document.getElementById("mail");
+        const usuario = document.getElementById("usuario");
+        if (mail) mail.textContent = "";
+        if (usuario) usuario.textContent = "Iniciá sesión para ver tus datos";
+        return; 
     }
 
-    let usuarioObj;
+   
+    else {let usuarioObj;
     try {
         const guardado = JSON.parse(datosGuardados);
-        // El login puede guardar { usuario: {...} }, { user: {...} } o los datos planos.
-        usuarioObj = guardado?.usuario ?? guardado?.user ?? guardado?.datos ?? guardado;
+        usuarioObj = guardado.usuario || guardado.user || guardado.datos || guardado;
     } catch (error) {
-        console.error("No se pudieron leer los datos de la sesión:", error);
+        console.error("Error al leer los datos de la sesión:", error);
         return;
-    }
+    }}
 
     const mail = document.getElementById("mail");
     const contrasena = document.getElementById("contrasena");
     const usuario = document.getElementById("usuario");
+    const fotoPerfilImg = document.getElementById("fotoPerfil");
 
     if (mail) {
-        mail.textContent = usuarioObj.mail ?? usuarioObj.mailUser ?? "Sin correo";
+        mail.textContent = usuarioObj.mail || usuarioObj.mailUser || "Sin correo";
     }
 
     if (contrasena) {
-        const clave = usuarioObj.password ?? usuarioObj.contrasena;
-        // Si el backend devuelve el hash, no lo mostramos.
-        contrasena.textContent = clave && !String(clave).startsWith("scrypt:")
-            ? clave
-            : "********";
+        const clave = usuarioObj.password || usuarioObj.contrasena;
+        contrasena.textContent = (clave && !String(clave).startsWith("scrypt:")) ? clave : "********";
     }
 
     if (usuario) {
-        usuario.textContent = usuarioObj.nombre ?? "Usuario";
+        usuario.textContent = usuarioObj.nombre || "Usuario";
+    }
+
+    if (fotoPerfilImg && usuarioObj.foto) {
+        fotoPerfilImg.src = usuarioObj.foto;
     }
 });
+
+// El evento del input de la foto sigue funcionando igual...
+const inputFoto = document.getElementById('inputFoto');
+const fotoPerfil = document.getElementById('fotoPerfil');
+
+if (inputFoto) {
+    inputFoto.addEventListener('change', function(evento) {
+        const archivo = evento.target.files[0];
+        
+        if (archivo) {
+            const urlImagen = URL.createObjectURL(archivo);
+            if (fotoPerfil) fotoPerfil.src = urlImagen;
+
+            const lector = new FileReader();
+            lector.onload = async function(e) {
+                const base64String = e.target.result;
+                const datosGuardados = localStorage.getItem('usuarioRegistrado');
+                if (!datosGuardados) return;
+
+                try {
+                    const guardado = JSON.parse(datosGuardados);
+                    const usuarioObj = guardado.usuario || guardado.user || guardado.datos || guardado;
+                    const userId = usuarioObj.id;
+
+                    if (!userId) return;
+
+                    const respuesta = await fetch(`http://localhost:3000/marea/nuevafoto/${userId}`, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ foto: base64String })
+                    });
+
+                    if (respuesta.ok) {
+                        usuarioObj.foto = base64String;
+                        localStorage.setItem('usuarioRegistrado', JSON.stringify(guardado));
+                    }
+                } catch (error) {
+                    console.error("Error al conectar con el servidor:", error);
+                }
+            };
+            lector.readAsDataURL(archivo);
+        }
+    });
+}
