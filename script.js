@@ -118,7 +118,9 @@ async function buscarInicioReciente(id) {
     );
   }
 
-const masReciente = dias.findIndex((d) => d.tiene);
+  const dias = await Promise.all(peticiones);
+
+  const masReciente = dias.findIndex((d) => d.tiene);
   if (masReciente === -1) return null;
 
   // desde ese día, retrocedemos mientras haya síntomas consecutivos
@@ -133,7 +135,7 @@ const masReciente = dias.findIndex((d) => d.tiene);
   return fecha;
 }
 
-function mostrarRueda(datos, periodoHoy) {
+function mostrarRueda(datos, inicioReciente) {
   const duracionPeriodo = datos.duracion;
   const duracionCiclo = datos.duracionUltimoCiclo;
   const inicioUltimo = new Date(datos.inicioUltimo + "T00:00:00");
@@ -174,8 +176,24 @@ document.querySelector(".progreso").style.strokeDashoffset =
 }
 
 async function iniciar() {
-  const usuario = JSON.parse(localStorage.getItem('usuarioRegistrado'));
+  let usuario = null;
+
+  try {
+    usuario = JSON.parse(localStorage.getItem('usuarioRegistrado'));
+  } catch (error) {
+    console.error("No se pudieron leer los datos de la sesión:", error);
+  }
+
+  // El login puede guardar { usuario: {...} }, { user: {...} } o los datos planos.
+  usuario = usuario?.usuario ?? usuario?.user ?? usuario?.datos ?? usuario;
   const id = usuario?.id;
+
+  if (!id) {
+    console.error("No hay un usuario logueado. Iniciá sesión para ver tu ciclo.");
+    const burbuja = document.getElementById("burbuja");
+    if (burbuja) burbuja.textContent = "Sin sesión";
+    return;
+  }
 
   try {
     const resRueda = await fetch(`${URL_BASE}/marea/rueda/${id}`);

@@ -30,6 +30,58 @@ function validarRespuestaActual(respuestas) {
     return mensajex === ""; 
 }
 
+function comoBooleano(valor) {
+    if (typeof valor === "boolean") return valor;
+    if (typeof valor === "number") return valor !== 0;
+
+    if (typeof valor === "string") {
+        const texto = valor.trim().toLowerCase();
+        if (["si", "sí", "true", "ok", "1", "correcto", "exitoso"].includes(texto)) return true;
+        if (["no", "false", "0", "incorrecto", "incorrecta", "error"].includes(texto)) return false;
+    }
+
+    return null;
+}
+
+// Según el README, /marea/login responde 200 OK con "Sí/No" + paleta + foto.
+function loginExitoso(resultado) {
+    const directo = comoBooleano(resultado);
+    if (directo !== null) return directo;
+
+    if (!resultado || typeof resultado !== "object") return false;
+
+    const claves = [
+        "puedeIniciarSesion", "puedeIniciar", "inicioSesion", "login",
+        "ok", "exito", "éxito", "success", "autenticado", "logueado",
+        "estaLogueado", "valido", "válido", "acceso", "ingreso"
+    ];
+
+    for (const clave of claves) {
+        if (clave in resultado) {
+            const valor = comoBooleano(resultado[clave]);
+            if (valor !== null) return valor;
+        }
+    }
+
+    const mensaje = comoBooleano(resultado.mensaje ?? resultado.message ?? resultado.estado);
+    if (mensaje !== null) return mensaje;
+
+    // Si vino la paleta o la foto, el login fue correcto.
+    if (resultado.paleta || resultado.foto) return true;
+
+    const usuario = resultado.usuario ?? resultado.user ?? resultado.datos;
+    return Boolean(usuario?.id ?? resultado.id ?? usuario);
+}
+
+function mensajeDeError(resultado) {
+    if (resultado && typeof resultado === "object") {
+        return resultado.mensaje || resultado.message || resultado.error ||
+            "El usuario o la contraseña no coinciden.";
+    }
+
+    return "El usuario o la contraseña no coinciden.";
+}
+
 async function enviarDatos(respuestas) {
     try {
         const respuesta = await fetch("http://localhost:3000/marea/login", {
@@ -40,17 +92,53 @@ async function enviarDatos(respuestas) {
             body: JSON.stringify(respuestas)
         });
 
-        const resultado = await respuesta.json();
+        // La respuesta puede ser JSON o texto plano ("Sí"/"No").
+        const texto = await respuesta.text();
+        let resultado;
+
+        try {
+            resultado = JSON.parse(texto);
+        } catch {
+            resultado = texto.trim();
+        }
+
         console.log(resultado);
 
-        if (!respuesta.ok) {
-            const mensajeError = resultado.mensaje || resultado.error || "El usuario o la contraseña no coinciden.";
-            mostrarEstado(mensajeError);
-        } else {
-            mostrarEstado("¡Inicio de sesión exitoso!");
-            localStorage.setItem('usuarioRegistrado', JSON.stringify(resultado));
-            window.location.href = "../../index.html";
+        if (!respuesta.ok || !loginExitoso(resultado)) {
+            mostrarEstado(mensajeDeError(resultado));
+            return;
         }
+
+        mostrarEstado("¡Inicio de sesión exitoso!");
+
+        // Puede venir { usuario: {...} }, { user: {...} } o los datos planos.
+        let datosLogin = {};
+        if (resultado && typeof resultado === "object") {
+            const { usuario, user, datos, ...resto } = resultado;
+            const perfil = usuario ?? user ?? datos;
+            datosLogin = perfil && typeof perfil === "object"
+                ? { ...resto, ...perfil }
+                : resto;
+        }
+
+        let datosPrevios = {};
+        try {
+            const guardado = JSON.parse(localStorage.getItem('usuarioRegistrado'));
+            datosPrevios = guardado?.usuario ?? guardado?.user ?? guardado?.datos ?? guardado ?? {};
+        } catch {
+            datosPrevios = {};
+        }
+
+        // Mezclamos para no perder las respuestas del formulario
+        // (duración del ciclo, fechas de menstruación, etc.).
+        const usuarioFinal = { ...datosPrevios, ...datosLogin };
+        localStorage.setItem('usuarioRegistrado', JSON.stringify(usuarioFinal));
+
+        if (!usuarioFinal.id) {
+            console.warn("El login no devolvió un id. El home necesita ese id para pedir /marea/rueda/:id.");
+        }
+
+        window.location.href = "../../index.html";
 
     } catch (error) {
         console.error("Error al conectar con el servidor:", error);
