@@ -7,6 +7,23 @@ document.addEventListener('DOMContentLoaded', () => {
           boton.classList.toggle('activo');
       });
   });
+   function iniciar() {
+    const usuario = JSON.parse(localStorage.getItem("usuarioRegistrado")) 
+    const id = usuario?.id
+    return id
+  }
+
+   let idUser = iniciar()
+
+
+async function verSintomas (id, fecha) {
+  try {
+    const respuesta = await fetch(`http://localhost:3000/marea/versintomas/${id}/${fecha}`);
+    const datos =  await respuesta.json();
+    console.log(datos);
+  } catch (error) {
+    console.error("No se pudieron cargar los datos:", error);
+  }  }
 
   const enviar = document.getElementById("boton-enviar");
   if (enviar) {
@@ -20,10 +37,12 @@ document.addEventListener('DOMContentLoaded', () => {
           const sintomas = Array.from(document.querySelectorAll('.opcion.activo'))
               .map(el => el.id);
 
-          const registro = { fechaseleccionada, entrada, sintomas };
+          const registro = {idUser, fechaseleccionada, entrada, sintomas };
           console.log(registro);
       });
   }
+
+  
 
 
   const fechaInput = document.getElementById("inputfecha");
@@ -38,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
       asignarFechaHoy(fechaInput);
       console.log("Se cargó la fecha de hoy por defecto.");
   }
+  verSintomas (idUser, fechaInput.value)
   }
 });
 
@@ -58,6 +78,5 @@ function cargarFecha(input){
 }
 
 window.addEventListener('beforeunload', () => {
-  localStorage.clear();
+  localStorage.removeItem('registro');
 });
-
