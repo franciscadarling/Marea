@@ -16,10 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
    let idUser = iniciar()
 
 
-function verSintomas (id, fecha) {
+async function verSintomas (id, fecha) {
   try {
-    const respuesta =  fetch(`http://localhost:3000/marea/versintomas/${idUser}/${fechaSeleccionada}`);
-    const datos =  respuesta.json();
+    const respuesta = await fetch(`http://localhost:3000/marea/versintomas/${id}/${fecha}`);
+    const datos =  await respuesta.json();
     console.log(datos);
   } catch (error) {
     console.error("No se pudieron cargar los datos:", error);
@@ -53,11 +53,11 @@ function verSintomas (id, fecha) {
     if (fechaSeleccionada) {
       cargarFecha(fechaInput);
       console.log("Se cargó la fecha "+fechaSeleccionada);
-      verSintomas (idUser, fechaSeleccionada)
   } else {
       asignarFechaHoy(fechaInput);
       console.log("Se cargó la fecha de hoy por defecto.");
   }
+  verSintomas (idUser, fechaInput.value)
   }
 });
 
