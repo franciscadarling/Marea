@@ -11,28 +11,32 @@
     <div class="app">
         <header class="header">
             <div class="foto-logo">
-                <img src="../Logo.png" alt="Logo">
+                <img class="imglogo" src="../Logo.png" alt="Logo">
             </div>
-            <a href="../perfil/index.html" class="btnperfil">Perfil</a>
+            <a href="../perfil/index.html" class="fotoPerfil">
+                <img class="imglogo" src="../Logo.png" alt="Logo">
+            </a>
         </header>
     
         <main class="pantalla">
-<div class="foto-perfil-grande">
-    <img id="fotoPerfil" class="imagenperfil" src="blank-profile-picture-973460_640.png" alt="Foto de perfil">
-</div>
-<input type="file" id="inputFoto" accept="image/*">
+
+    <div class="foto-perfil-grande">
+        <!-- 1. Primero la imagen -->
+        <img id="fotoPerfil" class="imagenperfil" src="Group 2.png" alt="Foto de perfil">
+        
+        <!-- 2. Después el input (queda flotando encima) -->
+        <input type="file" id="inputFoto" accept="image/*" class="inputFoto">
+    </div>
             <section class="info">
                 <h1>Datos personales</h1>
-                <p id="usuario">Usuario</p>
-                <p id="mail">Correo</p>
-
-            </section>
+                <p id="usuario">Usuario:</p>
+                <p id="mail">Correo:</p>
+                </section>
             <section class="info">
                 <h1>Sobre tu ciclo</h1>
-                <p>Duración</p>
-                <p>Último periodo</p>
-                <p>Duración periodo</p>
-
+                <p>Duración ciclo:</p>
+                <p>Último periodo:</p>
+                <p>Duración periodo:</p>
             </section>
         </main>
     

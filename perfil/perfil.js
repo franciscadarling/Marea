@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const mail = document.getElementById("mail");
         const usuario = document.getElementById("usuario");
         if (mail) mail.textContent = "";
-        if (usuario) usuario.textContent = "Iniciá sesión para ver tus datos";
+        if (usuario) usuario.innerHTML = '<a href="../log-in/index.html" style="color: inherit; text-decoration: underline;">Inicia sesión para ver tus datos</a>'
         return; 
     }
 
@@ -41,7 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// El evento del input de la foto sigue funcionando igual...
 const inputFoto = document.getElementById('inputFoto');
 const fotoPerfil = document.getElementById('fotoPerfil');
 
