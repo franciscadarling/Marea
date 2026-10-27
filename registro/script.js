@@ -7,18 +7,17 @@ document.addEventListener('DOMContentLoaded', () => {
           boton.classList.toggle('activo');
       });
   });
-  async function iniciar() {
+   function iniciar() {
     const usuario = JSON.parse(localStorage.getItem("usuarioRegistrado")) 
     const id = usuario?.id
     return id
   }
-  
+
    let idUser = iniciar()
 
   const enviar = document.getElementById("boton-enviar");
   if (enviar) {
       enviar.addEventListener('click', function() {
-
           const fecha = document.getElementById("inputfecha");
           const fechaseleccionada = fecha ? fecha.value : '';
 
@@ -28,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const sintomas = Array.from(document.querySelectorAll('.opcion.activo'))
               .map(el => el.id);
 
-          const registro = { fechaseleccionada, entrada, sintomas };
+          const registro = {idUser, fechaseleccionada, entrada, sintomas };
           console.log(registro);
       });
   }
