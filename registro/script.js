@@ -32,6 +32,14 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
 
+  try {
+    const respuesta =  fetch(`http://localhost:3000/marea/versintomas/${idUser}/${fechaSeleccionada}`);
+    const datos =  respuesta.json();
+    console.log(datos);
+  } catch (error) {
+    console.error("No se pudieron cargar los datos:", error);
+  }  
+
 
   const fechaInput = document.getElementById("inputfecha");
   const fechaSeleccionada = localStorage.getItem('registro');
@@ -65,13 +73,5 @@ function cargarFecha(input){
 }
 
 window.addEventListener('beforeunload', () => {
-  localStorage.clear();
+  localStorage.removeItem('registro');
 });
-
-try {
-  const respuesta =  fetch(`http://localhost:3000/marea/versintomas/${idUser}/${fechaSeleccionada}`);
-  const datos =  respuesta.json();
-  console.log(datos);
-} catch (error) {
-  console.error("No se pudieron cargar los datos:", error);
-}
