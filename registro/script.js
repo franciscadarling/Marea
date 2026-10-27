@@ -62,8 +62,8 @@ window.addEventListener('beforeunload', () => {
 });
 
 try {
-  const respuesta = await fetch(`http://localhost:3000/marea/versintomas/${id}/${input.value}`);
-  const datos = await respuesta.json();
+  const respuesta =  fetch(`http://localhost:3000/marea/versintomas/${id}/${fechaSeleccionada}`);
+  const datos =  respuesta.json();
   console.log(datos);
 } catch (error) {
   console.error("No se pudieron cargar los datos:", error);
