@@ -7,10 +7,18 @@ document.addEventListener('DOMContentLoaded', () => {
           boton.classList.toggle('activo');
       });
   });
+  async function iniciar() {
+    const usuario = JSON.parse(localStorage.getItem("usuarioRegistrado")) 
+    const id = usuario?.id
+    return id
+  }
+  
+   let idUser = iniciar()
 
   const enviar = document.getElementById("boton-enviar");
   if (enviar) {
       enviar.addEventListener('click', function() {
+
           const fecha = document.getElementById("inputfecha");
           const fechaseleccionada = fecha ? fecha.value : '';
 
@@ -62,7 +70,7 @@ window.addEventListener('beforeunload', () => {
 });
 
 try {
-  const respuesta =  fetch(`http://localhost:3000/marea/versintomas/${id}/${fechaSeleccionada}`);
+  const respuesta =  fetch(`http://localhost:3000/marea/versintomas/${idUser}/${fechaSeleccionada}`);
   const datos =  respuesta.json();
   console.log(datos);
 } catch (error) {
