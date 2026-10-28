@@ -4,6 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const contrasena = document.getElementById("contrasena");
     const usuario = document.getElementById("usuario");
     const fotoPerfil = document.getElementById('fotoPerfil');
+    const duracionCiclo = document.getElementById("duracionCiclo");
+    const duracionMenstruacion = document.getElementById("duracionMenstruacion");
+    const ultimaMenstruacion = document.getElementById('ultimaMestruacion');
 
     if (!datosusuario) {
         if (mail) mail.textContent = "";
