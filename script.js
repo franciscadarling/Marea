@@ -22,9 +22,17 @@ function mostrarRueda(datos) {
   const duracionCiclo = datos.duracionUltimoCiclo;
   const inicioUltimo = aFecha(datos.inicioUltimo);
   const hayProxima = Array.isArray(datos.completo) && datos.completo.length > 0;
-
   // Duración de la menstruación: si el back no la manda, uso los días de "completo"
   const duracionPeriodo = datos.duracion ?? (hayProxima ? datos.completo.length : 5);
+  const infoCiclo = {
+    duracion: duracionCiclo,
+    inicio: inicioUltimo,
+    periodo: duracionPeriodo
+  };
+ 
+  localStorage.setItem("miCiclo", JSON.stringify(infoCiclo));
+
+  
 
   // Inicio de la próxima menstruación: el primer día de "completo"
   const inicioProximo = hayProxima
