@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="educacion.css">
+    <link rel="stylesheet" href="contenedor.css">
     <script>
     document.addEventListener("DOMContentLoaded", () => {
       const articuloGuardado = localStorage.getItem("articuloActual");
@@ -18,8 +18,30 @@
   }); </script>
 </head>
 <body>
+  <div class="app">
+      <header class="header">
+     <div class="foto-logo">
+        <img class="imglogo" src="../Logo.png" alt="Logo">
+      </div>
+      <a href="../perfil/index.html" class="fotoPerfil">
+        <img class="imglogo" src="../Logo.png" alt="Logo">
+      </a>
+    </header>
+
+  <main class="pantalla">
   <h1 id="titulo" class="titulo-articulo">Título</h1>
   <h2 id="subtitulo" class="subtitulo-articulo">Subtitulo</h2>
+  <div class="contenedor-texto">
   <p id="cuerpo" class="cuerpo-articulo">Texto</p>
+</div>
+</main>
+<nav class="botones">
+  <a href="../index.html" class="botonpagina"><img src="../imagenes-botones/Home.png" alt="home"></a> 
+  <a href="../chatbot/index.html" class="botonpagina"><img src="../imagenes-botones/Chatbot.png" alt="chatbot"></a>
+  <a href="../registro/index.html" class="botonpagina"><img src="../imagenes-botones/Registro.png" alt="registro"></a>
+  <a href="../calendario/index.html" class="botonpagina"><img src="../imagenes-botones/Calendario.png" alt="calendario"></a>
+  <a href="../educacion/index.html" class="botonpagina"><img src="../imagenes-botones/Educacion.png" alt="educacion"></a>
+</nav>
+</div>
 </body>
 </html>
