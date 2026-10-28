@@ -12,74 +12,193 @@ document.addEventListener('DOMContentLoaded', () => {
     const id = usuario?.id
     return id
   }
-
    let idUser = iniciar()
 
-   function verSintomas(id, fecha) {
-    fetch(`http://localhost:3000/marea/versintomas/${id}/${fecha}`)
-      .then(respuesta => respuesta.json())
-      if (fecha = /*null*/) { //COMPLETAR
 
-        const activos = document.querySelectorAll('.opcion.activo');
-        const idsMenstruacion = ['1', '2', '3', '4'];
-        const hoyMenstruo = Array.from(activos).some(el => idsMenstruacion.includes(el.id))
-        if (hoyMenstruo) {
-        fetch(`http://localhost:3000/marea/sintomas/${id}/${fecha}`)
-      } 
-      else {
-        fetch(`http://localhost:3000/marea/sintomas/${id}/${fecha}`)
-        fetch(`http://localhost:3000/marea/cambiarsintomas/${id}/${fecha}`)
-      }
-      } else if (fecha = /*no null*/) { //COMPLETAR
-      (datos => {
-        document.querySelectorAll('.opcion.activo')
-        .forEach(el => el.classList.remove('activo'));
+   const enviar = document.getElementById("boton-enviar");
+   if (enviar) {
+       enviar.addEventListener('click', function() {
+           const fecha = document.getElementById("inputfecha");
+           const fechaseleccionada = fecha ? fecha.value : '';
 
-        if (datos && Array.isArray(datos.sintomas)) {
-          datos.sintomas.forEach(idSintoma => {
-            const boton = document.getElementById(idSintoma);
-            if (boton) {
-              boton.classList.add('activo');}
-          });
-        }; 
-        const diario = document.getElementById("entradaDiario");
-        if (diario) {
-          diario.value = (datos && datos.entrada) ? datos.entrada : '';}
-      
-      console.log(datos);
+           const diario = document.getElementById("entradaDiario");
+           const entradaDiaria = diario ? diario.value : '';
+           
+           const sintomasActivos = Array.from(document.querySelectorAll('.opcion.activo'))
+               .map(el => Number(el.id));
+ 
+          const registro = {idUser, fechaseleccionada, entradaDiaria, sintomasActivos };
 
-      const activos = document.querySelectorAll('.opcion.activo');
-      const idsMenstruacion = ['1', '2', '3', '4'];
-      const hoyMenstruo = Array.from(activos).some(el => idsMenstruacion.includes(el.id))
-      if (hoyMenstruo) {
-      // COMPLETAR
-      } 
-      else {
-      // COMPLETAR
-      }
-      })
-      .catch(error => {
-        console.log("No se pudieron cargar los datos:", error);});
-  } 
+           if (diaExiste === false) {
+            const idsMenstruacion = [1, 2, 3, 4];
+            const hoyMenstruo = registro.sintomasActivos.some(s => idsMenstruacion.includes(s));
+            if (hoyMenstruo) {
+            fetch(`http://localhost:3000/marea/sintomas/${idUser}/${fechaseleccionada}`, {
+              method: "POST",
+              headers: {
+            "Content-Type": "application/json"
+               },
+             body: JSON.stringify({
+              entrada: registro.entradaDiaria,
+              sintomas: registro.sintomasActivos,
+               })
+            }) 
+            .then (response => response.json())
+            .then (data => {
+                console.log(data)
+            })
+            .catch (error => {
+              console.log("Hubo un error")
+            })
+            fetch(`http://localhost:3000/marea/agregarfechas/${idUser}`, {
+              method: "POST",
+              headers: {
+            "Content-Type": "application/json"
+               },
+             body: JSON.stringify({
+              fecha: registro.fechaseleccionada
+               })
+            }) 
+            .then (response => response.json())
+            .then (data => {
+                console.log(data)
+                diaExiste=true
+            })
+            .catch (error => {
+              console.log("Hubo un error")
+            })
+          } 
+          else {
+            fetch(`http://localhost:3000/marea/sintomas/${idUser}/${fechaseleccionada}`, {
+              method: "POST",
+              headers: {
+            "Content-Type": "application/json"
+               },
+             body: JSON.stringify({
+              entrada: registro.entradaDiaria,
+              sintomas: registro.sintomasActivos,
+               })
+            }) 
+            .then (response => response.json())
+            .then (data => {
+                console.log(data)
+            })
+            .catch (error => {
+              console.log("Hubo un error")
+            })
+          }
+          } else if (diaExiste === true) { 
+            const idsMenstruacion = [1, 2, 3, 4];
+            const hoyMenstruo = registro.sintomasActivos.some(s => idsMenstruacion.includes(s));
+            if (hoyMenstruo) {
+              fetch(`http://localhost:3000/marea/cambiarsintomas/${idUser}/${fechaseleccionada}`, {
+                method: "PUT",
+                headers: {
+              "Content-Type": "application/json"
+                 },
+               body: JSON.stringify({
+                entrada: registro.entradaDiaria,
+                sintomas: registro.sintomasActivos,
+                 })
+              }) 
+              .then (response => response.json())
+              .then (data => {
+                  console.log(data)
+              })
+              .catch (error => {
+                console.log("Hubo un error")
+              })
+              fetch(`http://localhost:3000/marea/agregarfechas/${idUser}`, {
+                method: "POST",
+                headers: {
+              "Content-Type": "application/json"
+                 },
+               body: JSON.stringify({
+                fecha: registro.fechaseleccionada
+                 })
+              }) 
+              .then (response => response.json())
+              .then (data => {
+                  console.log(data)
+                  diaExiste=true
+              })
+              .catch (error => {
+                console.log("Hubo un error")
+              })
+            } 
+            else {
+              fetch(`http://localhost:3000/marea/cambiarsintomas/${idUser}/${fechaseleccionada}`, {
+                method: "PUT",
+                headers: {
+              "Content-Type": "application/json"
+                 },
+               body: JSON.stringify({
+                entrada: registro.entradaDiaria,
+                sintomas: registro.sintomasActivos,
+                 })
+              }) 
+              .then (response => response.json())
+              .then (data => {
+                  console.log(data)
+              })
+              .catch (error => {
+                console.log("Hubo un error")
+              })
+             fetch(`http://localhost:3000/marea/eliminarfecha/${idUser}`, {
+                method: "DELETE",
+                headers: {
+              "Content-Type": "application/json"
+                 },
+               body: JSON.stringify({
+                fecha: registro.fechaseleccionada
+                 })
+              }) 
+              .then (response => response.json())
+              .then (data => {
+                  console.log(data)
+                  diaExiste = fals
+              })
+              .catch (error => {
+                console.log("Hubo un error")
+              })
+            }
+        } 
+       });
+   }
+
+let diaExiste = true
+
+   function verSintomas(idUser, fechaseleccionada) {
+    fetch(`http://localhost:3000/marea/versintomas/${idUser}/${fechaseleccionada}`)
+      .then(respuesta => respuesta.json())   
+      .then (datos => {
+    if (datos?.fecha) {
+      diaExiste=true
+    }
+    else {
+      diaExiste = false
+    }
+
+  document.querySelectorAll('.opcion.activo')
+  .forEach(el => el.classList.remove('activo'));
+
+  if (datos && Array.isArray(datos.sintomas)) {
+    datos.sintomas.forEach(idSintoma => {
+      const boton = document.getElementById(idSintoma);
+      if (boton) {
+        boton.classList.add('activo');}
+    });
+  }; 
+  const diario = document.getElementById("entradaDiario");
+  if (diario) {
+    diario.value = (datos && datos.entrada) ? datos.entrada : '';}
+
+console.log(datos);
+})
+.catch(error => {
+  console.log("No se pudieron cargar los datos:", error);});
 }
 
-
-  const enviar = document.getElementById("boton-enviar");
-  if (enviar) {
-      enviar.addEventListener('click', function() {
-          const fecha = document.getElementById("inputfecha");
-          const fechaseleccionada = fecha ? fecha.value : '';
-
-          const diario = document.getElementById("entradaDiario");
-          const entrada = diario ? diario.value : '';
-          
-          const sintomas = Array.from(document.querySelectorAll('.opcion.activo'))
-              .map(el => el.id);
-
-          const registro = {idUser, fechaseleccionada, entrada, sintomas };
-          console.log(registro);
-      });
-  }
 
   const fechaInput = document.getElementById("inputfecha");
   const fechaSeleccionada = localStorage.getItem('registro');
@@ -94,10 +213,12 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log("Se cargó la fecha de hoy por defecto.");
   }
   verSintomas (idUser, fechaInput.value)
-  }
+
   fechaInput.addEventListener('change', () => {
     verSintomas(idUser, fechaInput.value);
   });
+  }
+  
 });
 
 /*
