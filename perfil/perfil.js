@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const datosusuario = localStorage.getItem('usuarioRegistrado');
+    const datosMenstruacion = localStorage.getItem("miCiclo");
     const mail = document.getElementById("mail");
     const contrasena = document.getElementById("contrasena");
     const usuario = document.getElementById("usuario");
@@ -17,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const guardado = JSON.parse(datosusuario);
+    const guardadoM = JSON.parse(datosMenstruacion);
 
     if (mail) mail.textContent = guardado.mailUser || "";
     
@@ -29,6 +31,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (fotoPerfil && guardado.foto) {
         fotoPerfil.src = guardado.foto;
     }
+    if (duracionCiclo) duracionCiclo.textContent = guardadoM.duracion || "";
+    
+    if (duracionMenstruacion) {
+        duracionMenstruacion.textContent = guardadoM.periodo;
+    }
+    if (ultimaMenstruacion) {
+        ultimaMenstruacion.textContent = guardadoM.inicio;
+    }
+
+
 });
 
 /* Acá carga la foto de perfil jiji */
