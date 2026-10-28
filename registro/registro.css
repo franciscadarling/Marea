@@ -142,6 +142,17 @@ h1 {
 
 }
 
+.exito {
+    color: #DDD5F5;
+    border: solid #DDD5F5;
+    background-color: #1A0F33;
+    font-size: 2.3vh;
+    font-family: 'Gaegu', serif;
+    box-shadow: 0 0 1vh 0.3vh #4F349E;
+    padding: 1vh;
+    margin: 1vh;
+}
+
 .sintomas {
     display: flex;
     flex-direction: column;
