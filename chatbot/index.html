@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatbot</title>
     <link rel="stylesheet" href="chatbot.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
 <div class="app">
@@ -24,10 +25,10 @@
                <article class="bdetexto">Respuesta</article>
             </div>
         </div>
-        <div class="pregutar"> 
-           <input type="text" placeholder="Preguntale a Selene..." class="inputpregunta"> 
-           
-        </div>
+        <form class="pregutar" id="formMensaje"> 
+           <input type="text" placeholder="Preguntale a Selene..." class="inputpregunta" id="mensaje"> 
+           <button type="submit" id="Enviar">Enviar</button>
+        </form>
     </section>
 
     <nav class="botones">
