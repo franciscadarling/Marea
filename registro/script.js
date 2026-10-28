@@ -15,15 +15,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
    let idUser = iniciar()
 
-
-async function verSintomas (id, fecha) {
-  try {
-    const respuesta = await fetch(`http://localhost:3000/marea/versintomas/${id}/${fecha}`);
-    const datos =  await respuesta.json();
-    console.log(datos);
-  } catch (error) {
-    console.error("No se pudieron cargar los datos:", error);
-  }  }
+   function verSintomas(id, fecha) {
+    fetch(`http://localhost:3000/marea/versintomas/${id}/${fecha}`)
+      .then(respuesta => respuesta.json())
+      .then(datos => {
+        console.log(datos);
+        datos;
+      })
+      .catch(error => {
+        console.log("No se pudieron cargar los datos:", error);
+      });
+  }
 
   const enviar = document.getElementById("boton-enviar");
   if (enviar) {
