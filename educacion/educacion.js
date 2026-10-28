@@ -10,7 +10,7 @@ function cargarArticulosMenstruacion (listaArticulos){
     if (articulo.clase === "menstruacion"){
       containerMenstruacion.innerHTML += `
         <article class="tarjeta">
-          <a class="link-articulo" href="contenedor.html">
+          <a class="link-articulo" href="contenedor.html" onclick='localStorage.setItem("articuloActual", JSON.stringify(${JSON.stringify(articulo)}))'>
           <h1>${articulo.titulo}</h1>
           <h2>${articulo.subtitulo}</h2></a>
         </article>
@@ -25,7 +25,7 @@ function cargarArticulosSPM (listaArticulos){
     if (articulo.clase === "ciclo"){
       containerCICLO.innerHTML += `
         <article class="tarjeta">
-          <a class="link-articulo" href="contenedor.html">
+          <a class="link-articulo" href="contenedor.html" onclick='localStorage.setItem("articuloActual", JSON.stringify(${JSON.stringify(articulo)}))'>
           <h1>${articulo.titulo}</h1>
           <h2>${articulo.subtitulo}</h2></a>
         </article>
@@ -40,7 +40,7 @@ function cargarArticulosHYS (listaArticulos){
     if (articulo.clase === "hys"){
       containerHYS.innerHTML += `
         <article class="tarjeta">
-          <a class="link-articulo" href="contenedor.html">
+          <a class="link-articulo" href="contenedor.html" onclick='localStorage.setItem("articuloActual", JSON.stringify(${JSON.stringify(articulo)}))'>
           <h1>${articulo.titulo}</h1>
           <h2>${articulo.subtitulo}</h2></a>
         </article>
@@ -55,7 +55,7 @@ function cargarArticulosOTROS (listaArticulos){
     if (articulo.clase === "otros"){
     containerOTROS.innerHTML += `
       <article class="tarjeta">
-        <a class="link-articulo" href="contenedor.html">
+        <a class="link-articulo" href="contenedor.html" onclick='localStorage.setItem("articuloActual", JSON.stringify(${JSON.stringify(articulo)}))'>
         <h1>${articulo.titulo}</h1>
         <h2>${articulo.subtitulo}</h2></a>
       </article>
