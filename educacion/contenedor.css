@@ -13,9 +13,12 @@
 
 body {
     height: 100dvh;
+    width: 100vw;
     overflow: hidden; 
     background-image: url("../Fondo predeterminado.png");
-    font-family: "Gaegu", sans-serif; /* Aplicamos Gaegu por defecto en el cuerpo */
+    background-size: cover;
+    background-position: center;
+    font-family: "Gaegu", sans-serif;
 }
 
 .app {
@@ -25,7 +28,7 @@ body {
     flex-direction: column;
 }
 
-/*clases nav bar*/
+/* Base Nav / Header */
 .foto-logo {
     width: 19.0839694656dvw;
     aspect-ratio: 1/1;
@@ -37,16 +40,16 @@ body {
     background-color:#4F349E;
     justify-content: center;
     align-items: center;
-}
-
-.imglogo{
-max-width: 69.333333333%;
-max-height:69.333333333%;
-aspect-ratio: 1/1;
-border-radius: 50%;
-}
-
-.fotoPerfil{
+  }
+  
+  .imglogo{
+  max-width: 69.333333333%;
+  max-height:69.333333333%;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  }
+  
+  .fotoPerfil{
     width: 19.0839694656dvw;
     aspect-ratio: 1/1;
     margin: 4.58015267176%;
@@ -57,8 +60,8 @@ border-radius: 50%;
     background-color:#4F349E;
     justify-content: center;
     align-items: center;  
-}
-.header {
+  }
+  .header {
     width: 100%;
     height: 12.3529411765%;
     flex-shrink: 0; 
@@ -67,8 +70,8 @@ border-radius: 50%;
     justify-content: space-between;
     align-items: center;
     background-color:transparent;
-}
-/*terminan clases nav bar*/
+  }
+
 
 .pantalla {
     width: 100%;
@@ -78,44 +81,106 @@ border-radius: 50%;
     display: flex;
     align-items: center;
     flex-direction: column;
-    gap: 3vh; 
-    padding: 3vh 0;
+    padding: 1dvh 5dvw;
+    gap: 1.5dvh;
+}
 
+.titulo-articulo {
+    font-family: "Gaegu", sans-serif;
+    color: #FFFFFF;
+    font-size: 2.2rem;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.1;
+}
+
+.subtitulo-articulo {
+    font-family: "Quicksand", sans-serif;
+    color: #E2D9F3;
+    font-size: 1rem;
+    font-weight: 400;
+    text-align: center;
+}
+
+
+.contenedor-texto {
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    background-color: #DDD5FAF0; 
+    border: 0.35rem solid #A890E0;
+    border-radius: 5dvw;
+    box-shadow: 0 0 2dvh #4F349E; 
+    padding: 4dvw;
+    overflow-y: auto;
+}
+
+.cuerpo-articulo {
+    font-family: "Quicksand", sans-serif;
+    color: #2D1B54;
+    font-size: 1.05rem;
+    line-height: 1.4;
+    text-align: left;
+}
+
+.marcar-leido-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 3dvw;
+    margin-top: 0.5dvh;
+}
+
+.texto-marcar-leido {
+    font-family: "Gaegu", sans-serif;
+    color: #FFFFFF;
+    font-size: 1.5rem;
+}
+
+.checkbox-leido {
+    width: 6dvw;
+    height: 6dvw;
+    max-width: 2.5rem;
+    max-height: 2.5rem;
+    accent-color: #DDD5FA;
+    border-radius: 50%;
+    cursor: pointer;
 }
 
 .botones {
     background-color: #4F349E;
     box-shadow: 0 0 2dvh #4F349E; 
-    height: 8vh;
-    width: 96%;
+    height: 9dvh;
+    width: 92%;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-evenly;
-    border-radius: 5vh;
+    border-radius: 4.5dvh;
     flex-shrink: 0;
-    margin: 1vh 2%; 
+    margin: 1dvh auto 2dvh auto; 
 }
 
 .botonpagina {
-    width: 15.27%;
-    height: 73.68%;
+    width: 18%;
+    height: 100%;
     display: flex;
-    flex-direction: row;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: center;
 }
+
+.botonpagina img {
+    max-width: 60%;
+    max-height: 60%;
+    object-fit: contain;
+}
+
 .gaegu-bold {
     font-family: "Gaegu", sans-serif;
-    font-style: normal;
+    font-weight: bold;
 }
-.titulo-articulo{
-    font-family: "Gaegu", sans-serif;
-    color: white;
-}
-.contenedor-texto{
-    height: 50dvh;
-    width: 91.0941475827%;
-    background-color: gray;
-    border-radius: 5%;
+
+.quicksand {
+    font-family: "Quicksand", sans-serif;
 }
