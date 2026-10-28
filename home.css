@@ -134,8 +134,15 @@ body {
   max-width: 92%;
 }
 
+#dia-ciclo {
+  font-family: 'Gaegu';
+  font-size: 4dvh;
+  color: #FFFFFF;
+}
+
 #fase {
-  font-size: 1.8vh;
+  font-family: 'Gaegu';
+  font-size: 2.2dvh;
   color: #DDD5F5;
 }
 

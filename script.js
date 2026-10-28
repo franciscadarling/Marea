@@ -2,9 +2,27 @@ const URL_BASE = "http://localhost:3000";
 const MS_POR_DIA = 1000 * 60 * 60 * 24;
 const CIRCUNFERENCIA = 534; // 2 * π * 85, el mismo r del círculo SVG
 
+// Texto informativo de cada fase (va en la tarjeta de abajo)
+const DATOS_FASE = {
+  "Menstruación":
+    "Es normal sentir cólicos, cansancio o cambios de ánimo. Descansar, tomar agua y poner calor suave en la panza puede aliviar. Si el dolor es muy fuerte o no te deja hacer tus cosas, consultá con un profesional de la salud.",
+  "Fase folicular":
+    "Los estrógenos van subiendo y es común sentir más energía y mejor ánimo. Tu cuerpo está preparando un óvulo para liberarlo.",
+  "Ovulación":
+    "Se libera un óvulo y es la etapa con más probabilidad de embarazo. Puede aparecer flujo más transparente y elástico. En ciclos irregulares el momento puede variar.",
+  "Fase lútea":
+    "Sube la progesterona. Puede aparecer el síndrome premenstrual: hinchazón, sensibilidad en el pecho, antojos o cambios de ánimo."
+};
+
 // "2026-10-28T..." -> Date a medianoche local (evita desfases por zona horaria)
 function aFecha(texto) {
   return new Date(String(texto).slice(0, 10) + "T00:00:00");
+}
+
+// Escribe un texto en un elemento; si el elemento no existe, no rompe el resto
+function escribir(id, texto) {
+  const elemento = document.getElementById(id);
+  if (elemento) elemento.textContent = texto;
 }
 
 // Día del ciclo en que ocurre la ovulación
@@ -68,15 +86,15 @@ function mostrarRueda(datos) {
   document.querySelector(".progreso").style.strokeDashoffset =
     CIRCUNFERENCIA * (1 - progreso);
   document.querySelector(".rueda").style.setProperty("--angulo", progreso * 360 + "deg");
-  document.getElementById("burbuja").textContent = `Día ${diaDelCiclo}`;
 
   // --- Textos ---
-  document.getElementById("hoy").textContent =
-    "Hoy, " + hoy.toLocaleDateString("es-AR", { day: "numeric", month: "long" });
-  document.getElementById("fase").textContent =
-    obtenerFase(diaDelCiclo, duracionPeriodo, duracionCiclo);
-  document.getElementById("proximo").textContent = textoProximo;
-  document.getElementById("proximo-ciclo").textContent = textoProximo;
+  const fase = obtenerFase(diaDelCiclo, duracionPeriodo, duracionCiclo);
+
+  escribir("burbuja", `Día ${diaDelCiclo}`);
+  escribir("dia-ciclo", `Día ${diaDelCiclo}`);
+  escribir("fase", fase);                          // <- nueva
+  escribir("proximo-ciclo", textoProximo);
+  escribir("dato-fase", `${fase}: ${DATOS_FASE[fase]}`);
 }
 
 function iniciar() {
