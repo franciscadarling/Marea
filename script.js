@@ -1,3 +1,4 @@
+const URL_BASE = "http://localhost:3000";
 const MS_POR_DIA = 1000 * 60 * 60 * 24;
 const CIRCUNFERENCIA = 534; // 2 * π * 85, el mismo r del círculo SVG
 
@@ -69,7 +70,7 @@ function mostrarRueda(datos) {
   document.querySelector(".rueda").style.setProperty("--angulo", progreso * 360 + "deg");
   document.getElementById("burbuja").textContent = `Día ${diaDelCiclo}`;
 
-
+  // --- Textos ---
   document.getElementById("hoy").textContent =
     "Hoy, " + hoy.toLocaleDateString("es-AR", { day: "numeric", month: "long" });
   document.getElementById("fase").textContent =
@@ -87,7 +88,7 @@ function iniciar() {
     return;
   }
 
-  fetch(`http://localhost:3000/marea/rueda/${id}`)
+  fetch(`${URL_BASE}/marea/rueda/${id}`)
     .then((respuesta) => {
       if (!respuesta.ok) throw new Error("Rueda: error " + respuesta.status);
       return respuesta.json();
