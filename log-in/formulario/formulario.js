@@ -110,7 +110,6 @@ formulario.addEventListener('submit', async function(e) {
     localStorage.setItem('usuarioRegistrado', JSON.stringify(respuestas));
     console.log(respuestas);
     
-    // ESPERAMOS a que termine todo el proceso con el backend antes de redirigir
     let registroExitoso = await enviarRegistro(respuestas);
 
     if (registroExitoso) {
