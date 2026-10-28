@@ -15,11 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const guardado = JSON.parse(datosusuario);
 
-    if (mail) mail.textContent = guardado.mail || "";
+    if (mail) mail.textContent = guardado.mailUser || "";
     
     if (contrasena) {
-        const clave = guardado.password;
-        contrasena.textContent = (clave && !String(clave).startsWith("scrypt:")) ? clave : "********";
+        contrasena.textContent = guardado.password;
     }
 
     if (usuario) usuario.textContent = guardado.nombre || "Usuario";
