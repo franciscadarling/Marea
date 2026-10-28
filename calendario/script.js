@@ -1,7 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
   const contenedor = document.querySelector('.pantalla');
   const calendarioScroll = document.getElementById('calendario-scroll');
-  const diasMarcados = ['2026-09-03', '2026-09-04', '2026-09-05'];
+  
+  let diasMarcados = [];
+
+  const usuario = JSON.parse(localStorage.getItem("usuarioRegistrado"));
+  const usuarioId = usuario?.id;
 
   const nombresMes = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
   const diasSemana = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
@@ -40,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
       celda.textContent = dia;
 
       const fechaStr = `${año}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+      
       if (diasMarcados.includes(fechaStr)) {
         celda.classList.add('dia-menstruacion');
       }
@@ -47,7 +52,6 @@ document.addEventListener('DOMContentLoaded', function() {
       celda.addEventListener('click', function() {
         localStorage.setItem('registro', fechaStr);
         window.location.href = "../registro/index.html";
-        
       });
 
       grid.appendChild(celda);
@@ -114,14 +118,29 @@ document.addEventListener('DOMContentLoaded', function() {
     observer.observe(bloque);
   }
 
-  const bloqueActual = crearBloqueMes(hoy.getFullYear(), hoy.getMonth());
-  calendarioScroll.appendChild(bloqueActual);
+  function inicializarCalendario() {
+    calendarioScroll.innerHTML = ''; 
 
-  for (let i = 0; i < 3; i++) cargarMesSiguiente();
-  for (let i = 0; i < 3; i++) cargarMesAnterior();
+    const bloqueActual = crearBloqueMes(hoy.getFullYear(), hoy.getMonth());
+    calendarioScroll.appendChild(bloqueActual);
 
-  if (fechaAdelante < limiteFuturo) {
-    observarUltimo(calendarioScroll.lastElementChild);
+    for (let i = 0; i < 3; i++) cargarMesSiguiente();
+    for (let i = 0; i < 3; i++) cargarMesAnterior();
+
+    if (fechaAdelante < limiteFuturo) {
+      observarUltimo(calendarioScroll.lastElementChild);
+    }
+    observarPrimero(calendarioScroll.firstElementChild);
   }
-  observarPrimero(calendarioScroll.firstElementChild);
+
+  fetch(`http://localhost:3000/marea/calendario/${usuarioId}`)         
+    .then(response => response.json())  
+    .then(data => {                   
+      diasMarcados = data; 
+      inicializarCalendario(); 
+    })
+    .catch(error => {                  
+      console.error('Error al leer el archivo JSON:', error);
+      inicializarCalendario(); 
+    });
 });
