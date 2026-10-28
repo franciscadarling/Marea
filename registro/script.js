@@ -19,7 +19,24 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch(`http://localhost:3000/marea/versintomas/${id}/${fecha}`)
       .then(respuesta => respuesta.json())
       .then(datos => {
-        console.log(datos);
+        document.querySelectorAll('.opcion.activo')
+        .forEach(el => el.classList.remove('activo'));
+
+        if (datos && Array.isArray(datos.sintomas)) {
+          datos.sintomas.forEach(idSintoma => {
+            const boton = document.getElementById(idSintoma);
+            if (boton) {
+              boton.classList.add('activo');
+            }
+          });
+        }; 
+        const diario = document.getElementById("entradaDiario");
+        if (diario) {
+          diario.value = (datos && datos.entrada) ? datos.entrada : '';
+        }
+
+
+      console.log(datos);
         datos;
       })
       .catch(error => {
@@ -44,7 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
 
-  
 
 
   const fechaInput = document.getElementById("inputfecha");
@@ -61,7 +77,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   verSintomas (idUser, fechaInput.value)
   }
+  fechaInput.addEventListener('change', () => {
+    verSintomas(idUser, fechaInput.value);
+  });
 });
+
+
 
 function asignarFechaHoy(input) {
   const hoy = new Date();
