@@ -23,16 +23,50 @@ body {
     font-style: normal;
   }
 
+/*clases nav bar*/
+.foto-logo {
+    width: 19.0839694656dvw;
+    aspect-ratio: 1/1;
+    margin: 4.58015267176%;
+    display: flex;
+    flex-direction: row;
+    border-radius: 50%;
+    box-shadow: 0 0 2dvh #4F349E; 
+    background-color:#4F349E;
+    justify-content: center;
+    align-items: center;
+}
+
+.imglogo{
+max-width: 69.333333333%;
+max-height:69.333333333%;
+aspect-ratio: 1/1;
+border-radius: 50%;
+}
+
+.fotoPerfil{
+    width: 19.0839694656dvw;
+    aspect-ratio: 1/1;
+    margin: 4.58015267176%;
+    display: flex;
+    flex-direction: row;
+    border-radius: 50%;
+    box-shadow: 0 0 2dvh #4F349E; 
+    background-color:#4F349E;
+    justify-content: center;
+    align-items: center;  
+}
 .header {
     width: 100%;
-    height: 10.45dvh;
+    height: 12.3529411765%;
     flex-shrink: 0; 
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 0 5%; 
+    background-color:transparent;
 }
+/*terminan clases nav bar*/
 
 .pantalla {
     width: 100%;
@@ -78,13 +112,6 @@ body {
     flex-direction: row;
 }
 
-.foto-logo {
-    width: 12.72%;
-    height: 56.18%;
-    position: relative;
-    display: flex;
-    flex-direction: row;
-}
 
 .mensaje {
     display: flex;

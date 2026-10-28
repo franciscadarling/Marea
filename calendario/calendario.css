@@ -92,16 +92,6 @@ body {
     align-items: center;
     justify-content: space-evenly;
 }
-
-.btnperfil {
-    background-color: rgb(185, 185, 185);
-    width: 12.72%;
-    height: 56.18%;
-    position: relative;
-    display: flex;
-    flex-direction: row;
-}
-
 /*clases nav bar*/
 .foto-logo {
     width: 19.0839694656dvw;
