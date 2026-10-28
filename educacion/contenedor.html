@@ -4,8 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="educacion.js"></script>
     <link rel="stylesheet" href="educacion.css">
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const articuloGuardado = localStorage.getItem("articuloActual");
+
+      if (articuloGuardado) {
+          const articulo = JSON.parse(articuloGuardado);
+          document.getElementById("titulo").textContent = articulo.titulo;
+          document.getElementById("subtitulo").textContent = articulo.subtitulo;
+          document.getElementById("cuerpo").textContent = articulo.texto;
+      }
+  }); </script>
 </head>
 <body>
   <h1 id="titulo" class="titulo-articulo">Título</h1>

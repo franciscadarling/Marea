@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!datosusuario) {
         if (mail) mail.textContent = "";
+        if (contrasena) contrasena.textContent = "";
         if (usuario) {
             usuario.innerHTML = '<a href="../log-in/index.html" style="color: inherit; text-decoration: underline;">Inicia sesión para ver tus datos</a>';
         }
@@ -20,24 +21,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const guardado = JSON.parse(datosusuario);
     const guardadoM = JSON.parse(datosMenstruacion);
 
-    if (mail) mail.textContent = guardado.mailUser || "";
+    if (mail) mail.textContent = "Mail: " + guardado.mailUser || "";
     
     if (contrasena) {
-        contrasena.textContent = guardado.password;
+        contrasena.textContent = "Contraseña: " + guardado.password;
     }
 
-    if (usuario) usuario.textContent = guardado.nombre || "Usuario";
+    if (usuario) usuario.textContent = "Nombre: " +guardado.nombre || "Usuario";
 
     if (fotoPerfil && guardado.foto) {
         fotoPerfil.src = guardado.foto;
     }
-    if (duracionCiclo) duracionCiclo.textContent = guardadoM.duracion || "";
+    if (duracionCiclo) duracionCiclo.textContent = "Duración del ciclo: " +guardadoM.duracion || "";
     
     if (duracionMenstruacion) {
-        duracionMenstruacion.textContent = guardadoM.periodo;
-    }
-    if (ultimaMenstruacion) {
-        ultimaMenstruacion.textContent = guardadoM.inicio;
+        duracionMenstruacion.textContent = "Duración del sangrado: " + guardadoM.periodo;
     }
 
 
