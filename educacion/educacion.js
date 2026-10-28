@@ -1,51 +1,67 @@
-const articulosmenstruacion = [
-    { titulo: "Cuidado Menstrual", subtitulo: "Todo lo que necesitas saber sobre métodos reutilizables." },
-    { titulo: "Ciclo Irregular", subtitulo: "Causas comunes y cuándo consultar a un especialista." },
-    { titulo: "Cuidado Menstrual", subtitulo: "Todo lo que necesitas saber sobre métodos reutilizables." },
-    { titulo: "Ciclo Irregular", subtitulo: "Causas comunes y cuándo consultar a un especialista." }
-];
+fetch('http://localhost:3000/marea/articulos')          // Ruta al archivo JSON
+  .then(response => response.json())  // Convertir la respuesta en JSON
+  .then(data => {                     // Aquí tienes acceso al JSON en formato de objeto J   
+    articulos = data;                   // Asignar el JSON a la variable comidas
+  })
+  .catch(error => {                   // Manejo de errores al leer el archivo JSON
+    console.error('Error al leer el archivo JSON:', error);
+  });
 
-const articulosSPM = [
-    { titulo: "Síndrome Premenstrual", subtitulo: "Consejos prácticos para lidiar con los cambios de humor." },
-    { titulo: "Alimentación y SPM", subtitulo: "Qué alimentos incorporar y cuáles evitar durante estos días." }
-];
 
-const articulosHYS = [
-    { titulo: "Higiene y Confort", subtitulo: "Hábitos saludables para el cuidado diario." },
-    { titulo: "Mitos y Verdades", subtitulo: "Desmintiendo creencias populares sobre la salud íntima." }
-];
-/*hay que hacer un fetch que traiga los tres tipos de artículos*/
 const containerMenstruacion = document.getElementById("carrusel-1")
-function cargarArticulosMenstruacion (listaArticulos = articulosmenstruacion){
+const todosLosArticulos = JSON.parse(articulos);
+
+function cargarArticulosMenstruacion (listaArticulos){
     containerMenstruacion.innerHTML = "";
   listaArticulos.forEach(articulo => {
-    containerMenstruacion.innerHTML += `
-      <article class="tarjeta">
-        <a class="link-articulo" href="contenedor.html">
-        <h1>${articulo.titulo}</h1>
-        <h2>${articulo.subtitulo}</h2></a>
-      </article>
-    `;
+    if (articulo.clase = "menstruacion"){
+      containerHYS.innerHTML += `
+        <article class="tarjeta">
+          <a class="link-articulo" href="contenedor.html">
+          <h1>${articulo.titulo}</h1>
+          <h2>${articulo.subtitulo}</h2></a>
+        </article>
+      `;
+  }
   });
 }
 
-const containerSPM = document.getElementById("carrusel-2")
-function cargarArticulosSPM (listaArticulos = articulosSPM){
+const containerCICLO = document.getElementById("carrusel-2")
+function cargarArticulosSPM (listaArticulos){
     containerSPM.innerHTML = "";
   listaArticulos.forEach(articulo => {
-    containerSPM.innerHTML += `
-      <article class="tarjeta">
-        <a class="link-articulo" href="contenedor.html">
-        <h1>${articulo.titulo}</h1>
-        <h2>${articulo.subtitulo}</h2></a>
-      </article>
-    `;
+    if (articulo.clase = "ciclo"){
+      containerHYS.innerHTML += `
+        <article class="tarjeta">
+          <a class="link-articulo" href="contenedor.html">
+          <h1>${articulo.titulo}</h1>
+          <h2>${articulo.subtitulo}</h2></a>
+        </article>
+      `;
+  }
   });
 }
 const containerHYS = document.getElementById("carrusel-3")
-function cargarArticulosHYS (listaArticulos = articulosHYS){
+function cargarArticulosHYS (listaArticulos){
     containerHYS.innerHTML = "";
   listaArticulos.forEach(articulo => {
+    if (articulo.clase = "hys"){
+      containerHYS.innerHTML += `
+        <article class="tarjeta">
+          <a class="link-articulo" href="contenedor.html">
+          <h1>${articulo.titulo}</h1>
+          <h2>${articulo.subtitulo}</h2></a>
+        </article>
+      `;
+  }
+  });
+}
+
+const containerOTROS = document.getElementById("carrusel-4")
+function cargarArticulosOTROS (listaArticulos){
+    containerOTROS.innerHTML = "";
+  listaArticulos.forEach(articulo => {
+    if (articulo.clase = "otros"){
     containerHYS.innerHTML += `
       <article class="tarjeta">
         <a class="link-articulo" href="contenedor.html">
@@ -53,8 +69,9 @@ function cargarArticulosHYS (listaArticulos = articulosHYS){
         <h2>${articulo.subtitulo}</h2></a>
       </article>
     `;
-  });
+}});
 }
-cargarArticulosMenstruacion();
-cargarArticulosSPM();
-cargarArticulosHYS();
+cargarArticulosMenstruacion(todosLosArticulos);
+cargarArticulosSPM(todosLosArticulos);
+cargarArticulosHYS(todosLosArticulos);
+cargarArticulosOTROS(todosLosArticulos);
