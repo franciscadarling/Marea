@@ -69,7 +69,7 @@ function mostrarRueda(datos) {
   document.querySelector(".rueda").style.setProperty("--angulo", progreso * 360 + "deg");
   document.getElementById("burbuja").textContent = `Día ${diaDelCiclo}`;
 
-  // --- Textos ---
+
   document.getElementById("hoy").textContent =
     "Hoy, " + hoy.toLocaleDateString("es-AR", { day: "numeric", month: "long" });
   document.getElementById("fase").textContent =
