@@ -87,11 +87,9 @@ body {
 /* Rueda */
 .rueda {
   position: relative;
-  width: 50dvh;
-  max-width: 61vw;
-  aspect-ratio: 1;
+  width: min(70vw);       
   flex-shrink: 0;
-  filter: drop-shadow(0 0 1.4vh #6C4EE0);
+  filter: drop-shadow(0 0 1.4vh #4426b9);
 }
 
 .rueda svg {
@@ -199,7 +197,7 @@ circle {
 
 .proximo-ciclo {
   min-height: 8dvh;
-  margin-top: 9dvh;              /* separación rueda → tarjeta 1 */
+  margin-top: calc(37dvh - min(70vw, 33dvh));  /* las tarjetas quedan donde estaban */
 }
 
 .dato-fase {
