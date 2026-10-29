@@ -82,6 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then (response => response.json())
             .then (data => {
                 console.log(data)
+                diaExiste = true
             })
             .catch (error => {
               console.log("Hubo un error")
@@ -156,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
               .then (response => response.json())
               .then (data => {
                   console.log(data)
-                  diaExiste = fals
+                  diaExiste = registro.sintomasActivos.length > 0 || registro.entradaDiaria !== ""
               })
               .catch (error => {
                 console.log("Hubo un error")
@@ -221,29 +222,6 @@ console.log(datos);
   
 });
 
-/*
-get "hay sintomas previos hoy"
-
-A)if get "null"
-
-1-post
-2-verif. 1: fijarse si persona tiene sintomas 1,2,3,4
-3-if not, fetch añadir sintomas
-4-if, fetch añadir sintomas y fetch añadir fechas
-
-A) COMPLETADO (PSEUDO(?))
-
-B)if get no "null"
-
-1-put
-2-verif.2: fijarse si hay sintomas 1,2,3,4 hoy 
-3-if not, 
-4-if, 
-
-*/
-
-
-
 
 function asignarFechaHoy(input) {
   const hoy = new Date();
@@ -264,4 +242,3 @@ function cargarFecha(input){
 window.addEventListener('beforeunload', () => {
   localStorage.removeItem('registro');
 });
-
