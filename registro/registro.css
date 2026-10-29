@@ -130,22 +130,44 @@ h1 {
 .minicalendario {
     font-family: 'Gaegu', serif;
     display: flex;
+    align-items: center;
+    justify-content: center;
     margin-left: 2vh;
-    font-size: 3dvh;
-    background-color: #1A0F33;
-    border-color: #DDD5F5;
+    font-size: 3vh;
+    border-radius: 2.5vh;
+    background-color:#4F349E;
+    box-shadow: 0 0 2dvh #4F349E; 
     color: #DDD5F5;
+    border: none;
+    outline: none;
+    appearance: none;
+    padding: 0 2vh;
+    height: 5vh;
+    box-sizing: border-box;
+}
+
+.minicalendario::-webkit-calendar-picker-indicator {
+    filter: invert(85%) sepia(10%) saturate(500%) hue-rotate(220deg);
+    cursor: pointer;
 }
 
 .enviar {
     display: flex;
-    background-color: #1A0F33;
-    border-color: #DDD5F5;
+    background-color:#4F349E;
+    box-shadow: 0 0 2dvh #4F349E; 
     color: #DDD5F5;
     margin-left: 2vh;
-    font-size: 3dvh;
+    font-size: 3vh;
+    border-radius: 2.5vh;
+    align-items: center;
+    justify-content: center;
+    width: 10vh;
+    height: 5vh;
     font-family: 'Gaegu', serif;
-
+    border: none;
+    outline: none;
+    appearance: none;
+    cursor: pointer;
 }
 
 .exito {
@@ -186,10 +208,12 @@ h2 {
 .opciones {
     display: flex;
     gap: 3vw;
+    gap: 2vh;
     overflow-x: auto;
+    padding: 4vh 4vw;  
+    margin: -4vh 0;
     scroll-snap-type: x mandatory;
     scroll-padding-left: 4vw;
-    padding: 0 4vw;
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
@@ -217,12 +241,13 @@ h2 {
     appearance: none;          
     -webkit-appearance: none;  
     outline: none; 
+     transition: box-shadow 0.3s ease;
 }
 
 button.activo {
-    box-shadow: 
-        0 0 1vh 0.3vh #4F349E,
-        0 0 2vh 0.5vh #3d287a;
+  box-shadow:
+    0 0 2vh 0.4vh rgba(255, 255, 255, 0.55),
+    0 0 5vh 1vh rgba(255, 255, 255, 0.25);
   }
 
 .imagenes{
@@ -244,14 +269,30 @@ button.activo {
     border: 0.5vh;
     border-color: blueviolet;
     font-family: 'Gaegu', serif;
+    color: #DDD5F5;
+}
+
+.labelentrada {
+    margin-left: 1.5vh;
 }
 
 .inputdiario {
-    height: 20vh;
     width: 40vh;
-    margin-bottom: 1vh;
-    margin-left: 1.3vh;
+    height: 18vh;
     display: flex;
     flex-direction: column;
+    background-color: #9B85CC;
+    box-shadow: 0 0 1vh 0.3vh #7458B8BF; 
+    border: none;
+    outline: none;
+    appearance: none;
+    border-radius: 3vh;
+    margin: 1.5vh;
+    font-size: 2.5vh;
+    font-family: 'Gaegu', serif;
 }
 
+.inputdiario::placeholder {
+    color: #DDD5F5;
+    opacity: 1;
+}
