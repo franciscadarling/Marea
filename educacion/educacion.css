@@ -15,7 +15,7 @@ body {
     height: 100dvh;
     overflow: hidden; 
     background-image: url("../Fondo predeterminado.png");
-    font-family: "Gaegu", sans-serif; /* Aplicamos Gaegu por defecto en el cuerpo */
+    font-family: "Gaegu", sans-serif;
 }
 
 .app {
@@ -110,9 +110,7 @@ border-radius: 50%;
     object-fit: contain;
   }
 
-
-
-.seccion-artículos {
+.sección-artículos {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -124,7 +122,6 @@ border-radius: 50%;
     color: white;
     font-size: 4dvh;
 }
-
 
 .carrusel {
     display: flex;
@@ -140,7 +137,6 @@ border-radius: 50%;
     display: none; 
 }
 
-
 .tarjeta {
     flex: 0 0 auto; 
     aspect-ratio: 1 / 1;
@@ -150,8 +146,21 @@ border-radius: 50%;
     border-radius: 3vw;
     scroll-snap-align: start; 
     overflow: hidden;
+    position: relative; /* Necesario para ubicar el punto verde dentro de la tarjeta */
 }
 
+/* Estilo para el punto verde cuando la tarjeta está leída */
+.tarjeta.leido::after {
+    content: '';
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 14px;
+    height: 14px;
+    background-color: #2ecc71; /* Verde */
+    border-radius: 50%;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+}
 
 .link-articulo {
     width: 100%;
@@ -173,7 +182,6 @@ border-radius: 50%;
     font-family: "Gaegu", sans-serif;
     font-weight: bold;
 }
-
 
 .link-articulo h2 {
     font-size: clamp(0.8rem, 1.8dvh, 1.1rem);
