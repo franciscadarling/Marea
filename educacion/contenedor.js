@@ -14,20 +14,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     let idArticulo = null;
+    let articuloActualObj = null;
+
     if (articuloGuardado) {
         try {
-            const articulo = JSON.parse(articuloGuardado);
-            idArticulo = articulo.id;
+            articuloActualObj = JSON.parse(articuloGuardado);
+            idArticulo = articuloActualObj.id;
             
             // Rellenar la vista del artículo
-            document.getElementById("titulo").textContent = articulo.titulo || "";
-            document.getElementById("subtitulo").textContent = articulo.subtitulo || "";
-            document.getElementById("cuerpo").textContent = articulo.texto || "";
+            document.getElementById("titulo").textContent = articuloActualObj.titulo || "";
+            document.getElementById("subtitulo").textContent = articuloActualObj.subtitulo || "";
+            document.getElementById("cuerpo").textContent = articuloActualObj.texto || "";
 
-            // Marcar el checkbox si la propiedad 'leido' viene en true
+            // Marcar el checkbox si la propiedad 'leido' es true
             const checkLeido = document.getElementById("check-leido");
-            if (checkLeido && articulo.leido) {
-                checkLeido.checked = true;
+            if (checkLeido) {
+                checkLeido.checked = !!articuloActualObj.leido;
             }
         } catch (e) {
             console.error("Error al parsear articuloActual", e);
@@ -36,23 +38,22 @@ document.addEventListener("DOMContentLoaded", () => {
         console.warn("No hay 'articuloActual' en el localStorage.");
     }
 
-    // 2. Controlar el evento 'change' del checkbox para actualizar el backend
+    // 2. Controlar el evento 'change' del checkbox
     const marcarleido = document.getElementById("check-leido");
 
     if (marcarleido) {
-        marcarleido.addEventListener('change', function(event) {
+        marcarleido.addEventListener('change', async function(event) {
             const leido = event.target.checked; // true o false
 
             if (!idUser || !idArticulo) {
                 console.error("Faltan los datos del usuario o del artículo en localStorage.", { idUser, idArticulo });
                 return;
             }
-            if (articuloGuardado) {
-                try {
-                    const artObj = JSON.parse(articuloGuardado);
-                    artObj.leido = leido;
-                    localStorage.setItem("articuloActual", JSON.stringify(artObj));
-                } catch (e) {}
+
+            // Actualizar inmediatamente el objeto en localStorage para que sincronice si vuelve atrás
+            if (articuloActualObj) {
+                articuloActualObj.leido = leido;
+                localStorage.setItem("articuloActual", JSON.stringify(articuloActualObj));
             }
 
             fetch(`http://localhost:3000/marea/leido/${idUser}/${idArticulo}/${leido}`,{
