@@ -124,11 +124,10 @@ border-radius: 50%;
     width: 100%;
     flex: 1; 
     min-height: 0; 
-    overflow-y: auto; 
-    display: flex;
-    align-items: center;
+    align-items:  center;
     justify-content: center;
     gap: 2.5vh;
+    padding: 0 3vh;
 }
 
 .preguntar {
@@ -141,27 +140,55 @@ border-radius: 50%;
 
 .avatar {
     display: flex;
-    flex-direction: row;     
     align-items: flex-start;
     height: 25vh;
     width: 20vh;
+    flex-shrink: 0;
 }
 
 
 .respuesta {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    gap: 1.5vh;
+    flex: 1;
+    min-width: 0;
+    max-height: 35vh;     
+    overflow-y: auto;    
+    padding-left: 5vh;
 
 }
 
 .bdetexto {
-    display: flex;
-    flex-direction: column;
-    background-color: rgb(170, 170, 170);
     border-radius: 12vh 12vh 12vh 1vh;
-    padding: 6.5vh 8.5vh;
+    position: relative;
+    background-color: rgb(170, 170, 170);
+    padding: 2vh 2.5vh;
     width: fit-content;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    font-family: 'Gaegu';
+}
+
+/* circulitos de "pensamiento", solo en la última burbuja */
+.bdetexto:last-child::before,
+.bdetexto:last-child::after {
+    content: "";
+    position: absolute;
+    background-color: rgb(170, 170, 170);
+    border-radius: 50%;
+}
+.bdetexto:last-child::before {
+    width: 2.4vh;
+    height: 2.4vh;
+    left: -2.8vh;
+    bottom: 1vh;
+}
+.bdetexto:last-child::after {
+    width: 1.4vh;
+    height: 1.4vh;
+    left: -4.6vh;
+    bottom: -0.6vh;
 }
 
 .inputpregunta {
