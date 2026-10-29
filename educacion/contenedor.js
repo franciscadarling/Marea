@@ -47,8 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.error("Faltan los datos del usuario o del artículo en localStorage.", { idUser, idArticulo });
                 return;
             }
-
-            // Actualizar localmente el objeto en localStorage por si vuelve a la pantalla anterior
             if (articuloGuardado) {
                 try {
                     const artObj = JSON.parse(articuloGuardado);
@@ -57,8 +55,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 } catch (e) {}
             }
 
-            // Petición Fetch al backend
-            fetch(`http://localhost:3000/marea/leido/${idUser}/${idArticulo}/${leido}`)
+            fetch(`http://localhost:3000/marea/leido/${idUser}/${idArticulo}/${leido}`,{
+                method: "PUT"
+            })
                 .then(response => response.json())
                 .then(data => {
                     console.log('Estado actualizado con éxito:', data);
