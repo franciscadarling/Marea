@@ -247,19 +247,28 @@ document.addEventListener('DOMContentLoaded', function() {
       observarUltimo(bloque);
     }
   }
+  const limitePasado = 1950;
 
   function cargarMesAnterior() {
+    // Creamos una copia para probar el mes siguiente al retroceder
+    const fechaPrueba = new Date(fechaAtras);
+    fechaPrueba.setMonth(fechaPrueba.getMonth() - 1);
+  
+    // Si al retroceder el año es menor a 1950, detenemos la ejecución
+    if (fechaPrueba.getFullYear() < limitePasado) {
+      return; 
+    }
+  
     fechaAtras.setMonth(fechaAtras.getMonth() - 1);
     const bloque = crearBloqueMes(fechaAtras.getFullYear(), fechaAtras.getMonth());
-
+  
     const alturaAntes = calendarioScroll.scrollHeight;
     calendarioScroll.insertBefore(bloque, calendarioScroll.firstChild);
     const alturaDespues = calendarioScroll.scrollHeight;
-
+  
     contenedor.scrollTop += (alturaDespues - alturaAntes);
     observarPrimero(bloque);
   }
-
   function observarUltimo(bloque) {
     if (!bloque) return;
     const observer = new IntersectionObserver((entries) => {
