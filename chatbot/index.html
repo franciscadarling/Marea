@@ -21,14 +21,14 @@
     <section class="pantalla">
         <div class="mensaje"> 
             <div class="avatar"><img src="./Avatar-Selene/Property 1=Dormida.png" alt="Avatar-Selene"> </div>
-            <div class="respuesta" id="historial"> 
-               <article class="bdetexto">Hola, soy Selene. ¿En qué te puedo ayudar?</article>
-            </div>
+               <article class="bdetexto" id="burbujaAvatar">Hola, soy Selene. ¿En qué te puedo ayudar?</article>
         </div>
-        <form class="pregutar" id="formMensaje"> 
+        <div class="respuesta" id="historial" style="display: none;">
+        </div>
+        <form class="preguntar" id="formMensaje"> 
            <input type="text" placeholder="Preguntale a Selene..." class="inputpregunta" id="mensaje"> 
            <button type="submit" id="Enviar">Enviar</button>
-           <button type="submit" id="eliminar">Eliminar Historial</button>
+           <button type="button" id="eliminar">Eliminar Historial</button>
         </form>
     </section>
 

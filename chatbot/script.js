@@ -1,10 +1,13 @@
 
 const formulario = document.getElementById("formMensaje")
 const mensajito = document.getElementById("mensaje")
+const burbujaAvatar = document.getElementById("burbujaAvatar")
 const eliminarH = document.getElementById("eliminar")
 const historial = document.getElementById("historial")
 const infoUsuario = localStorage.getItem('usuarioRegistrado')
 const infoGuardada = JSON.parse(infoUsuario)
+const saludo = "Hola, soy Selene. ¿En qué te puedo ayudar?"
+
 
 function agregarBurbuja(texto) {
     const burbuja = document.createElement("article")
@@ -12,7 +15,12 @@ function agregarBurbuja(texto) {
     burbuja.textContent = texto
     historial.appendChild(burbuja)
     historial.scrollTop = historial.scrollHeight 
-    return burbuja
+}
+
+function mostrarRespuesta(texto) {
+    burbujaAvatar.textContent = saludo      
+    historial.style.display = "flex"        
+    agregarBurbuja(texto)
 }
 
 formulario.addEventListener("submit", (event) => {
@@ -21,7 +29,7 @@ formulario.addEventListener("submit", (event) => {
     const texto = mensajito.value
     if (!texto.trim()) return
     mensajito.value = ""
-    const burbuja = agregarBurbuja("Dejame pensar...")
+    burbujaAvatar.textContent = "Dejame pensar..."
 
     fetch (`http://localhost:3000/marea/mensajeChatbot/${infoGuardada.id}`, {
         method: "POST",
@@ -32,29 +40,24 @@ formulario.addEventListener("submit", (event) => {
             mensaje: texto
         })
     })
-    .then (response => response.json())
-    .then (data => {
-        console.log(data)
-        burbuja.textContent = data.respuesta 
-        historial.scrollTop = historial.scrollHeight
-    })
+    .then(response => 
+        response.json())
+    .then(data => 
+        mostrarRespuesta(data.respuesta))
+        .catch(error => {
+            console.log(error)
+            mostrarRespuesta("Ups, algo salió mal. Probá de nuevo.") 
+        })
 })
 
-eliminarH.addEventListener("submit", (event) => {
-    fetch (`http://localhost:3000/marea/eliminarChatbot/${id}`, {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            mensaje: texto
+eliminarH.addEventListener("click", (event) => {
+    fetch (`http://localhost:3000/marea/eliminarChatbot/${infoGuardada.id}`, {
+        method: "DELETE", 
+        })
+        .then(response => {
+            if (!response.ok) throw new Error()
+            historial.innerHTML = ""
+            historial.style.display = "none"
+            burbujaAvatar.textContent = saludo
         })
     })
-    .then (response => response.json())
-    .then (data => {
-        console.log(data)
-        burbuja.textContent = data.respuesta 
-        historial.scrollTop = historial.scrollHeight
-    })
-
-})
