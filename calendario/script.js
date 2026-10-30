@@ -230,7 +230,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   const hoy = new Date();
-  const limiteFuturo = new Date(hoy.getFullYear() + 1, hoy.getMonth(), 1);
+  const limiteFuturo = new Date(hoy.getFullYear(), hoy.getMonth() + 6, 1);
 
   let fechaAdelante = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
   let fechaAtras = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
