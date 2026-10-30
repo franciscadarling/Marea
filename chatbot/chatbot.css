@@ -171,7 +171,8 @@ border-radius: 50%;
 .bdetexto {
     border-radius: 12vh 12vh 12vh 1vh;
     position: relative;
-    background-color: rgb(170, 170, 170);
+    background-color: #9B85CC;
+    box-shadow: 0 0 1vh 0.3vh #7458B8BF;
     padding: 2vh 2.5vh;
     width: fit-content;
     max-width: 100%;
@@ -179,12 +180,12 @@ border-radius: 50%;
     font-family: 'Gaegu';
 }
 
-/* circulitos de "pensamiento", solo en la última burbuja */
 .bdetexto:last-child::before,
 .bdetexto:last-child::after {
     content: "";
     position: absolute;
-    background-color: rgb(170, 170, 170);
+    background-color: #9B85CC;
+    box-shadow: 0 0 1vh 0.3vh #7458B8BF;
     border-radius: 50%;
 }
 .bdetexto:last-child::before {
@@ -216,4 +217,51 @@ border-radius: 50%;
     font-size:larger;
     text-align: start;
 
+}
+
+.losbotones {
+    width: 100%;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+}
+
+.enviar {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   background-color:#4F349E;
+   box-shadow: 0 0 2dvh #4F349E; 
+   color: #DDD5F5;
+   font-family: 'Gaegu', serif;
+   border: none;
+   outline: none;
+   appearance: none;
+   cursor: pointer;
+   font-size: 2.4vh;
+   height: 3.5vh;
+   width: 7vh;
+   border-radius: 2vh;
+}
+
+.eliminar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color:#4F349E;
+    box-shadow: 0 0 2dvh #4F349E; 
+    color: #DDD5F5;
+    font-family: 'Gaegu', serif;
+    border: none;
+    outline: none;
+    appearance: none;
+    cursor: pointer;
+    font-size: 2.3vh;
+    height: 3.5vh;
+    width: 18vh;
+    border-radius: 2vh;
 }
