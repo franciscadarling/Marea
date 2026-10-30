@@ -16,25 +16,30 @@ function obtenerIdUsuario() {
 const idUser = obtenerIdUsuario();
 function renderizarTarjetas(listaArticulos, articulosLeidos, claseFiltro, contenedor) {
     contenedor.innerHTML = "";
-    
+
     listaArticulos.forEach(articulo => {
-        if (articulo.clase === claseFiltro) {
-            const estaLeido = articulosLeidos.some(leido => {
-                const idLeido = (typeof leido === 'object' && leido !== null) ? (leido.id || leido._id) : leido;
-                return String(idLeido) === String(articulo.id);
-            });
+        if (articulo.clase !== claseFiltro) return;
 
-            const claseLeido = estaLeido ? "leido" : "";
-            const articuloConEstado = { ...articulo, leido: estaLeido };
+        const estaLeido = articulosLeidos.some(leido => {
+            const idLeido = (typeof leido === 'object' && leido !== null) ? (leido.id || leido._id) : leido;
+            return String(idLeido) === String(articulo.id);
+        });
 
-            contenedor.innerHTML += `
-                <article class="tarjeta ${claseLeido}">
-                  <a class="link-articulo" href="contenedor.html" onclick='localStorage.setItem("articuloActual", JSON.stringify(${JSON.stringify(articuloConEstado)}))'>
-                  <h1>${articulo.titulo}</h1>
-                  <h2>${articulo.subtitulo}</h2></a>
-                </article>
-            `;
-        }
+        const tarjeta = document.createElement("article");
+        tarjeta.className = `tarjeta ${estaLeido ? "leido" : ""}`;
+        tarjeta.innerHTML = `
+            <a class="link-articulo" href="contenedor.html">
+                <h1></h1>
+                <h2></h2>
+            </a>`;
+        tarjeta.querySelector("h1").textContent = articulo.titulo;
+        tarjeta.querySelector("h2").textContent = articulo.subtitulo;
+
+        tarjeta.querySelector("a").addEventListener("click", () => {
+            localStorage.setItem("articuloActual", JSON.stringify({ ...articulo, leido: estaLeido }));
+        });
+
+        contenedor.appendChild(tarjeta);
     });
 }
 
