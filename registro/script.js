@@ -14,6 +14,51 @@ document.addEventListener('DOMContentLoaded', () => {
   }
    let idUser = iniciar()
 
+   // Duración del sangrado configurada por la usuaria.
+   function obtenerDuracionMenstruacion() {
+     const guardado = JSON.parse(localStorage.getItem("usuarioRegistrado")) || {};
+     let duracion = Number(guardado.duracionMenstruacion);
+
+     if (!Number.isFinite(duracion) || duracion < 1) {
+       try {
+         const ciclo = JSON.parse(localStorage.getItem("miCiclo"));
+         duracion = Number(ciclo?.periodo);
+       } catch (e) {
+         duracion = NaN;
+       }
+     }
+
+     if (!Number.isFinite(duracion) || duracion < 1) duracion = 5;
+     return Math.min(Math.round(duracion), 14);
+   }
+
+   // Guarda el período en el navegador para que el calendario pueda marcar
+   // todos sus días aunque el servidor todavía no los tenga.
+   function guardarPeriodoLocal(fechaInicio, duracion) {
+     if (idUser === undefined || idUser === null || !fechaInicio) return;
+
+     const clave = `periodosLocales_${idUser}`;
+     let periodos = [];
+
+     try {
+       periodos = JSON.parse(localStorage.getItem(clave)) || [];
+     } catch (e) {
+       periodos = [];
+     }
+
+     if (!Array.isArray(periodos)) periodos = [];
+
+     const yaExiste = periodos.some((periodo) => {
+       const inicio = typeof periodo === "string" ? periodo : periodo?.inicio;
+       return String(inicio).slice(0, 10) === fechaInicio;
+     });
+
+     if (!yaExiste) {
+       periodos.push({ inicio: fechaInicio, duracion });
+       localStorage.setItem(clave, JSON.stringify(periodos));
+     }
+   }
+
 
    const enviar = document.getElementById("boton-enviar");
    if (enviar) {
@@ -29,9 +74,17 @@ document.addEventListener('DOMContentLoaded', () => {
  
           const registro = {idUser, fechaseleccionada, entradaDiaria, sintomasActivos };
 
+           const idsMenstruacion = [1, 2, 3, 4];
+           const hoyMenstruo = registro.sintomasActivos.some(s => idsMenstruacion.includes(s));
+           const duracionMenstruacion = obtenerDuracionMenstruacion();
+
+           // Si registró sangrado, guardamos el período completo (inicio + duración)
+           // para que el calendario marque también los días siguientes.
+           if (hoyMenstruo && registro.fechaseleccionada) {
+             guardarPeriodoLocal(registro.fechaseleccionada, duracionMenstruacion);
+           }
+
            if (diaExiste === false) {
-            const idsMenstruacion = [1, 2, 3, 4];
-            const hoyMenstruo = registro.sintomasActivos.some(s => idsMenstruacion.includes(s));
             if (hoyMenstruo) {
             fetch(`http://localhost:3000/marea/sintomas/${idUser}/${fechaseleccionada}`, {
               method: "POST",
@@ -91,8 +144,6 @@ document.addEventListener('DOMContentLoaded', () => {
             })
           }
           } else if (diaExiste === true) { 
-            const idsMenstruacion = [1, 2, 3, 4];
-            const hoyMenstruo = registro.sintomasActivos.some(s => idsMenstruacion.includes(s));
             if (hoyMenstruo) {
               fetch(`http://localhost:3000/marea/cambiarsintomas/${idUser}/${fechaseleccionada}`, {
                 method: "PUT",
