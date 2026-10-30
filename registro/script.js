@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then (response => response.json())
             .then (data => {
                 console.log(data)
+                exito.style.display= "block";
             })
             .catch (error => {
               console.log("Hubo un error")
@@ -82,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then (response => response.json())
             .then (data => {
                 console.log(data)
+                exito.style.display= "block";
                 diaExiste = true
             })
             .catch (error => {
@@ -105,6 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
               .then (response => response.json())
               .then (data => {
                   console.log(data)
+                  exito.style.display= "block";
               })
               .catch (error => {
                 console.log("Hubo un error")
@@ -141,6 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
               .then (response => response.json())
               .then (data => {
                   console.log(data)
+                  exito.style.display= "block";
               })
               .catch (error => {
                 console.log("Hubo un error")
