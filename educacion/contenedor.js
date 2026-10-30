@@ -5,7 +5,7 @@ function obtenerIdUsuario() {
     if (!usuarioGuardado) return null;
     try {
         const userObj = JSON.parse(usuarioGuardado);
-        return userObj.id || userObj._id || usuarioGuardado;
+        return userObj.id ?? userObj._id ?? usuarioGuardado;
     } catch (e) {
         return usuarioGuardado;
     }
@@ -23,8 +23,20 @@ function guardarPendientes(pendientes) {
     localStorage.setItem("leidoPendiente", JSON.stringify(pendientes));
 }
 
-function idDe(item) {
-    return (typeof item === "object" && item !== null) ? (item.id ?? item._id) : item;
+// En educacion.json cada registro es { id: <usuario>, articulo: <articulo>, leido: <bool> }.
+// El id que nos interesa para el artículo es "articulo", no "id" (que es el del usuario).
+function idDeArticulo(item) {
+    if (typeof item !== "object" || item === null) return item;
+    return item.articulo ?? item.idArticulo ?? item.id ?? item._id;
+}
+
+// Un registro cuenta como leído solo si "leido" no es falso.
+// Si el servidor devuelve directamente ids (o artículos sin "leido"), se considera leído.
+function esLeido(item) {
+    if (typeof item !== "object" || item === null) return true;
+    if (!("leido" in item)) return true;
+    const valor = item.leido;
+    return valor === true || valor === 1 || valor === "true" || valor === "1";
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -43,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    const idArticulo = String(articulo.id);
+    const idArticulo = String(articulo.id ?? articulo._id);
 
     // 1. Rellenar la vista
     document.getElementById("titulo").textContent = articulo.titulo || "";
@@ -65,7 +77,9 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!res.ok) throw new Error("HTTP " + res.status);
             const lista = await res.json();
 
-            const leido = lista.some(item => String(idDe(item)) === idArticulo);
+            const leido = lista.some(
+                item => String(idDeArticulo(item)) === idArticulo && esLeido(item)
+            );
             check.checked = leido;
 
             articulo.leido = leido;

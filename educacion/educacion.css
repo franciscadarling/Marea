@@ -146,10 +146,10 @@ border-radius: 50%;
     border-radius: 3vw;
     scroll-snap-align: start; 
     overflow: hidden;
-    position: relative; /* Necesario para ubicar el punto verde dentro de la tarjeta */
+    position: relative; 
+    border: 1dvh, #4F349E;;
 }
 
-/* Estilo para el punto verde cuando la tarjeta está leída */
 .tarjeta.leido::after {
     content: '';
     position: absolute;
@@ -157,7 +157,7 @@ border-radius: 50%;
     right: 12px;
     width: 14px;
     height: 14px;
-    background-color: #2ecc71; /* Verde */
+    background-color: #2ecc71; 
     border-radius: 50%;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
 }
