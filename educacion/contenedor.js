@@ -1,71 +1,130 @@
-document.addEventListener("DOMContentLoaded", () => {
-    // 1. Obtener de forma segura el usuario y el artículo del localStorage
+const API = "http://localhost:3000/marea";
+
+function obtenerIdUsuario() {
     const usuarioGuardado = localStorage.getItem("usuarioRegistrado");
-    const articuloGuardado = localStorage.getItem("articuloActual");
+    if (!usuarioGuardado) return null;
+    try {
+        const userObj = JSON.parse(usuarioGuardado);
+        return userObj.id || userObj._id || usuarioGuardado;
+    } catch (e) {
+        return usuarioGuardado;
+    }
+}
 
-    let idUser = null;
-    if (usuarioGuardado) {
-        try {
-            const userObj = JSON.parse(usuarioGuardado);
-            idUser = userObj.id || userObj._id || usuarioGuardado;
-        } catch (e) {
-            idUser = usuarioGuardado;
-        }
+function leerPendientes() {
+    try {
+        return JSON.parse(localStorage.getItem("leidoPendiente")) || {};
+    } catch (e) {
+        return {};
+    }
+}
+
+function guardarPendientes(pendientes) {
+    localStorage.setItem("leidoPendiente", JSON.stringify(pendientes));
+}
+
+function idDe(item) {
+    return (typeof item === "object" && item !== null) ? (item.id ?? item._id) : item;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const idUser = obtenerIdUsuario();
+    const check = document.getElementById("check-leido");
+
+    let articulo = null;
+    try {
+        articulo = JSON.parse(localStorage.getItem("articuloActual"));
+    } catch (e) {
+        console.error("Error al parsear articuloActual", e);
     }
 
-    let idArticulo = null;
-    let articuloActualObj = null;
-
-    if (articuloGuardado) {
-        try {
-            articuloActualObj = JSON.parse(articuloGuardado);
-            idArticulo = articuloActualObj.id;
-            
-            // Rellenar la vista del artículo
-            document.getElementById("titulo").textContent = articuloActualObj.titulo || "";
-            document.getElementById("subtitulo").textContent = articuloActualObj.subtitulo || "";
-            document.getElementById("cuerpo").textContent = articuloActualObj.texto || "";
-
-            // Marcar el checkbox si la propiedad 'leido' es true
-            const checkLeido = document.getElementById("check-leido");
-            if (checkLeido) {
-                checkLeido.checked = !!articuloActualObj.leido;
-            }
-        } catch (e) {
-            console.error("Error al parsear articuloActual", e);
-        }
-    } else {
+    if (!articulo) {
         console.warn("No hay 'articuloActual' en el localStorage.");
+        return;
     }
 
-    // 2. Controlar el evento 'change' del checkbox
-    const marcarleido = document.getElementById("check-leido");
+    const idArticulo = String(articulo.id);
 
-    if (marcarleido) {
-        marcarleido.addEventListener('change', async function(event) {
-            const leido = event.target.checked; // true o false
+    // 1. Rellenar la vista
+    document.getElementById("titulo").textContent = articulo.titulo || "";
+    document.getElementById("subtitulo").textContent = articulo.subtitulo || "";
+    document.getElementById("cuerpo").textContent = articulo.texto || "";
 
-            if (!idUser || !idArticulo) {
-                console.error("Faltan los datos del usuario o del artículo en localStorage.", { idUser, idArticulo });
-                return;
-            }
+    // 2. Estado inicial rápido (pendiente > lo guardado en la tarjeta)
+    const pendientes = leerPendientes();
+    check.checked = (idArticulo in pendientes) ? pendientes[idArticulo] : !!articulo.leido;
 
-            // Actualizar inmediatamente el objeto en localStorage para que sincronice si vuelve atrás
-            if (articuloActualObj) {
-                articuloActualObj.leido = leido;
-                localStorage.setItem("articuloActual", JSON.stringify(articuloActualObj));
-            }
+    // 3. Sincronizar con el servidor (la fuente de verdad)
+    async function sincronizarConServidor() {
+        if (!idUser) return;
+        // si hay un cambio todavía sin confirmar, no lo pisamos
+        if (idArticulo in leerPendientes()) return;
 
-            fetch(`http://localhost:3000/marea/leido/${idUser}/${idArticulo}/${leido}`,{
-                method: "PUT"
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Estado actualizado con éxito:', data);
-                })
-                .catch(error => {
-                    console.error('Error al actualizar el estado de leído:', error);
-                });
-        });
+        try {
+            const res = await fetch(`${API}/educacion/${idUser}`, { cache: "no-store" });
+            if (!res.ok) throw new Error("HTTP " + res.status);
+            const lista = await res.json();
+
+            const leido = lista.some(item => String(idDe(item)) === idArticulo);
+            check.checked = leido;
+
+            articulo.leido = leido;
+            localStorage.setItem("articuloActual", JSON.stringify(articulo));
+        } catch (error) {
+            console.error("No se pudo sincronizar el estado de leído:", error);
+        }
     }
+
+    sincronizarConServidor();
+
+    // si la página vuelve desde la caché del navegador, volver a sincronizar
+    window.addEventListener("pageshow", (event) => {
+        if (event.persisted) sincronizarConServidor();
+    });
+
+    // 4. Cuando el usuario marca / desmarca
+    check.addEventListener("change", async (event) => {
+        const leido = event.target.checked;
+
+        if (!idUser || !idArticulo) {
+            console.error("Faltan datos del usuario o del artículo.", { idUser, idArticulo });
+            check.checked = !leido;
+            return;
+        }
+
+        // guardar como pendiente + actualizar el artículo local al instante
+        const pend = leerPendientes();
+        pend[idArticulo] = leido;
+        guardarPendientes(pend);
+
+        articulo.leido = leido;
+        localStorage.setItem("articuloActual", JSON.stringify(articulo));
+
+        try {
+            const res = await fetch(`${API}/leido/${idUser}/${idArticulo}/${leido}`, {
+                method: "PUT",
+                keepalive: true // evita que se cancele si salís de la página rápido
+            });
+            if (!res.ok) throw new Error("HTTP " + res.status);
+
+            const data = await res.json().catch(() => null);
+            console.log("Estado actualizado con éxito:", data);
+
+            // el servidor confirmó: ya no hace falta el pendiente
+            const p = leerPendientes();
+            delete p[idArticulo];
+            guardarPendientes(p);
+        } catch (error) {
+            console.error("Error al actualizar el estado de leído:", error);
+
+            // si falló, volvemos atrás para no mostrar algo falso
+            const p = leerPendientes();
+            delete p[idArticulo];
+            guardarPendientes(p);
+
+            check.checked = !leido;
+            articulo.leido = !leido;
+            localStorage.setItem("articuloActual", JSON.stringify(articulo));
+        }
+    });
 });
