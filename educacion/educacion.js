@@ -43,13 +43,12 @@ async function inicializarPagina() {
         if (!idUser) {
             console.warn("No hay un usuario registrado en el localStorage.");
         }
-
-        const resArticulos = await fetch('http://localhost:3000/marea/articulos');
+        const resArticulos = await fetch('http://localhost:3000/marea/articulos', { cache: "no-store" });
         const todosLosArticulos = await resArticulos.json();
 
         let articulosLeidos = [];
         if (idUser) {
-            const resLeidos = await fetch(`http://localhost:3000/marea/educacion/${idUser}`);
+            const resLeidos = await fetch(`http://localhost:3000/marea/educacion/${idUser}`, { cache: "no-store" });
             articulosLeidos = await resLeidos.json();
         }
 
@@ -64,3 +63,6 @@ async function inicializarPagina() {
 }
 
 inicializarPagina();
+window.addEventListener("pageshow", (event) => {
+    if (event.persisted) inicializarPagina();
+});
