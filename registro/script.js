@@ -59,6 +59,49 @@ document.addEventListener('DOMContentLoaded', () => {
      }
    }
 
+   function sumarDias(fechaISO, cantidad) {
+     const [anio, mes, dia] = fechaISO.split("-").map(Number);
+     const fecha = new Date(anio, mes - 1, dia + cantidad);
+     return `${fecha.getFullYear()}-${String(fecha.getMonth() + 1).padStart(2, "0")}-${String(fecha.getDate()).padStart(2, "0")}`;
+   }
+
+   // Si se elimina una fecha que pertenece a un período guardado localmente,
+   // lo sacamos para que el calendario deje de marcarlo.
+   function eliminarPeriodoLocal(fecha) {
+     if (idUser === undefined || idUser === null || !fecha) return;
+
+     const clave = `periodosLocales_${idUser}`;
+     let periodos = [];
+
+     try {
+       periodos = JSON.parse(localStorage.getItem(clave)) || [];
+     } catch (e) {
+       periodos = [];
+     }
+
+     if (!Array.isArray(periodos)) periodos = [];
+
+     const fechaEliminada = String(fecha).slice(0, 10);
+     const restantes = periodos.filter((periodo) => {
+       const inicio = typeof periodo === "string" ? periodo : periodo?.inicio;
+       const inicioNormalizado = String(inicio).slice(0, 10);
+
+       if (!/^\d{4}-\d{2}-\d{2}$/.test(inicioNormalizado)) return true;
+
+       const duracion = Math.max(
+         1,
+         Number(typeof periodo === "object" && periodo ? periodo.duracion : 1) || 1
+       );
+       const fin = sumarDias(inicioNormalizado, duracion - 1);
+
+       return !(fechaEliminada >= inicioNormalizado && fechaEliminada <= fin);
+     });
+
+     if (restantes.length !== periodos.length) {
+       localStorage.setItem(clave, JSON.stringify(restantes));
+     }
+   }
+
 
    const enviar = document.getElementById("boton-enviar");
    if (enviar) {
@@ -200,6 +243,8 @@ document.addEventListener('DOMContentLoaded', () => {
               .catch (error => {
                 console.log("Hubo un error")
               })
+             eliminarPeriodoLocal(registro.fechaseleccionada);
+
              fetch(`http://localhost:3000/marea/eliminarfecha/${idUser}`, {
                 method: "DELETE",
                 headers: {

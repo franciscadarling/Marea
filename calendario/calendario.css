@@ -70,6 +70,12 @@ body {
     color: white;
 }
 
+/* Días estimados (todavía no cargados por la usuaria) */
+.dia-menstruacion-predicho {
+    background-color: rgba(230, 57, 57, 0.35);
+    color: white;
+}
+
 /* Navbar inferior (Intacta) */
 .botones {
     background-color: #4F349E;

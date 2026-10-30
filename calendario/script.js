@@ -2,7 +2,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const contenedor = document.querySelector('.pantalla');
   const calendarioScroll = document.getElementById('calendario-scroll');
   
-  let diasMarcados = new Set();
+  let diasRegistrados = new Set();
+  let diasPredichos = new Set();
 
   const usuario = JSON.parse(localStorage.getItem("usuarioRegistrado"));
   const usuarioId = usuario?.id;
@@ -62,9 +63,32 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  function normalizarDiasMarcados(datos, duracionMenstruacion) {
-    const fechas = new Set();
+  // Devuelve dos conjuntos:
+  //  - registrados: días que la usuaria cargó realmente.
+  //  - predichos: días estimados (los que completa el calendario y los que
+  //    calcula el servidor para los próximos ciclos).
+  function normalizarDiasMarcados(datos, duracionMenstruacion, inicioUltimo) {
+    const registrados = new Set();
+    const predichos = new Set();
+    const todas = new Set();
 
+    const hoyISO = fechaIso(new Date());
+    const inicioRegistrado = fechaIso(inicioUltimo);
+
+    // El servidor agrega los días predichos después del último período
+    // cargado. Todo lo anterior a ese período es dato real.
+    const finRegistrado = inicioRegistrado
+      ? sumarDias(inicioRegistrado, Math.max(duracionMenstruacion, 7) - 1)
+      : hoyISO;
+
+    const clasificar = (fecha) => {
+      if (fecha <= finRegistrado) registrados.add(fecha);
+      else predichos.add(fecha);
+      todas.add(fecha);
+    };
+
+    // Agrega un período a partir de su primer día. El primer día es el que
+    // cargó la usuaria; el resto de la duración es una predicción.
     const agregarRango = (inicio, duracion) => {
       const fechaInicio = fechaIso(inicio);
       if (!fechaInicio) return;
@@ -75,7 +99,10 @@ document.addEventListener('DOMContentLoaded', function() {
       );
 
       for (let i = 0; i < dias; i++) {
-        fechas.add(sumarDias(fechaInicio, i));
+        const fecha = sumarDias(fechaInicio, i);
+        if (i === 0) registrados.add(fecha);
+        else predichos.add(fecha);
+        todas.add(fecha);
       }
     };
 
@@ -84,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       if (typeof item === "string" || item instanceof Date) {
         const fecha = fechaIso(item);
-        if (fecha) fechas.add(fecha);
+        if (fecha) clasificar(fecha);
         return;
       }
 
@@ -94,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (Array.isArray(fechasDelItem)) {
         fechasDelItem.forEach((fecha) => {
           const fechaNormalizada = fechaIso(fecha);
-          if (fechaNormalizada) fechas.add(fechaNormalizada);
+          if (fechaNormalizada) clasificar(fechaNormalizada);
         });
         return;
       }
@@ -105,26 +132,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     (datos == null ? [] : Array.isArray(datos) ? datos : [datos]).forEach(agregarItem);
 
-    // Los períodos guardados localmente solo se agregan si el servidor
-    // todavía no tiene cubierta esa fecha. Así no se alargan de más.
-    const fechasDelServidor = new Set(fechas);
-    leerPeriodosLocales().forEach((item) => {
-      const inicio = fechaIso(typeof item === "object" && item !== null ? (item.inicio ?? item.fecha) : item);
-      if (!inicio) return;
+    // Períodos guardados localmente al registrarlos (el primer día es real).
+    leerPeriodosLocales().forEach(agregarItem);
 
-      const yaCubierto = [...fechasDelServidor].some((fecha) => {
-        const diferencia = diferenciaEnDias(fecha, inicio);
-        return diferencia >= 0 && diferencia < duracionMenstruacion;
-      });
-
-      if (!yaCubierto) agregarItem(item);
-    });
-
-    // Agrupamos los días que pertenecen a la misma menstruación (fechas
-    // cercanas entre sí). Si el servidor devolvió solo el primer día, o
-    // algunos días sueltos, completamos el período hasta la duración.
-    const ordenadas = [...fechas].filter(Boolean).sort();
-    const resultado = new Set(fechas);
+    // Completamos cada período cargado hasta la duración configurada. Los
+    // días que agrega el calendario son predichos, no registrados.
+    const ordenadas = [...todas].filter(Boolean).sort();
 
     let i = 0;
     while (i < ordenadas.length) {
@@ -136,20 +149,28 @@ document.addEventListener('DOMContentLoaded', function() {
         j++;
       }
 
-      const inicio = ordenadas[i];
-      const fin = ordenadas[j];
-      const diasDelGrupo = diferenciaEnDias(inicio, fin) + 1;
+      const grupo = ordenadas.slice(i, j + 1);
+      const inicio = grupo.find((fecha) => registrados.has(fecha));
 
-      // Se completa hasta la duración (también rellena huecos internos).
-      const diasAMarcar = Math.max(diasDelGrupo, duracionMenstruacion);
-      for (let d = 0; d < diasAMarcar; d++) {
-        resultado.add(sumarDias(inicio, d));
+      if (inicio) {
+        const fin = grupo[grupo.length - 1];
+        const diasDelGrupo = diferenciaEnDias(inicio, fin) + 1;
+
+        // Se completa hasta la duración (también rellena huecos internos).
+        const diasAMarcar = Math.max(diasDelGrupo, duracionMenstruacion);
+        for (let d = 0; d < diasAMarcar; d++) {
+          const fecha = sumarDias(inicio, d);
+          if (!registrados.has(fecha)) predichos.add(fecha);
+        }
       }
 
       i = j + 1;
     }
 
-    return resultado;
+    // Un día registrado nunca se muestra como predicho.
+    registrados.forEach((fecha) => predichos.delete(fecha));
+
+    return { registrados, predichos };
   }
 
   const nombresMes = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
@@ -190,8 +211,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
       const fechaStr = `${año}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
       
-      if (diasMarcados.has(fechaStr)) {
+      if (diasRegistrados.has(fechaStr)) {
         celda.classList.add('dia-menstruacion');
+      } else if (diasPredichos.has(fechaStr)) {
+        celda.classList.add('dia-menstruacion-predicho');
       }
 
       celda.addEventListener('click', function() {
@@ -293,24 +316,39 @@ document.addEventListener('DOMContentLoaded', function() {
 
   const duracionMenstruacion = obtenerDuracionMenstruacion();
 
-  if (usuarioId === undefined || usuarioId === null) {
-    diasMarcados = normalizarDiasMarcados([], duracionMenstruacion);
+  function aplicarDias(datosCalendario, datosRueda) {
+    const inicioUltimo = datosRueda && typeof datosRueda === "object"
+      ? datosRueda.inicioUltimo
+      : null;
+
+    const { registrados, predichos } = normalizarDiasMarcados(
+      datosCalendario,
+      duracionMenstruacion,
+      inicioUltimo
+    );
+
+    diasRegistrados = registrados;
+    diasPredichos = predichos;
     inicializarCalendario();
+  }
+
+  if (usuarioId === undefined || usuarioId === null) {
+    aplicarDias(null, null);
     return;
   }
 
-  fetch(`http://localhost:3000/marea/calendario/${usuarioId}`, { cache: 'no-store' })
-    .then(response => {
-      if (!response.ok) throw new Error('HTTP ' + response.status);
-      return response.json();
-    })
-    .then(data => {
-      diasMarcados = normalizarDiasMarcados(data, duracionMenstruacion);
-      inicializarCalendario();
-    })
-    .catch(error => {
-      console.error('Error al leer los días de menstruación:', error);
-      diasMarcados = normalizarDiasMarcados([], duracionMenstruacion);
-      inicializarCalendario();
-    });
+  const pedir = (ruta) =>
+    fetch(`http://localhost:3000${ruta}`, { cache: 'no-store' })
+      .then((response) => (response.ok ? response.json() : null))
+      .catch((error) => {
+        console.error(`Error al leer ${ruta}:`, error);
+        return null;
+      });
+
+  Promise.all([
+    pedir(`/marea/calendario/${usuarioId}`),
+    pedir(`/marea/rueda/${usuarioId}`)
+  ]).then(([datosCalendario, datosRueda]) => {
+    aplicarDias(datosCalendario, datosRueda);
+  });
 });

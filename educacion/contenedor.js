@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (!articulo) {
-        console.warn("No hay 'articuloActual' en el localStorage.");
+        console.log("No hay 'articuloActual' en el localStorage.");
         return;
     }
 
