@@ -12,7 +12,7 @@ function obtenerIdUsuario() {
     if (!usuarioGuardado) return null;
     try {
         const userObj = JSON.parse(usuarioGuardado);
-        return userObj.id || userObj._id || usuarioGuardado;
+        return userObj.id ?? userObj._id ?? usuarioGuardado;
     } catch (e) {
         return usuarioGuardado;
     }
@@ -26,8 +26,20 @@ function leerPendientes() {
     }
 }
 
-function idDe(item) {
-    return (typeof item === "object" && item !== null) ? (item.id ?? item._id) : item;
+// En educacion.json cada registro es { id: <usuario>, articulo: <articulo>, leido: <bool> }.
+// El id que nos interesa para la tarjeta es "articulo", no "id" (que es el del usuario).
+function idDeArticulo(item) {
+    if (typeof item !== "object" || item === null) return item;
+    return item.articulo ?? item.idArticulo ?? item.id ?? item._id;
+}
+
+// Un registro cuenta como leído solo si "leido" no es falso.
+// Si el servidor devuelve directamente ids (o artículos sin "leido"), se considera leído.
+function esLeido(item) {
+    if (typeof item !== "object" || item === null) return true;
+    if (!("leido" in item)) return true;
+    const valor = item.leido;
+    return valor === true || valor === 1 || valor === "true" || valor === "1";
 }
 
 function renderizarTarjetas(listaArticulos, idsLeidos, pendientes, claseFiltro, contenedor) {
@@ -88,7 +100,13 @@ async function inicializarPagina() {
             const resLeidos = await fetch(`${API}/educacion/${idUser}`, { cache: "no-store" });
             if (!resLeidos.ok) throw new Error("HTTP " + resLeidos.status);
             const lista = await resLeidos.json();
-            idsLeidos = new Set(lista.map(item => String(idDe(item))));
+            idsLeidos = new Set(
+                lista
+                    .filter(esLeido)
+                    .map(item => idDeArticulo(item))
+                    .filter(id => id !== undefined && id !== null)
+                    .map(id => String(id))
+            );
         }
 
         if (miCarga !== numeroDeCarga) return; // llegó una carga más nueva
