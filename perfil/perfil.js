@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const contrasena = document.getElementById("contrasena");
     const usuario = document.getElementById("usuario");
     const fotoPerfil = document.getElementById('fotoPerfil');
+    const fotoChica = document.getElementById('fotito');
     const duracionCiclo = document.getElementById("duracionCiclo");
     const duracionMenstruacion = document.getElementById("duracionMenstruacion");
     const ultimaMenstruacion = document.getElementById('ultimaMestruacion');
@@ -31,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (fotoPerfil && guardado.foto) {
         fotoPerfil.src = guardado.foto;
+        fotoChica.src = guardado.foto;
     }
     if (duracionCiclo) duracionCiclo.textContent = "Duración del ciclo: " +guardadoM.duracion || "";
     
@@ -44,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
 /* Acá carga la foto de perfil jiji */
 const inputFoto = document.getElementById('inputFoto');
 const fotoPerfil = document.getElementById('fotoPerfil');
+const fotoChica = document.getElementById('fotito');
 
 inputFoto?.addEventListener('change', function(evento) {
     const archivo = evento.target.files[0];
@@ -51,6 +54,7 @@ inputFoto?.addEventListener('change', function(evento) {
 
     const urlImagen = URL.createObjectURL(archivo);
     if (fotoPerfil) fotoPerfil.src = urlImagen;
+    if (fotoChica) fotoChica.src = urlImagen;
 
     const lector = new FileReader();
     lector.onload = async function(e) {
