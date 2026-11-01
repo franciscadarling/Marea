@@ -271,7 +271,7 @@ body.pagina-chatbot .botonpagina[href*="chatbot"] {
     justify-content: center;
     align-items: start;
     width: 40vh;
-    height: 13.5vh;
+    height: 10vh;
     gap: 1.2vh;
     background-color: #DDD5F5;
     box-shadow: 0 0 2dvh #4F349E;
