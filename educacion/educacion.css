@@ -83,32 +83,44 @@ border-radius: 50%;
 }
 
 .botones {
-    background-color: #4F349E;
-    box-shadow: 0 0 2dvh #4F349E; 
-    height: 9dvh;
-    width: 94%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-evenly;
-    border-radius: 4.5dvh;
-    flex-shrink: 0;
-    margin: 1dvh auto 2dvh auto; 
-  }
+   background-color: #4F349E;
+   box-shadow: 0 0 2dvh #4F349E;
+   height: 9dvh;
+   width: 94%;
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   justify-content: space-evenly;
+   border-radius: 4.5dvh;
+   flex-shrink: 0;
+   margin: 1dvh auto 2dvh auto;
+ }
+
+ .botonpagina {
+   height: 75%;
+    flex: 0 0 auto;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+ border-radius: 50%;
+ aspect-ratio: 1 / 1;
+ transition: background-color 0.2s;
+ }
   
-  .botonpagina {
-    width: 16%;
-    height: 75%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .botonpagina img {
-    max-width: 65%;
-    max-height: 65%;
-    object-fit: contain;
-  }
+body.pagina-home       .botonpagina[href$="index.html"][href^="../index"],
+body.pagina-chatbot    .botonpagina[href*="chatbot"],
+body.pagina-registro   .botonpagina[href*="registro"],
+body.pagina-calendario .botonpagina[href*="calendario"],
+body.pagina-educacion  .botonpagina[href*="educacion"] {
+ background-color: #2E1B6B;
+}
+
+ .botonpagina img {
+   max-width: 65%;
+   max-height: 65%;
+   object-fit: contain;
+ }
+
 
 .sección-artículos {
     width: 100%;
