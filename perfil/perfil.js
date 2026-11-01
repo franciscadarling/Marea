@@ -175,7 +175,28 @@ document.getElementById('cerrar-sesion')?.addEventListener('click', () => {
   });
 
   botonCerrarMail.addEventListener('click', () => {
-    modalMail.close();
+    const datosusuario = localStorage.getItem('usuarioRegistrado');
+    const guardado = JSON.parse(datosusuario);
+    const nuevoMail = inputMail.value.trim;
+
+    fetch (`http://localhost:3000/marea/cambiarUsuario/${guardado.id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            mail: nuevoMail
+        })
+    })
+    .then(response => 
+        response.json())
+    .then(data => 
+        mostrarRespuesta(data.respuesta))
+        .catch(error => {
+            console.log(error)
+            mostrarRespuesta("Ups, algo salió mal. Probá de nuevo.") 
+        })
+    modal.close();
   });
 
   /* Acá se abre y cierra el modal de la contraseña */
@@ -188,7 +209,28 @@ const botonAbrirContrasena = document.getElementById('contrasena-editar');
   });
 
   botonCerrarContrasena.addEventListener('click', () => {
-    modalContrasena.close();
+     const datosusuario = localStorage.getItem('usuarioRegistrado');
+    const guardado = JSON.parse(datosusuario);
+    const nuevaContrasena = inputContrasena.value.trim;
+
+    fetch (`http://localhost:3000/marea/cambiarUsuario/${guardado.id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            contraseña: nuevaContrasena
+        })
+    })
+    .then(response => 
+        response.json())
+    .then(data => 
+        mostrarRespuesta(data.respuesta))
+        .catch(error => {
+            console.log(error)
+            mostrarRespuesta("Ups, algo salió mal. Probá de nuevo.") 
+        })
+    modal.close();
   });
   
   /* Acá se abre y cierra el modal de la duración del ciclo */
@@ -201,8 +243,30 @@ const botonAbrirContrasena = document.getElementById('contrasena-editar');
   });
 
   botonCerrarDuracionCiclo.addEventListener('click', () => {
-    modalDuracionCiclo.close();
+     const datosusuario = localStorage.getItem('usuarioRegistrado');
+    const guardado = JSON.parse(datosusuario);
+    const nuevaDuracionCiclo = inputduracionCiclo.value.trim;
+
+    fetch (`http://localhost:3000/marea/cambiarUsuario/${guardado.id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            duracionCiclo: nuevaDuracionCiclo
+        })
+    })
+    .then(response => 
+        response.json())
+    .then(data => 
+        mostrarRespuesta(data.respuesta))
+        .catch(error => {
+            console.log(error)
+            mostrarRespuesta("Ups, algo salió mal. Probá de nuevo.") 
+        })
+    modal.close();
   });
+
   /* Acá se abre y cierra el modal de la duración de menstruación */
 const botonAbrirDuracionMenstruacion = document.getElementById('duracionMenstruacion-editar');
 const botonCerrarMenstruacion = document.getElementById('cerrar-menstruacion');
@@ -213,6 +277,27 @@ const botonCerrarMenstruacion = document.getElementById('cerrar-menstruacion');
   });
 
   botonCerrarMenstruacion.addEventListener('click', () => {
-    modalDuracionMenstruacion.close();
+   const datosusuario = localStorage.getItem('usuarioRegistrado');
+    const guardado = JSON.parse(datosusuario);
+    const nuevaDuracionMenstruacion = inputduracionMenstruacion.value.trim;
+
+    fetch (`http://localhost:3000/marea/cambiarUsuario/${guardado.id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            duracionMenstruacion: nuevaDuracionMenstruacion
+        })
+    })
+    .then(response => 
+        response.json())
+    .then(data => 
+        mostrarRespuesta(data.respuesta))
+        .catch(error => {
+            console.log(error)
+            mostrarRespuesta("Ups, algo salió mal. Probá de nuevo.") 
+        })
+    modal.close();
   });
 
