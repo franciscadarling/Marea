@@ -101,6 +101,7 @@ border-radius: 50%;
    justify-content: center;
  border-radius: 50%;
  aspect-ratio: 1 / 1;
+ min-width: 0;
  transition: background-color 0.2s;
  }
   
@@ -183,24 +184,32 @@ body.pagina-chatbot .botonpagina[href*="chatbot"] {
     width: fit-content;
     max-width: 100%;
     overflow-wrap: anywhere;
+    white-space: pre-wrap;
     font-family: 'Gaegu';
 }
 
-.bdetexto:last-child::before,
-.bdetexto:last-child::after {
+.bdetexto-usuario {
+    align-self: flex-end;
+    background-color: #4F349E;
+    color: #DDD5F5;
+    border-radius: 12vh 12vh 1vh 12vh;
+}
+
+.bdetexto:not(.bdetexto-usuario):last-child::before,
+.bdetexto:not(.bdetexto-usuario):last-child::after {
     content: "";
     position: absolute;
     background-color: #9B85CC;
     box-shadow: 0 0 1vh 0.3vh #7458B8BF;
     border-radius: 50%;
 }
-.bdetexto:last-child::before {
+.bdetexto:not(.bdetexto-usuario):last-child::before {
     width: 2.4vh;
     height: 2.4vh;
     left: -2.8vh;
     bottom: 1vh;
 }
-.bdetexto:last-child::after {
+.bdetexto:not(.bdetexto-usuario):last-child::after {
     width: 1.4vh;
     height: 1.4vh;
     left: -4.6vh;
