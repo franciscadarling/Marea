@@ -4,20 +4,39 @@ const mensajito = document.getElementById("mensaje")
 const burbujaAvatar = document.getElementById("burbujaAvatar")
 const eliminarH = document.getElementById("eliminar")
 const historial = document.getElementById("historial")
+const chat = document.getElementById("chat")
 const infoUsuario = localStorage.getItem('usuarioRegistrado')
 const infoGuardada = JSON.parse(infoUsuario)
 const saludo = "Hola, soy Selene. ¿En qué te puedo ayudar?"
+const fotoSelene = "./Avatar-Selene/Property 1=Dormida.png"
 
+
+function irAlFinal() {
+    chat.scrollTop = chat.scrollHeight
+}
 
 function agregarBurbuja(texto, autor = "selene") {
+    const esUsuario = autor === "usuario"
+
+    const fila = document.createElement("div")
+    fila.classList.add("fila", esUsuario ? "fila-usuario" : "fila-selene")
+
     const burbuja = document.createElement("article")
     burbuja.classList.add("bdetexto")
-    if (autor === "usuario") {
+    if (esUsuario) {
         burbuja.classList.add("bdetexto-usuario")
+        fila.append(burbuja)
+    } else {
+        const avatar = document.createElement("img")
+        avatar.classList.add("avatar-chat")
+        avatar.src = fotoSelene
+        avatar.alt = "Selene"
+        fila.append(avatar, burbuja)
     }
     burbuja.textContent = texto
-    historial.appendChild(burbuja)
-    historial.scrollTop = historial.scrollHeight 
+
+    historial.appendChild(fila)
+    irAlFinal()
 }
 
 function mostrarRespuesta(texto) {
@@ -37,7 +56,11 @@ function mostrarHistorial(entradas) {
         if (entrada.mensaje) agregarBurbuja(entrada.mensaje, "usuario")
         if (entrada.respuesta) agregarBurbuja(entrada.respuesta, "selene")
     })
-    historial.scrollTop = historial.scrollHeight
+    irAlFinal()
+    // La fuente Gaegu puede cargar despues: volvemos a bajar cuando este lista.
+    if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(irAlFinal)
+    }
 }
 
 formulario.addEventListener("submit", (event) => {
@@ -46,6 +69,7 @@ formulario.addEventListener("submit", (event) => {
     const texto = mensajito.value
     if (!texto.trim()) return
     mensajito.value = ""
+    agregarBurbuja(texto, "usuario")
     burbujaAvatar.textContent = "Dejame pensar..."
 
     fetch (`http://localhost:3000/marea/mensajeChatbot/${infoGuardada.id}`, {
