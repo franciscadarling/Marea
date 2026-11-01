@@ -126,5 +126,5 @@ inputFoto?.addEventListener('change', async function (evento) {
 });
 document.getElementById('cerrar-sesion')?.addEventListener('click', () => {
   localStorage.clear();
-  window.location.href = "../registro/index.html";
+  window.location.href = "../log-in/index.html";
 });
