@@ -169,6 +169,7 @@ document.getElementById('cerrar-sesion')?.addEventListener('click', () => {
   const botonAbrirMail = document.getElementById('mail-editar');
     const botonCerrarMail = document.getElementById('cerrar-mail');
   const modalMail = document.getElementById('inputMail');
+  const inputMail = document.getElementById('nuevoMail');
 
   botonAbrirMail.addEventListener('click', () => {
     modalMail.showModal(); // showModal() bloquea el fondo automáticamente
@@ -203,6 +204,7 @@ document.getElementById('cerrar-sesion')?.addEventListener('click', () => {
 const botonAbrirContrasena = document.getElementById('contrasena-editar');
     const botonCerrarContrasena = document.getElementById('cerrar-contrasena');
   const modalContrasena = document.getElementById('inputContrasena');
+  const inputContrasena = document.getElementById('nuevaContrasena');
 
   botonAbrirContrasena.addEventListener('click', () => {
     modalContrasena.showModal(); // showModal() bloquea el fondo automáticamente
@@ -237,6 +239,7 @@ const botonAbrirContrasena = document.getElementById('contrasena-editar');
   const botonAbrirDuracionCiclo = document.getElementById('duracionCiclo-editar');
     const botonCerrarDuracionCiclo = document.getElementById('cerrar-duracionCiclo');
   const modalDuracionCiclo = document.getElementById('inputduracionCiclo');
+  const inputDuracionCiclo = document.getElementById('nuevaDuracionCiclo');
 
   botonAbrirDuracionCiclo.addEventListener('click', () => {
     modalDuracionCiclo.showModal(); // showModal() bloquea el fondo automáticamente
@@ -245,7 +248,7 @@ const botonAbrirContrasena = document.getElementById('contrasena-editar');
   botonCerrarDuracionCiclo.addEventListener('click', () => {
      const datosusuario = localStorage.getItem('usuarioRegistrado');
     const guardado = JSON.parse(datosusuario);
-    const nuevaDuracionCiclo = inputduracionCiclo.value.trim;
+    const nuevaDuracionCiclo = inputDuracionCiclo.value.trim;
 
     fetch (`http://localhost:3000/marea/cambiarUsuario/${guardado.id}`, {
         method: "PUT",
@@ -271,6 +274,7 @@ const botonAbrirContrasena = document.getElementById('contrasena-editar');
 const botonAbrirDuracionMenstruacion = document.getElementById('duracionMenstruacion-editar');
 const botonCerrarMenstruacion = document.getElementById('cerrar-menstruacion');
   const modalDuracionMenstruacion = document.getElementById('inputduracionMenstruacion');
+  const inputDuracionMenstruacion = document.getElementById('nuevaDuracionMenstruacion');
 
   botonAbrirDuracionMenstruacion.addEventListener('click', () => {
     modalDuracionMenstruacion.showModal(); 
@@ -279,7 +283,7 @@ const botonCerrarMenstruacion = document.getElementById('cerrar-menstruacion');
   botonCerrarMenstruacion.addEventListener('click', () => {
    const datosusuario = localStorage.getItem('usuarioRegistrado');
     const guardado = JSON.parse(datosusuario);
-    const nuevaDuracionMenstruacion = inputduracionMenstruacion.value.trim;
+    const nuevaDuracionMenstruacion = inputDuracionMenstruacion.value.trim;
 
     fetch (`http://localhost:3000/marea/cambiarUsuario/${guardado.id}`, {
         method: "PUT",
