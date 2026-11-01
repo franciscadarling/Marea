@@ -8,9 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const fotoChica = document.getElementById('fotito');
     const duracionCiclo = document.getElementById("duracionCiclo");
     const duracionMenstruacion = document.getElementById("duracionMenstruacion");
-    const ultimaMenstruacion = document.getElementById('ultimaMestruacion');
     const cerrarSesion = document.getElementById('cerrar-sesion');
 
+    /* acá se muestra la info del usuario en el perfil */
     if (!datosusuario) {
         if (mail) mail.textContent = "";
         if (contrasena) contrasena.textContent = "";
@@ -50,7 +50,7 @@ const fotoPerfil = document.getElementById('fotoPerfil');
 const fotoChica = document.getElementById('fotito');
 const LADO_MAXIMO_FOTO = 512;
 
-// Achica la imagen antes de guardarla para no llenar el localStorage.
+/* Achica la imagen antes de guardarla para no llenar el localStorage. */
 function achicarImagen(archivo) {
     return new Promise((resolve, reject) => {
         const urlImagen = URL.createObjectURL(archivo);
@@ -102,7 +102,7 @@ async function guardarFotoEnServidor(foto) {
     localStorage.setItem('usuarioRegistrado', JSON.stringify(guardado));
 }
 
-inputFoto?.addEventListener('change', async function (evento) {
+inputFoto.addEventListener('change', async function (evento) {
     const archivo = evento.target.files[0];
     if (!archivo) return;
 
@@ -128,6 +128,10 @@ document.getElementById('cerrar-sesion')?.addEventListener('click', () => {
   localStorage.clear();
   window.location.href = "../log-in/index.html";
 });
+// Muestra un aviso breve debajo del perfil.
+function mostrarRespuesta(mensaje) {
+        console.log("Dato actualizado correctamente.")
+}
 
  /* Acá se abre y cierra el modal del usuario */
  const botonAbrirUsuario = document.getElementById('usuario-editar');
@@ -142,7 +146,7 @@ document.getElementById('cerrar-sesion')?.addEventListener('click', () => {
   botonCerrarUsuario.addEventListener('click', () => {
     const datosusuario = localStorage.getItem('usuarioRegistrado');
     const guardado = JSON.parse(datosusuario);
-    const nuevoUsuario = inputUsuario.value.trim;
+    const nuevoUsuario = inputUsuario.value.trim();
 
     fetch (`http://localhost:3000/marea/cambiarUsuario/${guardado.id}`, {
         method: "PUT",
@@ -153,10 +157,16 @@ document.getElementById('cerrar-sesion')?.addEventListener('click', () => {
             nombre: nuevoUsuario
         })
     })
-    .then(response => 
-        response.json())
-    .then(data => 
-        mostrarRespuesta(data.respuesta))
+    .then(response => {
+        if (!response.ok) throw new Error("El servidor respondió " + response.status);
+        return response.json();
+    })
+    .then(data => {
+        guardado.nombre = nuevoUsuario;
+        localStorage.setItem('usuarioRegistrado', JSON.stringify(guardado));
+        document.getElementById('usuario').textContent = "Nombre: " + nuevoUsuario;
+        mostrarRespuesta(data.respuesta);
+    })
         .catch(error => {
             console.log(error)
             mostrarRespuesta("Ups, algo salió mal. Probá de nuevo.") 
@@ -178,7 +188,7 @@ document.getElementById('cerrar-sesion')?.addEventListener('click', () => {
   botonCerrarMail.addEventListener('click', () => {
     const datosusuario = localStorage.getItem('usuarioRegistrado');
     const guardado = JSON.parse(datosusuario);
-    const nuevoMail = inputMail.value.trim;
+    const nuevoMail = inputMail.value.trim();
 
     fetch (`http://localhost:3000/marea/cambiarUsuario/${guardado.id}`, {
         method: "PUT",
@@ -189,15 +199,21 @@ document.getElementById('cerrar-sesion')?.addEventListener('click', () => {
             mail: nuevoMail
         })
     })
-    .then(response => 
-        response.json())
-    .then(data => 
-        mostrarRespuesta(data.respuesta))
+    .then(response => {
+        if (!response.ok) throw new Error("El servidor respondió " + response.status);
+        return response.json();
+    })
+    .then(data => {
+        guardado.mail = nuevoMail;
+        localStorage.setItem('usuarioRegistrado', JSON.stringify(guardado));
+        document.getElementById('mail').textContent = "Mail: " + nuevoMail;
+        mostrarRespuesta(data.respuesta);
+    })
         .catch(error => {
             console.log(error)
             mostrarRespuesta("Ups, algo salió mal. Probá de nuevo.") 
         })
-    modal.close();
+    modalMail.close();
   });
 
   /* Acá se abre y cierra el modal de la contraseña */
@@ -213,7 +229,7 @@ const botonAbrirContrasena = document.getElementById('contrasena-editar');
   botonCerrarContrasena.addEventListener('click', () => {
      const datosusuario = localStorage.getItem('usuarioRegistrado');
     const guardado = JSON.parse(datosusuario);
-    const nuevaContrasena = inputContrasena.value.trim;
+    const nuevaContrasena = inputContrasena.value.trim();
 
     fetch (`http://localhost:3000/marea/cambiarUsuario/${guardado.id}`, {
         method: "PUT",
@@ -224,15 +240,21 @@ const botonAbrirContrasena = document.getElementById('contrasena-editar');
             contraseña: nuevaContrasena
         })
     })
-    .then(response => 
-        response.json())
-    .then(data => 
-        mostrarRespuesta(data.respuesta))
+    .then(response => {
+        if (!response.ok) throw new Error("El servidor respondió " + response.status);
+        return response.json();
+    })
+    .then(data => {
+        guardado.password = nuevaContrasena;
+        localStorage.setItem('usuarioRegistrado', JSON.stringify(guardado));
+        document.getElementById('contrasena').textContent = "Contraseña: " + nuevaContrasena;
+        mostrarRespuesta(data.respuesta);
+    })
         .catch(error => {
             console.log(error)
             mostrarRespuesta("Ups, algo salió mal. Probá de nuevo.") 
         })
-    modal.close();
+    modalContrasena.close();
   });
   
   /* Acá se abre y cierra el modal de la duración del ciclo */
@@ -248,7 +270,7 @@ const botonAbrirContrasena = document.getElementById('contrasena-editar');
   botonCerrarDuracionCiclo.addEventListener('click', () => {
      const datosusuario = localStorage.getItem('usuarioRegistrado');
     const guardado = JSON.parse(datosusuario);
-    const nuevaDuracionCiclo = inputDuracionCiclo.value.trim;
+    const nuevaDuracionCiclo = inputDuracionCiclo.value.trim();
 
     fetch (`http://localhost:3000/marea/cambiarUsuario/${guardado.id}`, {
         method: "PUT",
@@ -256,18 +278,29 @@ const botonAbrirContrasena = document.getElementById('contrasena-editar');
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            duracionCiclo: nuevaDuracionCiclo
+            duracionCiclo: Number(nuevaDuracionCiclo)
         })
     })
-    .then(response => 
-        response.json())
-    .then(data => 
-        mostrarRespuesta(data.respuesta))
+    .then(response => {
+        if (!response.ok) throw new Error("El servidor respondió " + response.status);
+        return response.json();
+    })
+    .then(data => {
+        guardado.duracionCiclo = Number(nuevaDuracionCiclo);
+        localStorage.setItem('usuarioRegistrado', JSON.stringify(guardado));
+
+        const ciclo = JSON.parse(localStorage.getItem('miCiclo')) || {};
+        ciclo.duracion = Number(nuevaDuracionCiclo);
+        localStorage.setItem('miCiclo', JSON.stringify(ciclo));
+
+        document.getElementById('duracionCiclo').textContent = "Duración del ciclo: " + nuevaDuracionCiclo;
+        mostrarRespuesta(data.respuesta);
+    })
         .catch(error => {
             console.log(error)
             mostrarRespuesta("Ups, algo salió mal. Probá de nuevo.") 
         })
-    modal.close();
+    modalDuracionCiclo.close();
   });
 
   /* Acá se abre y cierra el modal de la duración de menstruación */
@@ -283,7 +316,7 @@ const botonCerrarMenstruacion = document.getElementById('cerrar-menstruacion');
   botonCerrarMenstruacion.addEventListener('click', () => {
    const datosusuario = localStorage.getItem('usuarioRegistrado');
     const guardado = JSON.parse(datosusuario);
-    const nuevaDuracionMenstruacion = inputDuracionMenstruacion.value.trim;
+    const nuevaDuracionMenstruacion = inputDuracionMenstruacion.value.trim();
 
     fetch (`http://localhost:3000/marea/cambiarUsuario/${guardado.id}`, {
         method: "PUT",
@@ -291,17 +324,27 @@ const botonCerrarMenstruacion = document.getElementById('cerrar-menstruacion');
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            duracionMenstruacion: nuevaDuracionMenstruacion
+            duracionMenstruacion: Number(nuevaDuracionMenstruacion)
         })
     })
-    .then(response => 
-        response.json())
-    .then(data => 
-        mostrarRespuesta(data.respuesta))
+    .then(response => {
+        if (!response.ok) throw new Error("El servidor respondió " + response.status);
+        return response.json();
+    })
+    .then(data => {
+        guardado.duracionMenstruacion = Number(nuevaDuracionMenstruacion);
+        localStorage.setItem('usuarioRegistrado', JSON.stringify(guardado));
+
+        const ciclo = JSON.parse(localStorage.getItem('miCiclo')) || {};
+        ciclo.periodo = Number(nuevaDuracionMenstruacion);
+        localStorage.setItem('miCiclo', JSON.stringify(ciclo));
+
+        document.getElementById('duracionMenstruacion').textContent = "Duración del sangrado: " + nuevaDuracionMenstruacion;
+        mostrarRespuesta(data.respuesta);
+    })
         .catch(error => {
             console.log(error)
             mostrarRespuesta("Ups, algo salió mal. Probá de nuevo.") 
         })
-    modal.close();
+    modalDuracionMenstruacion.close();
   });
-
