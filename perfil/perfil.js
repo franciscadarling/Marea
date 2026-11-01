@@ -140,6 +140,8 @@ document.getElementById('cerrar-sesion')?.addEventListener('click', () => {
   });
 
   botonCerrarUsuario.addEventListener('click', () => {
+    const datosusuario = localStorage.getItem('usuarioRegistrado');
+    const guardado = JSON.parse(datosusuario);
     const nuevoUsuario = inputUsuario.value.trim;
 
     fetch (`http://localhost:3000/marea/cambiarUsuario/${guardado.id}`, {
