@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const duracionCiclo = document.getElementById("duracionCiclo");
     const duracionMenstruacion = document.getElementById("duracionMenstruacion");
     const ultimaMenstruacion = document.getElementById('ultimaMestruacion');
+    const cerrarSesion = document.getElementById('cerrar-sesion');
 
     if (!datosusuario) {
         if (mail) mail.textContent = "";
@@ -20,9 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const guardado = JSON.parse(datosusuario);
-    const guardadoM = JSON.parse(datosMenstruacion);
+    const guardadoM = datosMenstruacion ? JSON.parse(datosMenstruacion) : {};
 
-    if (mail) mail.textContent = "Mail: " + guardado.mailUser || "";
+    if (mail) mail.textContent = "Mail: " + (guardado.mail || guardado.mailUser || "");
     
     if (contrasena) {
         contrasena.textContent = "Contraseña: " + guardado.password;
@@ -47,40 +48,83 @@ document.addEventListener('DOMContentLoaded', () => {
 const inputFoto = document.getElementById('inputFoto');
 const fotoPerfil = document.getElementById('fotoPerfil');
 const fotoChica = document.getElementById('fotito');
+const LADO_MAXIMO_FOTO = 512;
 
-inputFoto?.addEventListener('change', function(evento) {
+// Achica la imagen antes de guardarla para no llenar el localStorage.
+function achicarImagen(archivo) {
+    return new Promise((resolve, reject) => {
+        const urlImagen = URL.createObjectURL(archivo);
+        const imagen = new Image();
+
+        imagen.onload = () => {
+            URL.revokeObjectURL(urlImagen);
+            const escala = Math.min(1, LADO_MAXIMO_FOTO / Math.max(imagen.width, imagen.height));
+            const lienzo = document.createElement('canvas');
+            lienzo.width = Math.round(imagen.width * escala);
+            lienzo.height = Math.round(imagen.height * escala);
+            lienzo.getContext('2d').drawImage(imagen, 0, 0, lienzo.width, lienzo.height);
+            resolve(lienzo.toDataURL('image/jpeg', 0.85));
+        };
+
+        imagen.onerror = () => {
+            URL.revokeObjectURL(urlImagen);
+            reject(new Error('No se pudo leer la imagen.'));
+        };
+
+        imagen.src = urlImagen;
+    });
+}
+
+async function guardarFotoEnServidor(foto) {
+    const datosGuardados = localStorage.getItem('usuarioRegistrado');
+    if (!datosGuardados) {
+        throw new Error('No hay un usuario con sesión iniciada.');
+    }
+
+    const guardado = JSON.parse(datosGuardados);
+    const userId = guardado.id;
+
+    if (!userId) {
+        throw new Error('No pudimos identificar tu usuario. Cerrá sesión y volvé a iniciar sesión.');
+    }
+
+    const respuesta = await fetch(`http://localhost:3000/marea/nuevafoto/${userId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ foto })
+    });
+
+    if (!respuesta.ok) {
+        throw new Error(`El servidor respondió ${respuesta.status}.`);
+    }
+
+    guardado.foto = foto;
+    localStorage.setItem('usuarioRegistrado', JSON.stringify(guardado));
+}
+
+inputFoto?.addEventListener('change', async function (evento) {
     const archivo = evento.target.files[0];
     if (!archivo) return;
 
-    const urlImagen = URL.createObjectURL(archivo);
-    if (fotoPerfil) fotoPerfil.src = urlImagen;
-    if (fotoChica) fotoChica.src = urlImagen;
+    if (!archivo.type.startsWith('image/')) {
+        alert('Elegí un archivo de imagen.');
+        return;
+    }
 
-    const lector = new FileReader();
-    lector.onload = async function(e) {
-        const base64String = e.target.result;
-        const datosGuardados = localStorage.getItem('usuarioRegistrado');
-        if (!datosGuardados) return;
+    try {
+        // Se achica antes de subirla: una foto de celular en base64 pesa varios MB
+        // y el backend la rechaza por tamaño.
+        const fotoComprimida = await achicarImagen(archivo);
+        if (fotoPerfil) fotoPerfil.src = fotoComprimida;
+        if (fotoChica) fotoChica.src = fotoComprimida;
 
-        try {
-            const guardado = JSON.parse(datosGuardados);
-            const userId = guardado.id;
-
-            if (!userId) return;
-
-            const respuesta = await fetch(`http://localhost:3000/marea/nuevafoto/${userId}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ foto: base64String })
-            });
-
-            if (respuesta.ok) {
-                guardado.foto = base64String;
-                localStorage.setItem('usuarioRegistrado', JSON.stringify(guardado));
-            }
-        } catch (error) {
-            console.error("Error al conectar con el servidor:", error);
-        }
-    };
-    lector.readAsDataURL(archivo);
+        await guardarFotoEnServidor(fotoComprimida);
+    } catch (error) {
+        console.error('No se pudo guardar la foto de perfil:', error);
+        alert('No se pudo guardar la foto: ' + (error.message || 'error desconocido'));
+    }
+});
+document.getElementById('cerrar-sesion')?.addEventListener('click', () => {
+  localStorage.clear();
+  window.location.href = "../registro/index.html";
 });
