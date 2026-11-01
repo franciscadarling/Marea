@@ -153,13 +153,28 @@ body.pagina-educacion  .botonpagina[href*="educacion"] {
     flex: 0 0 auto; 
     aspect-ratio: 1 / 1;
     height: 22dvh; 
-    background-color: #858686;
-    color: white;
-    border-radius: 3vw;
+    background-color: #DDD5F5;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 80%;
+    border-radius: 5vw;
     scroll-snap-align: start; 
     overflow: hidden;
     position: relative; 
-    border: 1dvh, #4F349E;;
+    border: 0.5vh solid #7458B8;
+}
+
+.tarjeta.fase-1 {
+    background-image: url("Fase1.png");
+}
+.tarjeta.fase-2 {
+    background-image: url("Fase2.png");
+}
+.tarjeta.fase-3 {
+    background-image: url("Fase3.png");
+}
+.tarjeta.fase-4 {
+    background-image: url("Fase4.png");
 }
 
 .tarjeta.leido::after {
@@ -184,7 +199,7 @@ body.pagina-educacion  .botonpagina[href*="educacion"] {
     text-align: center;
     padding: 1.5dvh;
     text-decoration: none;
-    color: white;
+    color: rgb(23, 23, 23);
     gap: 1vh;
 }
 
@@ -198,7 +213,7 @@ body.pagina-educacion  .botonpagina[href*="educacion"] {
 .link-articulo h2 {
     font-size: clamp(0.8rem, 1.8dvh, 1.1rem);
     line-height: 1.2;
-    color: #e0e0e0;
+    color: rgb(36, 36, 36);
     font-family: "Gaegu", sans-serif;
     font-weight: normal;
     padding: 0;
