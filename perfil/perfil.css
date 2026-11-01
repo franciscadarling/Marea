@@ -133,6 +133,22 @@ border-radius: 50%;
     color:#DDD5F5;
 }
 
+.dato-fila {
+    display: flex;
+    align-items: center;
+    gap: 1vh;
+    width: 100%;
+}
+
+.punto-editar {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 1.6vh;
+    height: 1.6vh;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
 .foto-perfil-grande {
     position: relative; 
     display: flex;
@@ -161,4 +177,17 @@ border-radius: 50%;
     opacity: 0;         
     cursor: pointer;    
     z-index: 10;        
+}
+.cerrar-sesion {
+    background-color: #4F349E;
+    color: #DDD5F5;
+    border: none;
+    padding: 1.5vh 3vw;
+    font-size: 2.5vh;
+    border-radius: 2.5vh;
+    cursor: pointer;
+    margin-top: 2vh; 
+    justify-self: center;
+    align-self: center;
+    font-family: Gaegu, serif;
 }
