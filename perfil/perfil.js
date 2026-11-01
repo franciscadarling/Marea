@@ -128,18 +128,41 @@ document.getElementById('cerrar-sesion')?.addEventListener('click', () => {
   localStorage.clear();
   window.location.href = "../log-in/index.html";
 });
+
  /* Acá se abre y cierra el modal del usuario */
  const botonAbrirUsuario = document.getElementById('usuario-editar');
     const botonCerrarUsuario = document.getElementById('cerrar-usuario');
   const modal = document.getElementById('inputUsuario');
+    const inputUsuario = document.getElementById('nuevoUsuario');
 
   botonAbrirUsuario.addEventListener('click', () => {
     modal.showModal(); // showModal() bloquea el fondo automáticamente
   });
 
   botonCerrarUsuario.addEventListener('click', () => {
+    const nuevoUsuario = inputUsuario.value.trim;
+
+    fetch (`http://localhost:3000/marea/cambiarUsuario/${guardado.id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            nombre: nuevoUsuario
+        })
+    })
+    .then(response => 
+        response.json())
+    .then(data => 
+        mostrarRespuesta(data.respuesta))
+        .catch(error => {
+            console.log(error)
+            mostrarRespuesta("Ups, algo salió mal. Probá de nuevo.") 
+        })
     modal.close();
   });
+
+
  /* Acá se abre y cierra el modal del mail */
   const botonAbrirMail = document.getElementById('mail-editar');
     const botonCerrarMail = document.getElementById('cerrar-mail');
@@ -187,7 +210,7 @@ const botonCerrarMenstruacion = document.getElementById('cerrar-menstruacion');
     modalDuracionMenstruacion.showModal(); 
   });
 
-  botonCerrarDuracionMenstruacion.addEventListener('click', () => {
+  botonCerrarMenstruacion.addEventListener('click', () => {
     modalDuracionMenstruacion.close();
   });
 
