@@ -147,6 +147,8 @@ border-radius: 50%;
     height: 1.6vh;
     border-radius: 50%;
     cursor: pointer;
+    background-color: transparent;
+    border: none;
 }
 
 .foto-perfil-grande {

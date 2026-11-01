@@ -128,3 +128,66 @@ document.getElementById('cerrar-sesion')?.addEventListener('click', () => {
   localStorage.clear();
   window.location.href = "../log-in/index.html";
 });
+ /* Acá se abre y cierra el modal del usuario */
+ const botonAbrirUsuario = document.getElementById('usuario-editar');
+    const botonCerrarUsuario = document.getElementById('cerrar-usuario');
+  const modal = document.getElementById('inputUsuario');
+
+  botonAbrirUsuario.addEventListener('click', () => {
+    modal.showModal(); // showModal() bloquea el fondo automáticamente
+  });
+
+  botonCerrarUsuario.addEventListener('click', () => {
+    modal.close();
+  });
+ /* Acá se abre y cierra el modal del mail */
+  const botonAbrirMail = document.getElementById('mail-editar');
+    const botonCerrarMail = document.getElementById('cerrar-mail');
+  const modalMail = document.getElementById('inputMail');
+
+  botonAbrirMail.addEventListener('click', () => {
+    modalMail.showModal(); // showModal() bloquea el fondo automáticamente
+  });
+
+  botonCerrarMail.addEventListener('click', () => {
+    modalMail.close();
+  });
+
+  /* Acá se abre y cierra el modal de la contraseña */
+const botonAbrirContrasena = document.getElementById('contrasena-editar');
+    const botonCerrarContrasena = document.getElementById('cerrar-contrasena');
+  const modalContrasena = document.getElementById('inputContrasena');
+
+  botonAbrirContrasena.addEventListener('click', () => {
+    modalContrasena.showModal(); // showModal() bloquea el fondo automáticamente
+  });
+
+  botonCerrarContrasena.addEventListener('click', () => {
+    modalContrasena.close();
+  });
+  
+  /* Acá se abre y cierra el modal de la duración del ciclo */
+  const botonAbrirDuracionCiclo = document.getElementById('duracionCiclo-editar');
+    const botonCerrarDuracionCiclo = document.getElementById('cerrar-duracionCiclo');
+  const modalDuracionCiclo = document.getElementById('inputduracionCiclo');
+
+  botonAbrirDuracionCiclo.addEventListener('click', () => {
+    modalDuracionCiclo.showModal(); // showModal() bloquea el fondo automáticamente
+  });
+
+  botonCerrarDuracionCiclo.addEventListener('click', () => {
+    modalDuracionCiclo.close();
+  });
+  /* Acá se abre y cierra el modal de la duración de menstruación */
+const botonAbrirDuracionMenstruacion = document.getElementById('duracionMenstruacion-editar');
+const botonCerrarMenstruacion = document.getElementById('cerrar-menstruacion');
+  const modalDuracionMenstruacion = document.getElementById('inputduracionMenstruacion');
+
+  botonAbrirDuracionMenstruacion.addEventListener('click', () => {
+    modalDuracionMenstruacion.showModal(); 
+  });
+
+  botonCerrarDuracionMenstruacion.addEventListener('click', () => {
+    modalDuracionMenstruacion.close();
+  });
+
