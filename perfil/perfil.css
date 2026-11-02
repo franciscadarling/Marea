@@ -203,3 +203,73 @@ border-radius: 50%;
     font-family: Gaegu, serif;
     font-size: 2.3vh;
 }
+dialog.popup {
+    display: none; 
+    height: 20dvh; 
+    width: 80vw;  
+    max-width: 350px;
+    padding: 2dvh 2dvw;
+    padding-bottom: 1dvh;
+    background-color: #DDD5F5;
+    border-radius: 20px;
+    flex-direction: column;
+    border: none;
+    position: relative; 
+    justify-self: center;
+    align-self: center;
+}
+
+dialog.popup[open] {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    color: #1A0F33;
+    border: 0.4dvh solid #4F349E;
+    box-shadow: 0 0 2.5dvh #4F349E, 0 0 1dvh rgba(79, 52, 158, 0.6);
+}
+
+.cerrar-popup-btn {
+    position: absolute;
+    top: 1dvh;
+    right: 1.5dvh;
+    width: 3.5dvh;
+    height: 3.5dvh;
+    border-radius: 50%;
+    background-color: #4F349E;
+    color: #DDD5F5;
+    border: none;
+    font-size: 2dvh;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 0 1dvh rgba(79, 52, 158, 0.5);
+}
+
+h2 {
+    font-size: 3dvh;
+}
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5); 
+  }
+.guardar-popup{
+    width: 50%;
+    margin: 1dvh;
+    height: 3dvh;
+    background-color: #4F349E;
+    font-family: "Gaegu", Serif ;
+    color: #DDD5F5;
+    border-radius: 15%;
+    border: none;
+    box-shadow: 0 0 2dvh rgba(142, 115, 227, 0.4);
+    align-self: center;
+}
+.input-popup{
+    height: 3dvh;
+    width: 80%;
+    margin-top: 1dvh;
+    border-color: #4F349E;
+    border-radius: 5%;
+    font-family: "Gaegu", Serif;
+}
