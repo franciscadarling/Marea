@@ -273,7 +273,8 @@ body.pagina-chatbot .botonpagina[href*="chatbot"] {
     width: 100%;
     min-height: 11.6dvh;
     background-color: #DDD5F5;
-    box-shadow: 0 0 2dvh #4F349E;
+    border: 0.25dvh solid #4F349E;
+    box-shadow: 0 0 2dvh #4F349E, 0 0 4dvh rgba(79, 52, 158, 0.45);
     border-radius: 2.5dvh;
     padding: 1.8dvh 2dvh;
 }
@@ -289,12 +290,12 @@ body.pagina-chatbot .botonpagina[href*="chatbot"] {
     resize: none;
     color: #1A0F33;
     font-family: "Quicksand", sans-serif;
-    font-size: 2dvh;
+    font-size: 2.5dvh;
     line-height: 1.4;
 }
 
 .inputpregunta::placeholder {
-    color: #6C5A9E;
+    color: #1A0F33;
 }
 
 .enviar {

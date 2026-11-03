@@ -6,136 +6,145 @@
 
 body {
     height: 100dvh;
-    overflow: hidden; 
-    background-image: url(../../Fondo\ predeterminado.png);
+    overflow: hidden;
+    background-color: #1A0F33;
 }
+
 @font-face {
     font-family: 'Gaegu';
     src: url('../../Gaegu-Bold-Tildes.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
-  }
+}
 
 .app {
     width: 100%;
-    height: 100dvh; 
+    height: 100dvh;
     display: flex;
     flex-direction: column;
 }
 
 .pantalla {
     width: 100%;
-    flex: 1; 
-    min-height: 0; 
-    display: flex;
-    align-items: center; 
-    justify-content: center;
-    flex-direction: column;
-    gap: 5%; 
-    padding: 5% 0;
-}
-.inputpapa{
-    background-color: #4F349E;
+    flex: 1;
+    min-height: 0;
     display: flex;
     flex-direction: column;
-    width: 70dvw;
-    height: 40dvh;
     align-items: center;
-    justify-content: space-evenly;
-    border-radius: 5%;
-    box-shadow: 0 0 2dvh rgba(142, 115, 227, 0.4);
-}
-.email{
-display: flex;
-flex-direction: column;
-width: 100%;
-align-items: center;
-justify-content: center;
-margin-top: 6%;
+    justify-content: flex-start;
+    padding-top: 18dvh;
 }
 
-.contrasena{
-display: flex;
-flex-direction: column;
-width: 100%;
-align-items: center;
-justify-content: center;
+h1 {
+    margin-bottom: 2.2dvh;
+    font-family: 'Gaegu', Arial;
+    font-size: min(9.4vw, 4.6dvh);
+    line-height: 1;
+    color: #DDD5F5;
+    text-align: center;
 }
-.input{
-    width: 80%;
-    margin-bottom: 6%;
+
+.inputpapa {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80dvw;
+    height: 42dvh;
+    padding: 3.8dvh 7dvw 0;
+    background-color: #4F349E;
+    border-radius: min(5.3vw, 2.5dvh);
+}
+
+.email,
+.contrasena {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+}
+
+.contrasena {
+    margin-top: 4.2dvh;
+}
+
+h2 {
+    margin-bottom: 1.6dvh;
+    margin-left: -1.2dvw;
+    font-family: 'Gaegu', Arial;
+    font-size: min(6vw, 2.7dvh);
+    font-weight: normal;
+    line-height: 1;
+    color: #DDD5F5;
+}
+
+.input {
+    width: 100%;
     height: 4dvh;
+    padding: 0 2.2dvh;
+    background-color: #DDD5F5;
+    border: 0.25dvh solid #3D278A;
+    box-shadow: 0 0 1.5dvh rgba(221, 213, 245, 0.7);
+    border-radius: min(2.7vw, 1.3dvh);
+    outline: none;
+    font-family: 'Gaegu', Arial;
+    font-size: min(5.2vw, 2.4dvh);
+    color: #1A0F33;
 }
+
 .campo-contrasena {
-    position: relative;
-    width: 80%;
-    margin-bottom: 6%;
-    border-radius: 5%;
-    border: none;  
-  outline: none;
+    width: 100%;
 }
+
 .input-contrasena {
     width: 100%;
-    margin-bottom: 0;
-    padding-right: 42px;
-    border-radius: 5%;
-    border: none;  
-    outline: none;
 }
 
-h1{
-    font-family: Gaegu, Arial;
-    color: white;
-}
-h2{
-    margin-bottom: 6%;
-    align-self: flex-start;
-    margin-left: 10%;
-    font-family: Gaegu, Arial;
-    color: white;
-}
-.boton{
+.boton {
     display: flex;
-    margin-bottom: 3dvh;
-    flex-direction: row;
-    justify-content: center;
-    padding: 1.5dvw;
     align-items: center;
-    font-size: 2.5dvh;
-    background-color: #1A0F33;
-    border-color: #4F349E;
-    border-radius: 3vh;
-    border: 0.3vh solid;
-    width: 50%;
-    font-family: 'Gaegu', 'Serif';
-    color: white;
-    box-shadow: 0 0 2dvh rgba(142, 115, 227, 0.4);
+    justify-content: center;
+    width: 48dvw;
+    height: 4.6dvh;
+    margin-top: 6.2dvh;
+    background-color: #DDD5F5;
+    color: #1A0F33;
+    border: 0.25dvh solid #3D278A;
+    box-shadow: 0 0 2dvh rgba(221, 213, 245, 0.8);
+    border-radius: 999px;
+    font-family: 'Gaegu', Arial;
+    font-size: min(7.4vw, 3.4dvh);
+    line-height: 1;
+    cursor: pointer;
 }
 
 .mensaje-error {
+    width: 100%;
+    margin-top: 1.2dvh;
+    font-family: 'Gaegu', Arial;
+    font-size: min(4.6vw, 2.1dvh);
     color: #ffb4b4;
     text-align: center;
-    margin: 0 8% 2%;
-    font-family: Gaegu, Arial;
 }
 
-.boton-2{
+.boton-2 {
     display: flex;
-    align-items: center;
     justify-content: center;
+    margin-top: 5.8dvh;
 }
-p{
-    font-family: Gaegu, Arial;
-    text-decoration: none; 
-    color: white;
-    font-size: 2dvh;
+
+p {
+    font-family: 'Gaegu', Arial;
+    color: #FFFFFF;
+    font-size: min(6.5vw, 3.1dvh);
 }
+
 a {
-    color: inherit;            
-    text-decoration: none; }   
+    color: inherit;
+    text-decoration: none;
+}
 
 a:visited, a:hover, a:active, a:focus {
-    color: inherit;            
-    text-decoration: none;     
-    outline: none;            
+    color: inherit;
+    text-decoration: none;
+    outline: none;
 }
