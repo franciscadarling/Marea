@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
           boton.classList.toggle('activo');
       });
   });
+  
    function iniciar() {
     const usuario = JSON.parse(localStorage.getItem("usuarioRegistrado")) 
     const id = usuario?.id

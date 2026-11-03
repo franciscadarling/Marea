@@ -108,10 +108,11 @@ border-radius: 50%;
 body.pagina-home       .botonpagina[href$="index.html"][href^="../index"],
 body.pagina-chatbot    .botonpagina[href*="chatbot"],
 body.pagina-registro   .botonpagina[href*="registro"] {
- background-color: #2E1B6B;
+ background-color: transparent;
 };
 body.pagina-calendario .botonpagina[href*="calendario"],
 body.pagina-educacion  .botonpagina[href*="educacion"],
+
   .botonpagina img {
    max-width: 65%;
    max-height: 65%;
@@ -254,10 +255,12 @@ h2 {
      transition: box-shadow 0.3s ease;
 }
 
-button.activo {
+button.activo .imagenes {
+  border-radius: 1.7vh;
   box-shadow:
-    0 0 2vh 0.4vh rgba(255, 255, 255, 0.55),
-    0 0 5vh 1vh rgba(255, 255, 255, 0.25);
+   0 0 1vh 0.25vh rgba(255, 255, 255, 0.9),
+    0 0 2vh 1vh rgba(255, 255, 255, 0.6),
+    0 0 2.5vh 1.5vh rgba(255, 255, 255, 0.35);
   }
 
 .imagenes{

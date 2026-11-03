@@ -1,4 +1,5 @@
 const API = "http://localhost:3000/marea";
+const FASES = 4;
 
 const contenedores = {
     menstruacion: document.getElementById("carrusel-1"),
@@ -45,6 +46,8 @@ function esLeido(item) {
 function renderizarTarjetas(listaArticulos, idsLeidos, pendientes, claseFiltro, contenedor) {
     contenedor.innerHTML = "";
 
+    let posicion = 0;
+
     listaArticulos.forEach(articulo => {
         if (articulo.clase !== claseFiltro) return;
 
@@ -53,8 +56,11 @@ function renderizarTarjetas(listaArticulos, idsLeidos, pendientes, claseFiltro, 
         // un cambio pendiente (todavía no confirmado) manda sobre el servidor
         const estaLeido = (id in pendientes) ? pendientes[id] : idsLeidos.has(id);
 
+        const numeroFase = (posicion % FASES) + 1;
+        posicion++;
+
         const tarjeta = document.createElement("article");
-        tarjeta.className = "tarjeta" + (estaLeido ? " leido" : "");
+        tarjeta.className = "tarjeta fase-" + numeroFase + (estaLeido ? " leido" : "");
 
         const link = document.createElement("a");
         link.className = "link-articulo";

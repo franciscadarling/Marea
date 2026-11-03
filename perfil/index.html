@@ -32,10 +32,11 @@
                     <button class="punto-editar" id="usuario-editar"><img src="group 7.png" alt="Editar"></button>
                 </div>
 
-                <dialog id="inputUsuario">
+                <dialog id="inputUsuario" class="popup">
+                    <button class="cerrar-popup-btn" onclick="document.getElementById('inputUsuario').close()">✕</button>
                 <h2>Cambia tu nombre de usuario</h2>
-                <input type="text" id="nuevoUsuario" placeholder="Nuevo nombre de usuario">
-                <button id="cerrar-usuario">Guardar</button>
+                <input class="input-popup" type="text" id="nuevoUsuario" placeholder="Nuevo nombre de usuario">
+                <button id="cerrar-usuario" class="guardar-popup">Guardar</button>
                 </dialog>
 
                 <div class="dato-fila">
@@ -43,10 +44,11 @@
                     <button class="punto-editar" id="mail-editar"><img src="group 7.png" alt="Editar"></button>
                 </div>
 
-                <dialog id="inputMail">
+                <dialog id="inputMail" class="popup">
+                    <button class="cerrar-popup-btn" onclick="document.getElementById('inputUsuario').close()">✕</button>
                 <h2>Cambia tu correo electrónico</h2>
-                <input type="email" id="nuevoMail" placeholder="Nuevo correo electrónico">
-                <button id="cerrar-mail">Guardar</button>
+                <input class="input-popup" type="email" id="nuevoMail" placeholder="Nuevo correo electrónico">
+                <button id="cerrar-mail" class="guardar-popup">Guardar</button>
                 </dialog>
 
                 <div class="dato-fila">
@@ -54,10 +56,11 @@
                     <button class="punto-editar" id="contrasena-editar"><img src="group 7.png" alt="Editar"></button>
                 </div>
 
-                <dialog id="inputContrasena">
+                <dialog id="inputContrasena" class="popup">
+                    <button class="cerrar-popup-btn" onclick="document.getElementById('inputUsuario').close()">✕</button>
                 <h2>Cambia tu contraseña</h2>
-                <input type="password" id="nuevaContrasena" placeholder="Nueva contraseña">
-                <button id="cerrar-contrasena">Guardar</button>
+                <input class="input-popup" type="password" id="nuevaContrasena" placeholder="Nueva contraseña">
+                <button id="cerrar-contrasena" class="guardar-popup">Guardar</button>
                 </dialog>
 
                 </section>
@@ -69,10 +72,11 @@
                     <button class="punto-editar" id="duracionCiclo-editar"><img src="group 7.png" alt="Editar"></button>
                 </div>
 
-                <dialog id="inputduracionCiclo">
+                <dialog id="inputduracionCiclo" class="popup">
+                    <button class="cerrar-popup-btn" onclick="document.getElementById('inputUsuario').close()">✕</button>
                 <h2>Cambia la duración del ciclo</h2>
-                <input type="number" id="nuevaDuracionCiclo" placeholder="Nueva duración del ciclo">
-                <button id="cerrar-duracionCiclo">Guardar</button>
+                <input class="input-popup" type="number" id="nuevaDuracionCiclo" placeholder="Nueva duración del ciclo">
+                <button id="cerrar-duracionCiclo" class="guardar-popup">Guardar</button>
                 </dialog>
 
                 <div class="dato-fila">
@@ -80,10 +84,11 @@
                     <button class="punto-editar" id="duracionMenstruacion-editar"><img src="group 7.png" alt="Editar"></button>
                 </div>
 
-                <dialog id="inputduracionMenstruacion">
+                <dialog id="inputduracionMenstruacion" class="popup">
+                    <button class="cerrar-popup-btn" onclick="document.getElementById('inputUsuario').close()">✕</button>
                 <h2>Cambia la duración de la menstruación</h2>
-                <input type="number" id="nuevaDuracionMenstruacion" placeholder="Nueva duración de la menstruación">
-                <button id="cerrar-menstruacion">Guardar</button>
+                <input type="number" id="nuevaDuracionMenstruacion" placeholder="Nueva duración de la menstruación" class="input-popup">
+                <button id="cerrar-menstruacion" class="guardar-popup">Guardar</button>
                 </dialog>
 
             </section>
