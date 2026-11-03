@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (duracionCiclo) duracionCiclo.textContent = "Duración del ciclo: " +guardadoM.duracion || "";
     
     if (duracionMenstruacion) {
-        duracionMenstruacion.textContent = "Duración del sangrado: " + guardadoM.periodo;
+        duracionMenstruacion.textContent = "Duración del sangrado: " + guardado.duracionMenstruacion;
     }
 
 

@@ -1,363 +1,236 @@
-document.addEventListener('DOMContentLoaded', function() {
-  const contenedor = document.querySelector('.pantalla');
-  const calendarioScroll = document.getElementById('calendario-scroll');
-  
-  let diasRegistrados = new Set();
-  let diasPredichos = new Set();
+document.addEventListener('DOMContentLoaded', function () {
 
-  const usuario = JSON.parse(localStorage.getItem("usuarioRegistrado"));
-  const usuarioId = usuario?.id;
+  /* Variables y constantes*/
+  const contenedor = document.querySelector('.pantalla')
+  const calendarioScroll = document.getElementById('calendario-scroll')
+  const usuario = JSON.parse(localStorage.getItem('usuarioRegistrado'))
+  const nombresMes = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+  const diasSemana = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom']
+  let diasRegistrados = new Set()
+  let diasPredichos = new Set()
+  const hoy = new Date()
+  const limiteFuturo = new Date(hoy.getFullYear(), hoy.getMonth() + 6, 1)
+  let fechaAdelante = new Date(hoy.getFullYear(), hoy.getMonth(), 1)
+  let fechaAtras = new Date(hoy.getFullYear(), hoy.getMonth(), 1)
 
-  // Duración del sangrado: primero la del usuario, después la que ya calculó la rueda.
-  function obtenerDuracionMenstruacion() {
-    let duracion = Number(usuario?.duracionMenstruacion);
-
-    if (!Number.isFinite(duracion) || duracion < 1) {
-      try {
-        const ciclo = JSON.parse(localStorage.getItem("miCiclo"));
-        duracion = Number(ciclo?.periodo);
-      } catch (e) {
-        duracion = NaN;
-      }
-    }
-
-    if (!Number.isFinite(duracion) || duracion < 1) duracion = 5;
-    return Math.min(Math.round(duracion), 14);
-  }
-
-  function fechaIso(valor) {
-    if (!valor) return "";
-
-    if (valor instanceof Date) {
-      if (Number.isNaN(valor.getTime())) return "";
-      return `${valor.getFullYear()}-${String(valor.getMonth() + 1).padStart(2, "0")}-${String(valor.getDate()).padStart(2, "0")}`;
-    }
-
-    // Solo aceptamos fechas con formato AAAA-MM-DD (el servidor a veces
-    // devuelve textos de error y no queremos marcarlos como días).
-    const coincidencia = String(valor).match(/^(\d{4})-(\d{2})-(\d{2})/);
-    return coincidencia ? coincidencia[0] : "";
+  function fechaIso(fecha) {
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0')
+    const dia = String(fecha.getDate()).padStart(2, '0')
+    return `${fecha.getFullYear()}-${mes}-${dia}`
   }
 
   function sumarDias(fechaISO, cantidad) {
-    const [anio, mes, dia] = fechaISO.split("-").map(Number);
-    const fecha = new Date(anio, mes - 1, dia + cantidad);
-    return `${fecha.getFullYear()}-${String(fecha.getMonth() + 1).padStart(2, "0")}-${String(fecha.getDate()).padStart(2, "0")}`;
+    const [anio, mes, dia] = fechaISO.split('-').map(Number)
+    return fechaIso(new Date(anio, mes - 1, dia + cantidad))
   }
 
   function diferenciaEnDias(desdeISO, hastaISO) {
-    const [a1, m1, d1] = desdeISO.split("-").map(Number);
-    const [a2, m2, d2] = hastaISO.split("-").map(Number);
-    return Math.round((new Date(a2, m2 - 1, d2) - new Date(a1, m1 - 1, d1)) / 86400000);
+    const [a1, m1, d1] = desdeISO.split('-').map(Number)
+    const [a2, m2, d2] = hastaISO.split('-').map(Number)
+    return Math.round((new Date(a2, m2 - 1, d2) - new Date(a1, m1 - 1, d1)) / 86400000)
   }
 
-  // Períodos guardados localmente al registrarlos, por si el servidor
-  // todavía no los devuelve o solo devuelve el primer día.
-  function leerPeriodosLocales() {
-    if (usuarioId === undefined || usuarioId === null) return [];
-    try {
-      const guardado = JSON.parse(localStorage.getItem(`periodosLocales_${usuarioId}`));
-      return Array.isArray(guardado) ? guardado : [];
-    } catch (e) {
-      return [];
+  function normalizarDiasMarcados(datos, inicioUltimo) {
+    const duracion = usuario.duracionMenstruacion
+    const registrados = new Set()
+    const predichos = new Set()
+    const todas = new Set()
+
+    const finRegistrado = inicioUltimo
+      ? sumarDias(inicioUltimo, Math.max(duracion, 7) - 1)
+      : fechaIso(new Date())
+
+    // Días que ya devuelve el servidor (registrados y predichos).
+    if (Array.isArray(datos)) {
+      datos.forEach((fecha) => {
+        todas.add(fecha)
+        if (fecha <= finRegistrado) registrados.add(fecha)
+        else predichos.add(fecha)
+      })
     }
-  }
 
-  // Devuelve dos conjuntos:
-  //  - registrados: días que la usuaria cargó realmente.
-  //  - predichos: días estimados (los que completa el calendario y los que
-  //    calcula el servidor para los próximos ciclos).
-  function normalizarDiasMarcados(datos, duracionMenstruacion, inicioUltimo) {
-    const registrados = new Set();
-    const predichos = new Set();
-    const todas = new Set();
-
-    const hoyISO = fechaIso(new Date());
-    const inicioRegistrado = fechaIso(inicioUltimo);
-
-    // El servidor agrega los días predichos después del último período
-    // cargado. Todo lo anterior a ese período es dato real.
-    const finRegistrado = inicioRegistrado
-      ? sumarDias(inicioRegistrado, Math.max(duracionMenstruacion, 7) - 1)
-      : hoyISO;
-
-    const clasificar = (fecha) => {
-      if (fecha <= finRegistrado) registrados.add(fecha);
-      else predichos.add(fecha);
-      todas.add(fecha);
-    };
-
-    // Agrega un período a partir de su primer día. El primer día es el que
-    // cargó la usuaria; el resto de la duración es una predicción.
-    const agregarRango = (inicio, duracion) => {
-      const fechaInicio = fechaIso(inicio);
-      if (!fechaInicio) return;
-
-      const dias = Math.max(
-        1,
-        Math.min(Math.round(Number(duracion) || duracionMenstruacion), 14)
-      );
-
+    // Períodos guardados en el navegador al registrarlos.
+    const locales = JSON.parse(localStorage.getItem(`periodosLocales_${usuario.id}`) || '[]')
+    locales.forEach((periodo) => {
+      const inicio = typeof periodo === 'string' ? periodo : periodo.inicio
+      const dias = Number(periodo.duracion) || duracion
       for (let i = 0; i < dias; i++) {
-        const fecha = sumarDias(fechaInicio, i);
-        if (i === 0) registrados.add(fecha);
-        else predichos.add(fecha);
-        todas.add(fecha);
+        const fecha = sumarDias(inicio, i)
+        if (i === 0) registrados.add(fecha)
+        else predichos.add(fecha)
+        todas.add(fecha)
       }
-    };
+    })
 
-    const agregarItem = (item) => {
-      if (!item) return;
-
-      if (typeof item === "string" || item instanceof Date) {
-        const fecha = fechaIso(item);
-        if (fecha) clasificar(fecha);
-        return;
-      }
-
-      if (typeof item !== "object") return;
-
-      const fechasDelItem = item.fechasDeMenstruacion ?? item.fechasMenstruacion ?? item.fechas ?? item.dias;
-      if (Array.isArray(fechasDelItem)) {
-        fechasDelItem.forEach((fecha) => {
-          const fechaNormalizada = fechaIso(fecha);
-          if (fechaNormalizada) clasificar(fechaNormalizada);
-        });
-        return;
-      }
-
-      const inicio = item.inicio ?? item.fecha;
-      if (inicio) agregarRango(inicio, item.duracion ?? duracionMenstruacion);
-    };
-
-    (datos == null ? [] : Array.isArray(datos) ? datos : [datos]).forEach(agregarItem);
-
-    // Períodos guardados localmente al registrarlos (el primer día es real).
-    leerPeriodosLocales().forEach(agregarItem);
-
-    // Completamos cada período cargado hasta la duración configurada. Los
-    // días que agrega el calendario son predichos, no registrados.
-    const ordenadas = [...todas].filter(Boolean).sort();
-
-    let i = 0;
+    // Agrupamos días seguidos y dejamos cada período con la duración configurada.
+    const ordenadas = [...todas].sort()
+    let i = 0
     while (i < ordenadas.length) {
-      let j = i;
+      let fin = i
       while (
-        j + 1 < ordenadas.length &&
-        diferenciaEnDias(ordenadas[j], ordenadas[j + 1]) < duracionMenstruacion
+        fin + 1 < ordenadas.length &&
+        diferenciaEnDias(ordenadas[fin], ordenadas[fin + 1]) < duracion
       ) {
-        j++;
+        fin++
       }
 
-      const grupo = ordenadas.slice(i, j + 1);
-      const inicio = grupo.find((fecha) => registrados.has(fecha));
+      const grupo = ordenadas.slice(i, fin + 1)
+      const inicio = grupo.find((fecha) => registrados.has(fecha)) || grupo[0]
 
-      if (inicio) {
-        const fin = grupo[grupo.length - 1];
-        const diasDelGrupo = diferenciaEnDias(inicio, fin) + 1;
+      grupo.forEach((fecha) => {
+        if (diferenciaEnDias(inicio, fecha) >= duracion) predichos.delete(fecha)
+      })
 
-        // Se completa hasta la duración (también rellena huecos internos).
-        const diasAMarcar = Math.max(diasDelGrupo, duracionMenstruacion);
-        for (let d = 0; d < diasAMarcar; d++) {
-          const fecha = sumarDias(inicio, d);
-          if (!registrados.has(fecha)) predichos.add(fecha);
-        }
+      for (let d = 1; d < duracion; d++) {
+        const fecha = sumarDias(inicio, d)
+        if (!registrados.has(fecha)) predichos.add(fecha)
       }
 
-      i = j + 1;
+      i = fin + 1
     }
 
-    // Un día registrado nunca se muestra como predicho.
-    registrados.forEach((fecha) => predichos.delete(fecha));
 
-    return { registrados, predichos };
+    registrados.forEach((fecha) => predichos.delete(fecha))
+
+    return { registrados, predichos }
   }
-
-  const nombresMes = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-  const diasSemana = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
 
   function crearBloqueMes(año, mes) {
-    const bloque = document.createElement('div');
-    bloque.className = 'mes-bloque';
+    const bloque = document.createElement('div')
+    bloque.className = 'mes-bloque'
 
-    const titulo = document.createElement('div');
-    titulo.className = 'mes-titulo';
-    titulo.textContent = `${nombresMes[mes]} ${año}`;
-    bloque.appendChild(titulo);
+    const titulo = document.createElement('div')
+    titulo.className = 'mes-titulo'
+    titulo.textContent = `${nombresMes[mes]} ${año}`
+    bloque.appendChild(titulo)
 
-    const grid = document.createElement('div');
-    grid.className = 'dias-grid';
+    const grid = document.createElement('div')
+    grid.className = 'dias-grid'
 
-    diasSemana.forEach(dia => {
-      const celdaHeader = document.createElement('div');
-      celdaHeader.className = 'dia-semana-nombre';
-      celdaHeader.textContent = dia;
-      grid.appendChild(celdaHeader);
-    });
+    diasSemana.forEach((dia) => {
+      const celdaHeader = document.createElement('div')
+      celdaHeader.className = 'dia-semana-nombre'
+      celdaHeader.textContent = dia
+      grid.appendChild(celdaHeader)
+    })
 
-    let primerDia = new Date(año, mes, 1).getDay();
-    primerDia = (primerDia + 6) % 7;
-
-    const totalDias = new Date(año, mes + 1, 0).getDate();
+    const primerDia = (new Date(año, mes, 1).getDay() + 6) % 7
+    const totalDias = new Date(año, mes + 1, 0).getDate()
 
     for (let i = 0; i < primerDia; i++) {
-      grid.appendChild(document.createElement('div'));
+      grid.appendChild(document.createElement('div'))
     }
 
     for (let dia = 1; dia <= totalDias; dia++) {
-      const celda = document.createElement('div');
-      celda.className = 'dia-celda';
-      celda.textContent = dia;
+      const celda = document.createElement('div')
+      celda.className = 'dia-celda'
+      celda.textContent = dia
 
-      const fechaStr = `${año}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
-      
-      if (diasRegistrados.has(fechaStr)) {
-        celda.classList.add('dia-menstruacion');
-      } else if (diasPredichos.has(fechaStr)) {
-        celda.classList.add('dia-menstruacion-predicho');
-      }
+      const fecha = fechaIso(new Date(año, mes, dia))
 
-      celda.addEventListener('click', function() {
-        localStorage.setItem('registro', fechaStr);
-        window.location.href = "../registro/index.html";
-      });
+      if (diasRegistrados.has(fecha)) celda.classList.add('dia-menstruacion')
+      else if (diasPredichos.has(fecha)) celda.classList.add('dia-menstruacion-predicho')
 
-      grid.appendChild(celda);
+      celda.addEventListener('click', function () {
+        localStorage.setItem('registro', fecha)
+        window.location.href = '../registro/index.html'
+      })
+
+      grid.appendChild(celda)
     }
 
-    bloque.appendChild(grid);
-    return bloque;
+    bloque.appendChild(grid)
+    return bloque
   }
 
-  const hoy = new Date();
-  const limiteFuturo = new Date(hoy.getFullYear(), hoy.getMonth() + 6, 1);
+  /* Avisa cuando un bloque entra en pantalla; sirve para cargar más meses. */
+  function observar(bloque, alEntrar) {
+    if (!bloque) return
 
-  let fechaAdelante = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
-  let fechaAtras = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+    const observer = new IntersectionObserver((entradas) => {
+      if (!entradas.some((entrada) => entrada.isIntersecting)) return
+      observer.disconnect()
+      alEntrar()
+    }, { root: contenedor, threshold: 0.3 })
+
+    observer.observe(bloque)
+  }
 
   function cargarMesSiguiente() {
-    const siguiente = new Date(fechaAdelante.getFullYear(), fechaAdelante.getMonth() + 1, 1);
-    if (siguiente > limiteFuturo) return;
+    const siguiente = new Date(fechaAdelante.getFullYear(), fechaAdelante.getMonth() + 1, 1)
+    if (siguiente > limiteFuturo) return
 
-    fechaAdelante = siguiente;
-    const bloque = crearBloqueMes(fechaAdelante.getFullYear(), fechaAdelante.getMonth());
-    calendarioScroll.appendChild(bloque);
+    fechaAdelante = siguiente
+    const bloque = crearBloqueMes(fechaAdelante.getFullYear(), fechaAdelante.getMonth())
+    calendarioScroll.appendChild(bloque)
 
-    if (fechaAdelante < limiteFuturo) {
-      observarUltimo(bloque);
-    }
+    if (fechaAdelante < limiteFuturo) observar(bloque, cargarMesSiguiente)
   }
-  const limitePasado = 1950;
 
   function cargarMesAnterior() {
-    // Creamos una copia para probar el mes siguiente al retroceder
-    const fechaPrueba = new Date(fechaAtras);
-    fechaPrueba.setMonth(fechaPrueba.getMonth() - 1);
-  
-    // Si al retroceder el año es menor a 1950, detenemos la ejecución
-    if (fechaPrueba.getFullYear() < limitePasado) {
-      return; 
-    }
-  
-    fechaAtras.setMonth(fechaAtras.getMonth() - 1);
-    const bloque = crearBloqueMes(fechaAtras.getFullYear(), fechaAtras.getMonth());
-  
-    const alturaAntes = calendarioScroll.scrollHeight;
-    calendarioScroll.insertBefore(bloque, calendarioScroll.firstChild);
-    const alturaDespues = calendarioScroll.scrollHeight;
-  
-    contenedor.scrollTop += (alturaDespues - alturaAntes);
-    observarPrimero(bloque);
-  }
-  function observarUltimo(bloque) {
-    if (!bloque) return;
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          cargarMesSiguiente();
-          observer.disconnect();
-        }
-      });
-    }, { root: contenedor, threshold: 0.3 });
-    observer.observe(bloque);
-  }
+    const anterior = new Date(fechaAtras.getFullYear(), fechaAtras.getMonth() - 1, 1)
+    if (anterior.getFullYear() < 1950) return
 
-  function observarPrimero(bloque) {
-    if (!bloque) return;
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          cargarMesAnterior();
-          observer.disconnect();
-        }
-      });
-    }, { root: contenedor, threshold: 0.3 });
-    observer.observe(bloque);
+    fechaAtras = anterior
+    const bloque = crearBloqueMes(fechaAtras.getFullYear(), fechaAtras.getMonth())
+
+    // Al insertar arriba, compensamos el scroll para que no salte la vista.
+    const alturaAntes = calendarioScroll.scrollHeight
+    calendarioScroll.insertBefore(bloque, calendarioScroll.firstChild)
+    contenedor.scrollTop += calendarioScroll.scrollHeight - alturaAntes
+
+    observar(bloque, cargarMesAnterior)
   }
 
   function inicializarCalendario() {
-    calendarioScroll.innerHTML = ''; 
+    calendarioScroll.innerHTML = ''
 
-    fechaAdelante = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
-    fechaAtras = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+    fechaAdelante = new Date(hoy.getFullYear(), hoy.getMonth(), 1)
+    fechaAtras = new Date(hoy.getFullYear(), hoy.getMonth(), 1)
 
-    const bloqueActual = crearBloqueMes(hoy.getFullYear(), hoy.getMonth());
-    calendarioScroll.appendChild(bloqueActual);
+    const bloqueActual = crearBloqueMes(hoy.getFullYear(), hoy.getMonth())
+    calendarioScroll.appendChild(bloqueActual)
 
-    for (let i = 0; i < 3; i++) cargarMesSiguiente();
-    for (let i = 0; i < 3; i++) cargarMesAnterior();
+    for (let i = 0; i < 3; i++) cargarMesSiguiente()
+    for (let i = 0; i < 3; i++) cargarMesAnterior()
 
     // Al abrir el calendario, dejar el mes actual arriba de todo.
     const irAlMesActual = () => {
-      const top = bloqueActual.getBoundingClientRect().top
+      contenedor.scrollTop = bloqueActual.getBoundingClientRect().top
         - contenedor.getBoundingClientRect().top
-        + contenedor.scrollTop;
-      contenedor.scrollTop = top;
-    };
-    irAlMesActual();
-    requestAnimationFrame(irAlMesActual);
+        + contenedor.scrollTop
+    }
+    irAlMesActual()
+    requestAnimationFrame(irAlMesActual)
 
     if (fechaAdelante < limiteFuturo) {
-      observarUltimo(calendarioScroll.lastElementChild);
+      observar(calendarioScroll.lastElementChild, cargarMesSiguiente)
     }
-    observarPrimero(calendarioScroll.firstElementChild);
+    observar(calendarioScroll.firstElementChild, cargarMesAnterior)
   }
 
-  const duracionMenstruacion = obtenerDuracionMenstruacion();
-
-  function aplicarDias(datosCalendario, datosRueda) {
-    const inicioUltimo = datosRueda && typeof datosRueda === "object"
-      ? datosRueda.inicioUltimo
-      : null;
-
-    const { registrados, predichos } = normalizarDiasMarcados(
-      datosCalendario,
-      duracionMenstruacion,
-      inicioUltimo
-    );
-
-    diasRegistrados = registrados;
-    diasPredichos = predichos;
-    inicializarCalendario();
+  /* Sin sesión, mostramos el calendario vacío. */
+  if (!usuario) {
+    console.error('No hay usuario logueado en localStorage')
+    inicializarCalendario()
+    return
   }
 
-  if (usuarioId === undefined || usuarioId === null) {
-    aplicarDias(null, null);
-    return;
+  async function pedir(ruta) {
+    const respuesta = await fetch(`http://localhost:3000${ruta}`, { cache: 'no-store' })
+    return respuesta.ok ? respuesta.json() : null
   }
 
-  const pedir = (ruta) =>
-    fetch(`http://localhost:3000${ruta}`, { cache: 'no-store' })
-      .then((response) => (response.ok ? response.json() : null))
-      .catch((error) => {
-        console.error(`Error al leer ${ruta}:`, error);
-        return null;
-      });
+  async function iniciar() {
+    const datosCalendario = await pedir(`/marea/calendario/${usuario.id}`)
+    const datosRueda = await pedir(`/marea/rueda/${usuario.id}`)
+    const inicioUltimo = datosRueda ? datosRueda.inicioUltimo : null
 
-  Promise.all([
-    pedir(`/marea/calendario/${usuarioId}`),
-    pedir(`/marea/rueda/${usuarioId}`)
-  ]).then(([datosCalendario, datosRueda]) => {
-    aplicarDias(datosCalendario, datosRueda);
-  });
-});
+    const resultado = normalizarDiasMarcados(datosCalendario, inicioUltimo)
+    diasRegistrados = resultado.registrados
+    diasPredichos = resultado.predichos
+    inicializarCalendario()
+  }
+
+  iniciar().catch((error) => console.error('No se pudo cargar el calendario:', error))
+})
