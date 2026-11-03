@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatbot</title>
+    <!-- Fuentes Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="chatbot.css">
     <script src="../foto-perfil.js" defer></script>
     <script src="script.js" defer></script>
@@ -33,12 +37,17 @@
 
 
         
-        <form class="preguntar" id="formMensaje"> 
-           <input type="text" placeholder="Preguntale a Selene..." class="inputpregunta" id="mensaje"> 
-        <div class="losbotones"> 
-           <button type="submit" id="Enviar" class="enviar">Enviar</button>
-           <button type="button" id="eliminar" class="eliminar">Eliminar Historial</button>
-        </div>
+        <form class="preguntar" id="formMensaje">
+            <button type="button" id="eliminar" class="eliminar">Eliminar historial</button>
+            <div class="caja-pregunta">
+                <textarea placeholder="Pregúntale a Selene..." class="inputpregunta" id="mensaje" rows="2"></textarea>
+                <button type="submit" id="Enviar" class="enviar" aria-label="Enviar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M4 12h15"></path>
+                        <path d="M13 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+            </div>
         </form>
     </section>
 

@@ -63,6 +63,13 @@ function mostrarHistorial(entradas) {
     }
 }
 
+mensajito.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault()
+        formulario.requestSubmit()
+    }
+})
+
 formulario.addEventListener("submit", (event) => {
     event.preventDefault()
 

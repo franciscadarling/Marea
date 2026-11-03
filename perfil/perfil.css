@@ -124,7 +124,7 @@ border-radius: 50%;
     justify-content: space-evenly;
     flex-direction: column;
     margin-left: 8vw;
-    height: 12.4705882353%;
+    height: 17%;
     width: 84vw;
     justify-self: flex-start;
     justify-content: flex-start;
@@ -156,7 +156,7 @@ border-radius: 50%;
     display: flex;
     justify-self: flex-start;
     align-self: center;
-    background-color: rgb(224, 222, 222);
+    background-color: #DDD5FAF0;
     border-radius: 50%;
     width: 52.671755725%;
     aspect-ratio: 1/1;
@@ -219,6 +219,11 @@ dialog.popup {
     align-self: center;
 }
 
+dialog.popup h2{
+    font-family: "Gaegu", Serif;
+    font-size: 3dvh;
+}
+
 dialog.popup[open] {
     display: flex;
     justify-content: center;
@@ -248,7 +253,10 @@ dialog.popup[open] {
 }
 
 h2 {
-    font-size: 3dvh;
+    font-size: 4.7dvh;
+}
+p{
+    font-size: 2.7dvh;
 }
 dialog::backdrop {
     background-color: rgba(0, 0, 0, 0.5); 

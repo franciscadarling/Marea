@@ -136,13 +136,13 @@ body {
 
 #dia-ciclo {
   font-family: 'Gaegu';
-  font-size: 4dvh;
+  font-size: 5dvh;
   color: #DDD5F5;
 }
 
 #fase {
   font-family: 'Gaegu';
-  font-size: 2.2dvh;
+  font-size: 3dvh;
   color: #DDD5F5;
 }
 
@@ -192,7 +192,7 @@ circle {
   background-color: #9B85CCBF;
   box-shadow: 0 0 2.5vh 0.6vh #3D278A;
   font-family: 'Gaegu';
-  font-size: 2.1dvh;
+  font-size: 2.5dvh;
   color: #DDD5F5;
   display: flex;
   justify-content: flex-start;
