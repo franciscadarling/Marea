@@ -35,12 +35,21 @@ document.addEventListener('DOMContentLoaded', () => {
         fotoPerfil.src = guardado.foto;
         fotoChica.src = guardado.foto;
     }
-    if (duracionCiclo) duracionCiclo.textContent = "Duración del ciclo: " +guardadoM.duracion || "";
-    
-    if (duracionMenstruacion) {
-        duracionMenstruacion.textContent = "Duración del sangrado: " + guardado.duracionMenstruacion;
+
+    function mostrarDuraciones(ciclo, sangrado) {
+        if (duracionCiclo) {
+            duracionCiclo.textContent = "Duración del ciclo: " + (ciclo || "sin datos");
+        }
+        if (duracionMenstruacion) {
+            duracionMenstruacion.textContent = "Duración del sangrado: " + (sangrado || "sin datos");
+        }
     }
 
+    // Las duraciones ya vienen guardadas desde el login.
+    const ciclo = Number(guardado.duracionCiclo) || Number(guardadoM.duracion) || null;
+    const sangrado = Number(guardado.duracionMenstruacion) || Number(guardadoM.periodo) || null;
+
+    mostrarDuraciones(ciclo, sangrado);
 
 });
 
@@ -189,6 +198,12 @@ function mostrarRespuesta(mensaje) {
     const datosusuario = localStorage.getItem('usuarioRegistrado');
     const guardado = JSON.parse(datosusuario);
     const nuevoMail = inputMail.value.trim();
+
+    // Tiene que tener algo antes del @, un dominio y un punto.
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(nuevoMail)) {
+        alert("Escribí un correo válido, por ejemplo nombre@dominio.com");
+        return;
+    }
 
     fetch (`http://localhost:3000/marea/cambiarUsuario/${guardado.id}`, {
         method: "PUT",

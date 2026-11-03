@@ -31,7 +31,8 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function normalizarDiasMarcados(datos, inicioUltimo) {
-    const duracion = usuario.duracionMenstruacion
+    // La duración del sangrado viene guardada desde el login.
+    const duracion = Number(usuario.duracionMenstruacion) || 5
     const registrados = new Set()
     const predichos = new Set()
     const todas = new Set()

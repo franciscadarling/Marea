@@ -53,6 +53,7 @@ h1 {
     padding: 3.8dvh 7dvw 0;
     background-color: #4F349E;
     border-radius: min(5.3vw, 2.5dvh);
+     box-shadow: 0 0 1.5dvh rgba(221, 213, 245, 0.7);
 }
 
 .email,
@@ -83,7 +84,6 @@ h2 {
     padding: 0 2.2dvh;
     background-color: #DDD5F5;
     border: 0.25dvh solid #3D278A;
-    box-shadow: 0 0 1.5dvh rgba(221, 213, 245, 0.7);
     border-radius: min(2.7vw, 1.3dvh);
     outline: none;
     font-family: 'Gaegu', Arial;

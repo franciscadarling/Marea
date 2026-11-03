@@ -124,20 +124,31 @@ border-radius: 50%;
     justify-content: space-evenly;
     flex-direction: column;
     margin-left: 8vw;
-    height: 17%;
+    height: auto;
+    min-height: 17%;
     width: 84vw;
     justify-self: flex-start;
     justify-content: flex-start;
     align-items: flex-start;
     font-family: Gaegu, serif;
     color:#DDD5F5;
+    flex-shrink: 0;
 }
 
 .dato-fila {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 1vh;
     width: 100%;
+    min-width: 0;
+}
+
+/* Los mails, nombres o contraseñas largas se parten en varias líneas
+   en vez de estirar la pantalla y romper el perfil. */
+.dato-fila p {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .punto-editar {
@@ -161,6 +172,7 @@ border-radius: 50%;
     width: 52.671755725%;
     aspect-ratio: 1/1;
     overflow: hidden; 
+    flex-shrink: 0;
 }
 
 .imagenperfil {
