@@ -130,14 +130,14 @@ body {
   font-family: 'Gaegu';
   font-size: 2.1vh;
   line-height: 1.15;
-  color: #FFFFFF;
+  color: #DDD5F5;
   max-width: 92%;
 }
 
 #dia-ciclo {
   font-family: 'Gaegu';
   font-size: 4dvh;
-  color: #FFFFFF;
+  color: #DDD5F5;
 }
 
 #fase {
@@ -192,8 +192,8 @@ circle {
   background-color: #9B85CCBF;
   box-shadow: 0 0 2.5vh 0.6vh #3D278A;
   font-family: 'Gaegu';
-  font-size: 1.9dvh;
-  color: #FFFFFF;
+  font-size: 2.1dvh;
+  color: #DDD5F5;
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
@@ -208,7 +208,7 @@ circle {
 }
 
 .dato-fase {
-  min-height: 19dvh;
+  min-height: 17dvh;
   margin-top: 5dvh;              /* separación entre tarjetas */
 }
 

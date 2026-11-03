@@ -5,13 +5,13 @@ const CIRCUNFERENCIA = 534; // 2 * π * 85, el mismo r del círculo SVG
 // Texto informativo de cada fase (va en la tarjeta de abajo)
 const DATOS_FASE = {
   "Menstruación":
-    "Es normal sentir cólicos, cansancio o cambios de ánimo. Descansar, tomar agua y poner calor suave en la panza puede aliviar. Si el dolor es muy fuerte o no te deja hacer tus cosas, consultá con un profesional de la salud.",
+    "Tus hormonas están bajas. Es normal sentir menos energía. Descansa, hidratate y prioriza tu bienestar.",
   "Fase folicular":
-    "Los estrógenos van subiendo y es común sentir más energía y mejor ánimo. Tu cuerpo está preparando un óvulo para liberarlo.",
+    "Los estrógenos suben, mejorando tu concenttración y fuerza. Es una gran fase para esstudiar y activarte.",
   "Ovulación":
-    "Se libera un óvulo y es la etapa con más probabilidad de embarazo. Puede aparecer flujo más transparente y elástico. En ciclos irregulares el momento puede variar.",
+    "Pico de energía. Las hormonas estan al máximo y se libera un óvulo. Te sentirás muy segura y positiva",
   "Fase lútea":
-    "Sube la progesterona. Puede aparecer el síndrome premenstrual: hinchazón, sensibilidad en el pecho, antojos o cambios de ánimo."
+    "El ritmo disminuye. La progesterona sube y puuede dar cansancio o antojos. Escucha a tu cuerpo y busca calma."
 };
 
 // "2026-10-28T..." -> Date a medianoche local (evita desfases por zona horaria)
