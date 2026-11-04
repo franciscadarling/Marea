@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'Gaegu';
-  src: url('../../Gaegu-Bold-Tildes.ttf') format('truetype'); 
+  src: url('../../Gaegu-Bold-Tildes.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -14,96 +14,131 @@
 
 body {
   min-height: 100dvh;
-  background-image: url(../../Fondo\ predeterminado.png);
-  color: #ffffff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background-image: url('../../Fondo predeterminado.png');
+  background-color: #1A0F33;
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: #DDD5F5;
   overflow-y: auto;
-  padding: 5%;
 }
 
 .pantalla {
+  width: 100%;
+  min-height: 100dvh;
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
-  min-height: 100dvh;
-  width: 100dvw;
-  position: relative;
+  padding: 3dvh 5vw 3dvh;
 }
 
 #contenedor {
   display: flex;
   justify-content: center;
-  align-items: center;
   width: 100%;
 }
 
+/* El formulario deja ver el fondo de Marea, con un violeta suave encima. */
+form.preguntas {
+  width: 90dvw;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.8dvh;
+  padding: 3.5dvh 5dvw;
+  background-color: rgba(79, 52, 158, 0.32);
+  border: 0.22dvh solid rgba(221, 213, 245, 0.4);
+  border-radius: 2.5dvh;
+  box-shadow: 0 0 2.2dvh rgba(79, 52, 158, 0.8);
+}
 
-.inicio, .preguntas {
+.inicio,
+#formulario > .preguntas {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 85dvw;
-  max-width: 400px;
+  width: 100%;
   background-color: transparent;
   text-align: center;
-  gap: 20px;
+  gap: 1.2dvh;
 }
 
-
-.parrafo, .label {
-  color: #ffffff;
-  font-size: 3.2dvh;
-  line-height: 1.3;
-  letter-spacing: 1px;
+.parrafo,
+.label {
+  color: #DDD5F5;
+  font-size: 3.1dvh;
+  line-height: 1.35;
+  letter-spacing: 0.5px;
   text-align: center;
   margin: 0;
 }
 
+.inicio .label {
+  color: #EFEAFF;
+  font-size: 3.2dvh;
+}
 
+/* Campos del formulario: transparentes con borde blanco. */
 .preguntas input[type="text"],
 .preguntas input[type="number"],
 .preguntas select {
   width: 100%;
   max-width: 320px;
-  padding: 12px 20px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1.5px solid #8e73e3;
-  border-radius: 25px;
-  color: #000000;
-  font-size: 2.5dvh;
+  height: 5.2dvh;
+  min-height: 42px;
+  padding: 0 2.2dvh;
+  background-color: transparent;
+  border: 1.5px solid #FFFFFF;
+  border-radius: 1.6dvh;
+  color: #DDD5F5;
+  font-size: 2.6dvh;
   text-align: center;
   outline: none;
-  transition: all 0.3s ease;
+  color-scheme: dark;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .preguntas input:focus,
 .preguntas select:focus {
-  border-color: #bfa5ff;
-  box-shadow: 0 0 10px rgba(142, 115, 227, 0.4);
+  border-color: #FFFFFF;
+  box-shadow: 0 0 1.6dvh rgba(255, 255, 255, 0.45);
 }
 
 .preguntas select option {
-  background-color: #170d2f;
-  color: #ffffff;
+  background-color: #2A1B4D;
+  color: #DDD5F5;
 }
 
-/* Botones de Navegación */
-.botones {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  height: 10dvh;
-  margin-top: 15px;
-  gap: 15px;
+/* Botón principal, igual al de las pantallas de login. */
+.boton-enviar {
+  align-self: center;
+  width: 60%;
+  max-width: 260px;
+  min-height: 44px;
+  height: 5.4dvh;
+  background-color: #DDD5F5;
+  color: #1A0F33;
+  border: 0.25dvh solid #3D278A;
+  border-radius: 999px;
+  box-shadow: 0 0 2dvh rgba(221, 213, 245, 0.8);
+  font-size: 3.1dvh;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.boton-enviar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 2.6dvh rgba(221, 213, 245, 0.95);
+}
+
+.boton-enviar:active {
+  transform: translateY(0);
 }
 
 .estado-formulario {
-  color: #ffffff;
+  color: #DDD5F5;
   text-align: center;
   max-width: 420px;
   margin: 10px auto 0;
@@ -117,46 +152,23 @@ body {
   color: #b8f0bd;
 }
 
+/* --- Calendario del formulario --- */
 
+/* El panel del calendario queda oscuro, como la pantalla del calendario. */
+#formulario > .preguntas:has(.calendario-pantalla) {
+  align-items: stretch;
+  background-color: rgba(26, 15, 51, 0.55);
+  border: 0.22dvh solid rgba(221, 213, 245, 0.28);
+  border-radius: 1.8dvh;
+  padding: 2dvh 2dvh 1dvh;
+  box-shadow: inset 0 0 2dvh rgba(79, 52, 158, 0.45);
+}
 
-.boton-enviar {
-  height: 6dvh;
-  width: 60dvw;
-  max-width: 260px;
-  background-color: #5832a8; /* Violeta Marea */
-  color: #ffffff;
-  border: none;
-  border-radius: 25px;
+#formulario > .preguntas:has(.calendario-pantalla) .label {
+  color: #DDD5F5;
+  font-weight: normal;
   font-size: 2.8dvh;
-  letter-spacing: 1px;
-  cursor: pointer;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  transition: transform 0.2s ease, background-color 0.2s ease;
-}
-
-.boton-enviar:hover {
-  background-color: #6a3bc2;
-  transform: translateY(-2px);
-}
-
-
-
-/* --- Estilo Específico del Calendario Almanaque (P5) --- */
-
-.preguntas:has(.calendario-pantalla) {
-  width: 90dvw;
-  max-width: 420px;
-  background-color: #DDD5FAF0; /* Tarjeta lavanda */
-  border-radius: 20px;
-  padding: 2.5dvh 2dvh;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-}
-
-.preguntas:has(.calendario-pantalla) .label {
-  color: #1a0f35; /* Texto oscuro para contrastar con blanco */
-  font-weight: bold;
-  font-size: 2.8dvh;
-  margin-bottom: 10px;
+  margin-bottom: 1.2dvh;
 }
 
 .calendario-pantalla {
@@ -164,6 +176,8 @@ body {
   max-height: 42dvh;
   overflow-y: auto;
   padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: #4F349E transparent;
 }
 
 .calendario-scroll {
@@ -182,61 +196,61 @@ body {
   font-size: 2.4dvh;
   font-weight: bold;
   text-align: center;
-  color: #1a0f35;
-  padding-bottom: 4px;
-  border-bottom: 2px solid #f0ecfc;
+  color: #DDD5F5;
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgba(221, 213, 245, 0.25);
 }
 
 .dias-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
+  column-gap: 7px;
+  row-gap: 5px;
 }
 
 .dia-semana-nombre {
   font-weight: bold;
   font-size: 1.6dvh;
   text-align: center;
-  color: #6b5b95;
-  padding-bottom: 4px;
+  color: #B9AEDB;
+  padding-bottom: 2px;
 }
 
+/* Mismas celdas que el calendario: cuadrados lavanda y días marcados en rojo. */
 .dia-celda {
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 19 / 16;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2dvh;
-  color: #222222;
-  background-color: #DDD5FAF0;
-  border: 1px solid #e2dbf5;
-  cursor: pointer;
+  font-size: 1.9dvh;
+  color: #1A0F33;
+  background-color: #DDD5F5;
+  border: none;
   border-radius: 8px;
-  transition: all 0.2s ease;
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .dia-celda:not(.dia-deshabilitada):hover {
-  background-color: #e8dffc;
+  background-color: #EFE9FF;
+  transform: translateY(-1px);
 }
 
-/* Fecha seleccionada con el Violeta Marea */
 .dia-seleccionada {
-  background-color: #5832a8 !important;
-  color: #ffffff !important;
+  background-color: #E63939 !important;
+  color: #FFFFFF !important;
   font-weight: bold;
-  border-color: #5832a8 !important;
-  box-shadow: 0 2px 6px rgba(88, 50, 168, 0.4);
+  box-shadow: 0 0 1dvh rgba(230, 57, 57, 0.55);
 }
 
 .dia-deshabilitada {
-  opacity: 0.3;
   pointer-events: none;
-  background-color: #DDD5FAF0;
-  border-color: transparent;
+  background-color: rgba(221, 213, 245, 0.12);
+  color: rgba(221, 213, 245, 0.35);
 }
 
-.mensaje-error{
+.mensaje-error {
   color: coral;
-  height:5dvh;
-  font-family: "Gaegu", sans-serif;
+  height: 5dvh;
+  font-family: 'Gaegu', sans-serif;
 }

@@ -39,6 +39,22 @@ function esLeido(item) {
     return valor === true || valor === 1 || valor === "true" || valor === "1";
 }
 
+// Cada línea del texto del artículo es un párrafo aparte.
+function mostrarCuerpo(texto) {
+    const cuerpo = document.getElementById("cuerpo");
+    cuerpo.textContent = "";
+
+    const lineas = (texto || "").split("\n");
+
+    lineas.forEach((linea) => {
+        if (linea.trim() === "") return;
+
+        const parrafo = document.createElement("p");
+        parrafo.textContent = linea;
+        cuerpo.appendChild(parrafo);
+    });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     const idUser = obtenerIdUsuario();
     const check = document.getElementById("check-leido");
@@ -60,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1. Rellenar la vista
     document.getElementById("titulo").textContent = articulo.titulo || "";
     document.getElementById("subtitulo").textContent = articulo.subtitulo || "";
-    document.getElementById("cuerpo").textContent = articulo.texto || "";
+    mostrarCuerpo(articulo.texto);
 
     // 2. Estado inicial rápido (pendiente > lo guardado en la tarjeta)
     const pendientes = leerPendientes();

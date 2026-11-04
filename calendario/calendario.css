@@ -52,17 +52,21 @@ body {
 .dias-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
+    column-gap: 7px;
+    row-gap: 5px;
     font-family: 'Gaegu', serif;
 }
 
 .dia-celda {
-    aspect-ratio: 1;
+    aspect-ratio: 19 / 16;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
+    border-radius: 8px;
+    background-color: #DDD5F5;
+    color: #1A0F33;
     font-family: 'Gaegu', serif;
+    position: relative;
 }
 
 .dia-menstruacion {
@@ -72,8 +76,19 @@ body {
 
 
 .dia-menstruacion-predicho {
-    background-color: rgba(230, 57, 57, 0.35);
+    background-color: #e6393980;
     color: white;
+}
+
+/* El puntito verde marca los días con síntomas registrados. */
+.punto-sintoma {
+    position: absolute;
+    top: 4px;
+    left: 5px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: #2ecc71;
 }
 
 

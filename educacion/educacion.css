@@ -162,6 +162,7 @@ body.pagina-educacion  .botonpagina[href*="educacion"] {
     overflow: hidden;
     position: relative; 
     border: 0.5vh solid #7458B8;
+    color:#1a0f33;
 }
 
 .tarjeta.fase-1 {

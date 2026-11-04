@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const diasSemana = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom']
   let diasRegistrados = new Set()
   let diasPredichos = new Set()
+  let diasSintomas = new Set()
   const hoy = new Date()
   const limiteFuturo = new Date(hoy.getFullYear(), hoy.getMonth() + 6, 1)
   let fechaAdelante = new Date(hoy.getFullYear(), hoy.getMonth(), 1)
@@ -31,7 +32,6 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function normalizarDiasMarcados(datos, inicioUltimo) {
-    // La duración del sangrado viene guardada desde el login.
     const duracion = Number(usuario.duracionMenstruacion) || 5
     const registrados = new Set()
     const predichos = new Set()
@@ -41,7 +41,6 @@ document.addEventListener('DOMContentLoaded', function () {
       ? sumarDias(inicioUltimo, Math.max(duracion, 7) - 1)
       : fechaIso(new Date())
 
-    // Días que ya devuelve el servidor (registrados y predichos).
     if (Array.isArray(datos)) {
       datos.forEach((fecha) => {
         todas.add(fecha)
@@ -50,7 +49,6 @@ document.addEventListener('DOMContentLoaded', function () {
       })
     }
 
-    // Períodos guardados en el navegador al registrarlos.
     const locales = JSON.parse(localStorage.getItem(`periodosLocales_${usuario.id}`) || '[]')
     locales.forEach((periodo) => {
       const inicio = typeof periodo === 'string' ? periodo : periodo.inicio
@@ -63,7 +61,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     })
 
-    // Agrupamos días seguidos y dejamos cada período con la duración configurada.
     const ordenadas = [...todas].sort()
     let i = 0
     while (i < ordenadas.length) {
@@ -89,7 +86,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
       i = fin + 1
     }
-
 
     registrados.forEach((fecha) => predichos.delete(fecha))
 
@@ -132,6 +128,12 @@ document.addEventListener('DOMContentLoaded', function () {
       if (diasRegistrados.has(fecha)) celda.classList.add('dia-menstruacion')
       else if (diasPredichos.has(fecha)) celda.classList.add('dia-menstruacion-predicho')
 
+      if (diasSintomas.has(fecha)) {
+        const punto = document.createElement('div')
+        punto.className = 'punto-sintoma'
+        celda.appendChild(punto)
+      }
+
       celda.addEventListener('click', function () {
         localStorage.setItem('registro', fecha)
         window.location.href = '../registro/index.html'
@@ -144,7 +146,6 @@ document.addEventListener('DOMContentLoaded', function () {
     return bloque
   }
 
-  /* Avisa cuando un bloque entra en pantalla; sirve para cargar más meses. */
   function observar(bloque, alEntrar) {
     if (!bloque) return
 
@@ -175,7 +176,6 @@ document.addEventListener('DOMContentLoaded', function () {
     fechaAtras = anterior
     const bloque = crearBloqueMes(fechaAtras.getFullYear(), fechaAtras.getMonth())
 
-    // Al insertar arriba, compensamos el scroll para que no salte la vista.
     const alturaAntes = calendarioScroll.scrollHeight
     calendarioScroll.insertBefore(bloque, calendarioScroll.firstChild)
     contenedor.scrollTop += calendarioScroll.scrollHeight - alturaAntes
@@ -195,7 +195,6 @@ document.addEventListener('DOMContentLoaded', function () {
     for (let i = 0; i < 3; i++) cargarMesSiguiente()
     for (let i = 0; i < 3; i++) cargarMesAnterior()
 
-    // Al abrir el calendario, dejar el mes actual arriba de todo.
     const irAlMesActual = () => {
       contenedor.scrollTop = bloqueActual.getBoundingClientRect().top
         - contenedor.getBoundingClientRect().top
@@ -210,7 +209,6 @@ document.addEventListener('DOMContentLoaded', function () {
     observar(calendarioScroll.firstElementChild, cargarMesAnterior)
   }
 
-  /* Sin sesión, mostramos el calendario vacío. */
   if (!usuario) {
     console.error('No hay usuario logueado en localStorage')
     inicializarCalendario()
@@ -223,13 +221,21 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   async function iniciar() {
-    const datosCalendario = await pedir(`/marea/calendario/${usuario.id}`)
-    const datosRueda = await pedir(`/marea/rueda/${usuario.id}`)
+    const [datosCalendario, datosRueda, datosSintomas] = await Promise.all([
+      pedir(`/marea/calendario/${usuario.id}`),
+      pedir(`/marea/rueda/${usuario.id}`),
+      pedir(`/marea/diassintomas/${usuario.id}`)
+    ])
+
     const inicioUltimo = datosRueda ? datosRueda.inicioUltimo : null
 
     const resultado = normalizarDiasMarcados(datosCalendario, inicioUltimo)
     diasRegistrados = resultado.registrados
     diasPredichos = resultado.predichos
+
+    // Si no hay síntomas cargados, la ruta responde 404 y pedir() devuelve null.
+    diasSintomas = new Set(Array.isArray(datosSintomas) ? datosSintomas : [])
+
     inicializarCalendario()
   }
 
