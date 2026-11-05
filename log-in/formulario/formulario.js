@@ -2,6 +2,13 @@
 let indiceinicial = 0;
 let contenedorpregunta = document.getElementById("formulario");
 let fechasSeleccionadas = []; 
+(function(){
+emailjs.init("F7CbJoC5gp5aU4DCc");
+})();
+
+const serviceID = "service_icoa2r3";
+const templateID = "template_x7iwjbi";
+
 
 /* Elementos del DOM */
 let formulario = document.getElementById("formulario");
@@ -74,49 +81,31 @@ async function enviarRegistro(respuestas) {
       }
     }
 
+    // 1. Armamos los parámetros con los datos reales y actualizados
+    const templateParams = {
+      user_name: respuestas.nombre,
+      user_email: respuestas.mail
+    };
+
+    // 2. Enviamos el correo usando await para esperar a que se complete
+    try {
+      await emailjs.send(serviceID, templateID, templateParams);
+      console.log("Correo de registro enviado con éxito.");
+    } catch (emailError) {
+      console.error("Error al enviar el correo con EmailJS:", emailError);
+      // Opcional: Decide si querés que falle todo el registro si el correo falla, 
+      // o si solo querés advertirlo por consola.
+    }
+
     console.log("Registro completo exitoso:", resultado);
     return true; 
+
   } catch (error) {
     console.error("Error al conectar con el servidor:", error);
     mostrarEstado("Hubo un error al registrarse. Intentalo de nuevo.");
     return false;
   }
 }
-
-/* Submit del formulario */
-formulario.addEventListener('submit', async function(e) {
-  e.preventDefault(); 
-
-  let mailGuardado = localStorage.getItem('Email');
-  let contrasenaGuardada = localStorage.getItem('Contrasena');
-
-  let respuestas = {
-    mail: mailGuardado,              
-    password: contrasenaGuardada,
-    nombre: inputNombre.value.trim(),
-    genero: inputGenero.value,
-    edad: inputEdad.value,
-    regularidad: inputRegularidad.value, 
-    condiciones: "",
-    duracionCiclo: Number(inputCiclo.value),
-    duracionMenstruacion: Number(inputMenstruacion.value),
-    fechasMenstruacion: fechasSeleccionadas
-  };
-
-  let esValido = validarRespuestaActual(respuestas);
-
-  if (esValido === true) {
-    mostrarEstado("¡Formulario válido! Guardando datos...");
-    localStorage.setItem('usuarioRegistrado', JSON.stringify(respuestas));
-    console.log(respuestas);
-    
-    let registroExitoso = await enviarRegistro(respuestas);
-
-    if (registroExitoso) {
-      window.location.href = "../inicio-sesion/inicio-sesion.html";
-    }
-  }
-});
 
 
 // ---------- Calendario tipo Almanaque / Tabla para p5 ----------
