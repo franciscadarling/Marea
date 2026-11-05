@@ -2,13 +2,20 @@
 let indiceinicial = 0;
 let contenedorpregunta = document.getElementById("formulario");
 let fechasSeleccionadas = []; 
-(function(){
-emailjs.init("F7CbJoC5gp5aU4DCc");
-})();
+
+// Inicialización segura de EmailJS
+try {
+  if (typeof emailjs !== 'undefined') {
+    emailjs.init("F7CbJoC5gp5aU4DCc");
+  } else {
+    console.warn("La librería de EmailJS no está cargada en el HTML.");
+  }
+} catch (error) {
+  console.error("Error al inicializar EmailJS:", error);
+}
 
 const serviceID = "service_icoa2r3";
 const templateID = "template_x7iwjbi";
-
 
 /* Elementos del DOM */
 let formulario = document.getElementById("formulario");
